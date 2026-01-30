@@ -228,7 +228,14 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin: 12px 0;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #0b1220;
+  padding: 10px 0;
+  z-index: 1000;
 }
 .nav a {
   color: #e5e7eb;
@@ -240,6 +247,9 @@ h1 {
 .nav a:hover {
   background: rgba(229,231,235,0.06);
 }
+
+/* Ensure content is not hidden under fixed nav */
+body { padding-top: 56px; }
 
 /* Battleship styles */
 .bs-board{ display:grid; grid-template-columns: repeat(6,36px); gap:6px; justify-content:center; margin-top:8px; }
