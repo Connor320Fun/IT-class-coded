@@ -273,37 +273,112 @@ newGame();
 // Admin panel logic
 const adminBtn = document.getElementById('adminBtn');
 const adminPanel = document.getElementById('adminPanel');
+const adminAuth = document.getElementById('adminAuth');
+const adminPassword = document.getElementById('adminPassword');
+const adminUnlock = document.getElementById('adminUnlock');
+const adminContents = document.getElementById('adminContents');
 const adminDifficulty = document.getElementById('adminDifficulty');
+const adminStarter = document.getElementById('adminStarter');
 const forceAiWinBtn = document.getElementById('forceAiWin');
 const forcePlayerWinBtn = document.getElementById('forcePlayerWin');
 const forceDrawBtn = document.getElementById('forceDraw');
 const clearBoardBtn = document.getElementById('clearBoard');
+const clearScoresBtn = document.getElementById('clearScores');
+const resetLocalStorageBtn = document.getElementById('resetLocalStorage');
+const exportStateBtn = document.getElementById('exportState');
+const importFileInput = document.getElementById('importFile');
+const clearLogsBtn = document.getElementById('clearLogs');
+const exportLogsBtn = document.getElementById('exportLogs');
 const closeAdminBtn = document.getElementById('closeAdmin');
+const adminLogsEl = document.getElementById('adminLogs');
+const liveBoardEl = document.getElementById('liveBoard');
+const liveScoresEl = document.getElementById('liveScores');
 
-function openAdmin() {
-  const code = prompt('Enter admin code:');
-  if (code === '0320') {
-    adminPanel.classList.remove('hidden');
-  } else {
-    alert('Incorrect code.');
+let adminUnlocked = false;
+let adminLogs = JSON.parse(localStorage.getItem('ttt_admin_logs') || '[]');
+
+function saveAdminLogs() {
+  localStorage.setItem('ttt_admin_logs', JSON.stringify(adminLogs));
+}
+
+function logAdmin(action) {
+  const entry = `${new Date().toISOString()} - ${action}`;
+  adminLogs.unshift(entry);
+  if (adminLogs.length > 200) adminLogs.pop();
+  saveAdminLogs();
+  renderAdminLogs();
+}
+
+function renderAdminLogs() {
+  if (!adminLogsEl) return;
+  adminLogsEl.innerHTML = adminLogs.map(l => `<div>${l}</div>`).join('');
+}
+
+function renderLiveStats() {
+  if (liveBoardEl) {
+    liveBoardEl.innerHTML = '';
+    for (let i = 0; i < 9; i++) {
+      const el = document.createElement('div');
+      el.className = 'cell';
+      el.textContent = board[i] ? board[i] : '';
+      liveBoardEl.appendChild(el);
+    }
+  }
+  if (liveScoresEl) {
+    liveScoresEl.textContent = `Player: ${scores.player}  AI: ${scores.ai}  Draws: ${scores.draw}`;
   }
 }
 
-adminBtn && adminBtn.addEventListener('click', openAdmin);
+function unlockAdmin() {
+  if (adminPassword.value === '0320') {
+    adminUnlocked = true;
+    adminAuth.classList.add('hidden');
+    adminContents.classList.remove('hidden');
+    logAdmin('Admin unlocked');
+  } else {
+    alert('Incorrect code');
+    logAdmin('Failed admin unlock attempt');
+  }
+}
+
+adminBtn && adminBtn.addEventListener('click', () => {
+  adminPanel.classList.toggle('hidden');
+  if (!adminPanel.classList.contains('hidden')) {
+    // show auth by default
+    adminAuth.classList.remove('hidden');
+    adminContents.classList.add('hidden');
+    adminPassword.value = '';
+    renderAdminLogs();
+    renderLiveStats();
+  }
+});
+
+adminUnlock && adminUnlock.addEventListener('click', unlockAdmin);
 
 adminDifficulty && adminDifficulty.addEventListener('change', () => {
   difficultyEl.value = adminDifficulty.value;
+  logAdmin(`Difficulty set to ${adminDifficulty.value}`);
 });
 
+adminStarter && adminStarter.addEventListener('change', () => {
+  const starter = adminStarter.value;
+  logAdmin(`Starter set to ${starter}`);
+});
+
+function setStarterAndNew(starter) {
+  currentPlayer = starter;
+  newGame(starter);
+  logAdmin(`New game started with starter ${starter}`);
+}
+
 function forceWinFor(symbol) {
-  // choose a winning combo (first one) and set that symbol
   const combo = winningCombos[0];
-  // fill board with the opposite symbol to avoid accidental extra wins
   const opposite = symbol === 'O' ? 'X' : 'O';
   board = Array(9).fill(opposite);
   combo.forEach((i) => (board[i] = symbol));
   renderBoard();
   handleResult(symbol);
+  logAdmin(`Forced ${symbol} win`);
 }
 
 forceAiWinBtn && forceAiWinBtn.addEventListener('click', () => forceWinFor('O'));
@@ -313,10 +388,103 @@ forceDrawBtn && forceDrawBtn.addEventListener('click', () => {
   board = ['X','O','X','X','O','O','O','X','X'];
   renderBoard();
   handleResult('draw');
+  logAdmin('Forced draw');
 });
 
-clearBoardBtn && clearBoardBtn.addEventListener('click', () => newGame());
+clearBoardBtn && clearBoardBtn.addEventListener('click', () => {
+  newGame();
+  logAdmin('Cleared board (new game)');
+});
+
+clearScoresBtn && clearScoresBtn.addEventListener('click', () => {
+  resetScores();
+  logAdmin('Cleared scores');
+});
+
+resetLocalStorageBtn && resetLocalStorageBtn.addEventListener('click', () => {
+  localStorage.clear();
+  scores = { player: 0, ai: 0, draw: 0 };
+  adminLogs = [];
+  saveScores();
+  saveAdminLogs();
+  renderAdminLogs();
+  renderLiveStats();
+  logAdmin('Reset localStorage');
+});
+
+exportStateBtn && exportStateBtn.addEventListener('click', () => {
+  const state = { board, scores, currentPlayer, gameOver, adminLogs };
+  const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state));
+  const a = document.createElement('a');
+  a.setAttribute('href', dataStr);
+  a.setAttribute('download', 'ttt_state.json');
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  logAdmin('Exported state');
+});
+
+importFileInput && importFileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const state = JSON.parse(ev.target.result);
+      if (state.board) board = state.board;
+      if (state.scores) scores = state.scores;
+      if (state.currentPlayer) currentPlayer = state.currentPlayer;
+      gameOver = !!state.gameOver;
+      if (state.adminLogs) adminLogs = state.adminLogs;
+      saveScores();
+      saveAdminLogs();
+      renderBoard();
+      updateScoreboard();
+      renderAdminLogs();
+      renderLiveStats();
+      logAdmin('Imported state');
+    } catch (err) {
+      alert('Invalid file');
+    }
+  };
+  reader.readAsText(file);
+});
+
+clearLogsBtn && clearLogsBtn.addEventListener('click', () => {
+  adminLogs = [];
+  saveAdminLogs();
+  renderAdminLogs();
+  logAdmin('Cleared logs');
+});
+
+exportLogsBtn && exportLogsBtn.addEventListener('click', () => {
+  const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(adminLogs));
+  const a = document.createElement('a');
+  a.setAttribute('href', dataStr);
+  a.setAttribute('download', 'ttt_admin_logs.json');
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  logAdmin('Exported logs');
+});
 
 closeAdminBtn && closeAdminBtn.addEventListener('click', () => {
   adminPanel.classList.add('hidden');
+  adminUnlocked = false;
+  adminAuth.classList.remove('hidden');
+  adminContents.classList.add('hidden');
+  logAdmin('Admin locked');
 });
+
+// Ensure live stats update on key events
+const originalRenderBoard = renderBoard;
+renderBoard = function() {
+  originalRenderBoard();
+  renderLiveStats();
+};
+
+const originalUpdateScoreboard = updateScoreboard;
+updateScoreboard = function() {
+  originalUpdateScoreboard();
+  renderLiveStats();
+};

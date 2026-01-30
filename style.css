@@ -158,3 +158,45 @@ h1 {
 .admin-panel button:hover {
   background: #1f2937;
 }
+
+.admin-panel input[type="password"],
+.admin-panel input[type="file"],
+.admin-panel select {
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.live-board {
+  display: grid;
+  grid-template-columns: repeat(3, 28px);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.live-board .cell {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background: #0b1220;
+  border-radius: 4px;
+}
+
+.admin-logs {
+  max-height: 120px;
+  overflow: auto;
+  background: #0b1220;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.live-scores {
+  font-size: 13px;
+  margin-bottom: 8px;
+}

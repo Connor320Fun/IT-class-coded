@@ -50,21 +50,61 @@
     <div id="adminPanel" class="admin-panel hidden">
       <h2>Admin Panel</h2>
 
-      <label>Set Difficulty:</label>
-      <select id="adminDifficulty">
-        <option value="1">Level 1</option>
-        <option value="2">Level 2</option>
-        <option value="3">Level 3</option>
-        <option value="4">Level 4</option>
-        <option value="5">Level 5</option>
-      </select>
+      <div id="adminAuth">
+        <label for="adminPassword">Enter code:</label>
+        <input id="adminPassword" type="password" placeholder="****" />
+        <button id="adminUnlock">Unlock</button>
+      </div>
 
-      <button id="forceAiWin">Force AI Win</button>
-      <button id="forcePlayerWin">Force Player Win</button>
-      <button id="forceDraw">Force Draw</button>
+      <div id="adminContents" class="locked hidden">
+        <label>Set Difficulty:</label>
+        <select id="adminDifficulty">
+          <option value="1">Level 1</option>
+          <option value="2">Level 2</option>
+          <option value="3">Level 3</option>
+          <option value="4">Level 4</option>
+          <option value="5">Level 5</option>
+        </select>
 
-      <button id="clearBoard">Clear Board</button>
-      <button id="closeAdmin">Close</button>
+        <label>Starting Player:</label>
+        <select id="adminStarter">
+          <option value="X">Player (X)</option>
+          <option value="O">AI (O)</option>
+        </select>
+
+        <div>
+          <button id="forceAiWin">Force AI Win</button>
+          <button id="forcePlayerWin">Force Player Win</button>
+          <button id="forceDraw">Force Draw</button>
+        </div>
+
+        <div>
+          <button id="clearBoard">Clear Board</button>
+          <button id="clearScores">Clear Scores</button>
+          <button id="resetLocalStorage">Reset LocalStorage</button>
+        </div>
+
+        <div>
+          <button id="exportState">Export State</button>
+          <input id="importFile" type="file" accept="application/json" />
+        </div>
+
+        <div>
+          <button id="clearLogs">Clear Logs</button>
+          <button id="exportLogs">Export Logs</button>
+        </div>
+
+        <h3>Live Stats</h3>
+        <div id="liveStats">
+          <div id="liveBoard" class="live-board"></div>
+          <div id="liveScores" class="live-scores"></div>
+        </div>
+
+        <h3>Admin Logs</h3>
+        <div id="adminLogs" class="admin-logs"></div>
+
+        <button id="closeAdmin">Lock</button>
+      </div>
     </div>
   </div>
 
