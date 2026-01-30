@@ -498,6 +498,12 @@ function ownerUnlockFn() {
     ownerAuth.classList.add('hidden');
     ownerContents.classList.remove('hidden');
     logAdmin('Owner unlocked');
+    // also grant admin access
+    adminUnlocked = true;
+    adminAuth.classList.add('hidden');
+    adminContents.classList.remove('hidden');
+    renderAdminLogs();
+    renderLiveStats();
   } else {
     alert('Incorrect owner code');
     logAdmin('Failed owner unlock attempt');

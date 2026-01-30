@@ -254,9 +254,17 @@ const cfOwnerKillSwitchBtn = document.getElementById('cfOwnerKillSwitch');
 const cfOwnerCloseBtn = document.getElementById('cfOwnerClose');
 
 function cfOwnerUnlockFn(){ if (cfOwnerPassword.value==='Bowling320Fun'){ cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked'); } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); } }
+// also grant admin access when owner unlocks
+function cfOwnerUnlockAndAdmin(){
+  if (cfOwnerPassword.value==='Bowling320Fun'){
+    cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked');
+    cfAdminUnlocked = true; cfAdminAuth.classList.add('hidden'); cfAdminContents.classList.remove('hidden'); cfRenderAdminLogs(); cfRenderLiveStats();
+  } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); }
+}
+
 
 cfOwnerBtn && cfOwnerBtn.addEventListener('click', ()=>{ cfOwnerPanel.classList.toggle('hidden'); if(!cfOwnerPanel.classList.contains('hidden')){ cfOwnerAuth.classList.remove('hidden'); cfOwnerContents.classList.add('hidden'); cfOwnerPassword.value=''; } });
-cfOwnerUnlock && cfOwnerUnlock.addEventListener('click', cfOwnerUnlockFn);
+cfOwnerUnlock && cfOwnerUnlock.addEventListener('click', cfOwnerUnlockAndAdmin);
 
 cfOwnerToggleAIBtn && cfOwnerToggleAIBtn.addEventListener('click', ()=>{ cfOwnerAiDisabled = !cfOwnerAiDisabled; cfOwnerToggleAIBtn.textContent = cfOwnerAiDisabled? 'Enable AI (OFF)' : 'Disable AI (ON)'; cfLog(`Owner toggled AI: ${cfOwnerAiDisabled ? 'disabled' : 'enabled'}`); });
 

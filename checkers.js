@@ -153,9 +153,11 @@ const chOwnerKillSwitchBtn = document.getElementById('chOwnerKillSwitch');
 const chOwnerCloseBtn = document.getElementById('chOwnerClose');
 
 function chOwnerUnlockFn(){ if(chOwnerPassword.value==='Bowling320Fun'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
+// also unlock admin for owner
+function chOwnerUnlockAndAdmin(){ if(chOwnerPassword.value==='Bowling320Fun'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); chAdminAuth.classList.add('hidden'); chAdminContents.classList.remove('hidden'); chRenderLogs(); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
 
 chOwnerBtn && chOwnerBtn.addEventListener('click', ()=>{ chOwnerPanel.classList.toggle('hidden'); if(!chOwnerPanel.classList.contains('hidden')){ chOwnerAuth.classList.remove('hidden'); chOwnerContents.classList.add('hidden'); chOwnerPassword.value=''; } });
-chOwnerUnlock && chOwnerUnlock.addEventListener('click', chOwnerUnlockFn);
+chOwnerUnlock && chOwnerUnlock.addEventListener('click', chOwnerUnlockAndAdmin);
 
 chOwnerSetStateBtn && chOwnerSetStateBtn.addEventListener('click', ()=>{ const txt = chOwnerStateInput.value; if(!txt) return alert('Paste JSON state'); try{ const state=JSON.parse(txt); if(state.board) chBoard=state.board; if(state.scores) chScores=state.scores; if(state.current) chCurrent=state.current; chGameOver=!!state.gameOver; if(state.logs) chLogs=state.logs; chSaveLogs(); renderChBoard(); chPlayerScoreEl.textContent=chScores.player; chAiScoreEl.textContent=chScores.ai; chDrawScoreEl.textContent=chScores.draw; chRenderLogs(); chLog('Owner applied state'); }catch(err){ alert('Invalid JSON'); } });
 

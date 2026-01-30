@@ -95,9 +95,11 @@ const hmOwnerKillSwitchBtn = document.getElementById('hmOwnerKillSwitch');
 const hmOwnerCloseBtn = document.getElementById('hmOwnerClose');
 
 function hmOwnerUnlockFn(){ if(hmOwnerPassword.value==='Bowling320Fun'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
+// also open admin panel for owner
+function hmOwnerUnlockAndAdmin(){ if(hmOwnerPassword.value==='Bowling320Fun'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); hmAdminAuth.classList.add('hidden'); hmAdminContents.classList.remove('hidden'); hmRenderLogs(); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
 
 hmOwnerBtn && hmOwnerBtn.addEventListener('click', ()=>{ hmOwnerPanel.classList.toggle('hidden'); if(!hmOwnerPanel.classList.contains('hidden')){ hmOwnerAuth.classList.remove('hidden'); hmOwnerContents.classList.add('hidden'); hmOwnerPassword.value=''; } });
-hmOwnerUnlock && hmOwnerUnlock.addEventListener('click', hmOwnerUnlockFn);
+hmOwnerUnlock && hmOwnerUnlock.addEventListener('click', hmOwnerUnlockAndAdmin);
 
 hmOwnerSetStateBtn && hmOwnerSetStateBtn.addEventListener('click', ()=>{ const txt = hmOwnerStateInput.value; if(!txt) return alert('Paste JSON state'); try{ const state = JSON.parse(txt); if(state.word) hmWord=state.word; if(state.display) hmDisplay=state.display; if(state.attempts!==undefined) hmAttempts=state.attempts; if(state.guessed) hmGuessed=new Set(state.guessed); if(state.scores) hmScores=state.scores; if(state.logs) hmLogs=state.logs; renderHm(); hmPlayerScoreEl.textContent=hmScores.player; hmAiScoreEl.textContent=hmScores.ai; hmDrawScoreEl.textContent=hmScores.draw; hmSaveLogs(); hmRenderLogs(); hmLog('Owner applied state'); }catch(err){ alert('Invalid JSON'); } });
 
