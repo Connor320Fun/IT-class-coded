@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tic-Tac-Toe vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <h1>Tic-Tac-Toe vs AI</h1>
+
+    <div class="controls">
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty">
+        <option value="1">Level 1 - Random</option>
+        <option value="2">Level 2 - Easy</option>
+        <option value="3">Level 3 - Medium</option>
+        <option value="4">Level 4 - Hard</option>
+        <option value="5">Level 5 - Impossible</option>
+      </select>
+      <button id="resetScores">Reset Scores</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player (X): <span id="playerScore">0</span></div>
+      <div>AI (O): <span id="aiScore">0</span></div>
+      <div>Draws: <span id="drawScore">0</span></div>
+    </div>
+
+    <div id="status" class="status">Your turn (X)</div>
+
+    <div class="board" id="board">
+      <!-- 9 cells -->
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+
+    <button id="newGame" class="new-game">New Game</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
