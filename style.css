@@ -255,3 +255,10 @@ body { padding-top: 56px; }
 .bs-board{ display:grid; grid-template-columns: repeat(6,36px); gap:6px; justify-content:center; margin-top:8px; }
 .bs-cell{ width:36px; height:36px; background:#0b1220; border-radius:4px; display:flex; align-items:center; justify-content:center; color:white; cursor:pointer }
 .bs-cell:hover{ background:#111827 }
+
+/* Checkers styles */
+.checker-board{ display:grid; grid-template-columns: repeat(8,48px); gap:4px; justify-content:center; margin-top:12px; }
+.checker-cell{ width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:#cfcfcf; }
+.checker-cell:nth-child(odd){ background:#111827; color:white }
+.checker-cell:nth-child(even){ background:#f3f4f6; color:#111827 }
+.checker-cell:hover{ outline:2px solid rgba(59,130,246,0.6); cursor:pointer }
