@@ -138,6 +138,32 @@ const chAdminLogsEl = document.getElementById('chAdminLogs');
 const chCloseAdminBtn = document.getElementById('chCloseAdmin');
 
 let chLogs = JSON.parse(localStorage.getItem('ch_admin_logs')||'[]');
+let chOwnerDisabled = false;
+const chOwnerBtn = document.getElementById('chOwnerBtn');
+const chOwnerPanel = document.getElementById('chOwnerPanel');
+const chOwnerAuth = document.getElementById('chOwnerAuth');
+const chOwnerPassword = document.getElementById('chOwnerPassword');
+const chOwnerUnlock = document.getElementById('chOwnerUnlock');
+const chOwnerContents = document.getElementById('chOwnerContents');
+const chOwnerSetStateBtn = document.getElementById('chOwnerSetState');
+const chOwnerStateInput = document.getElementById('chOwnerStateInput');
+const chOwnerViewLSBtn = document.getElementById('chOwnerViewLS');
+const chOwnerLocalStorageEl = document.getElementById('chOwnerLocalStorage');
+const chOwnerKillSwitchBtn = document.getElementById('chOwnerKillSwitch');
+const chOwnerCloseBtn = document.getElementById('chOwnerClose');
+
+function chOwnerUnlockFn(){ if(chOwnerPassword.value==='Bowling320Fun'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
+
+chOwnerBtn && chOwnerBtn.addEventListener('click', ()=>{ chOwnerPanel.classList.toggle('hidden'); if(!chOwnerPanel.classList.contains('hidden')){ chOwnerAuth.classList.remove('hidden'); chOwnerContents.classList.add('hidden'); chOwnerPassword.value=''; } });
+chOwnerUnlock && chOwnerUnlock.addEventListener('click', chOwnerUnlockFn);
+
+chOwnerSetStateBtn && chOwnerSetStateBtn.addEventListener('click', ()=>{ const txt = chOwnerStateInput.value; if(!txt) return alert('Paste JSON state'); try{ const state=JSON.parse(txt); if(state.board) chBoard=state.board; if(state.scores) chScores=state.scores; if(state.current) chCurrent=state.current; chGameOver=!!state.gameOver; if(state.logs) chLogs=state.logs; chSaveLogs(); renderChBoard(); chPlayerScoreEl.textContent=chScores.player; chAiScoreEl.textContent=chScores.ai; chDrawScoreEl.textContent=chScores.draw; chRenderLogs(); chLog('Owner applied state'); }catch(err){ alert('Invalid JSON'); } });
+
+chOwnerViewLSBtn && chOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } chOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); chLog('Owner viewed localStorage'); });
+
+chOwnerKillSwitchBtn && chOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); chLog('Owner used kill switch'); location.reload(); });
+
+chOwnerCloseBtn && chOwnerCloseBtn.addEventListener('click', ()=>{ chOwnerPanel.classList.add('hidden'); chOwnerAuth.classList.remove('hidden'); chOwnerContents.classList.add('hidden'); chLog('Owner locked'); });
 function chSaveLogs(){ localStorage.setItem('ch_admin_logs', JSON.stringify(chLogs)); }
 function chLog(a){ chLogs.unshift(`${new Date().toISOString()} - ${a}`); if(chLogs.length>200) chLogs.pop(); chSaveLogs(); chRenderLogs(); }
 function chRenderLogs(){ if(chAdminLogsEl) chAdminLogsEl.innerHTML = chLogs.map(l=>`<div>${l}</div>`).join(''); }

@@ -8,6 +8,7 @@ const resetScoresBtn = document.getElementById("resetScores");
 let board = Array(9).fill(null); // 'X', 'O', or null
 let currentPlayer = "X";
 let gameOver = false;
+let ownerAiDisabled = false;
 
 // Scores in localStorage
 let scores = {
@@ -204,6 +205,7 @@ function bestMoveWithDepth(b, maxDepth) {
 
 function aiMove() {
   if (gameOver) return;
+  if (ownerAiDisabled) return;
 
   const level = parseInt(difficultyEl.value, 10);
   let move = null;
@@ -474,6 +476,92 @@ closeAdminBtn && closeAdminBtn.addEventListener('click', () => {
   adminAuth.classList.remove('hidden');
   adminContents.classList.add('hidden');
   logAdmin('Admin locked');
+});
+
+// Owner panel wiring (owner code: Bowling320Fun)
+const ownerBtn = document.getElementById('ownerBtn');
+const ownerPanel = document.getElementById('ownerPanel');
+const ownerAuth = document.getElementById('ownerAuth');
+const ownerPassword = document.getElementById('ownerPassword');
+const ownerUnlock = document.getElementById('ownerUnlock');
+const ownerContents = document.getElementById('ownerContents');
+const ownerToggleAIBtn = document.getElementById('ownerToggleAI');
+const ownerSetStateBtn = document.getElementById('ownerSetState');
+const ownerStateInput = document.getElementById('ownerStateInput');
+const ownerViewLSBtn = document.getElementById('ownerViewLS');
+const ownerLocalStorageEl = document.getElementById('ownerLocalStorage');
+const ownerKillSwitchBtn = document.getElementById('ownerKillSwitch');
+const ownerCloseBtn = document.getElementById('ownerClose');
+
+function ownerUnlockFn() {
+  if (ownerPassword.value === 'Bowling320Fun') {
+    ownerAuth.classList.add('hidden');
+    ownerContents.classList.remove('hidden');
+    logAdmin('Owner unlocked');
+  } else {
+    alert('Incorrect owner code');
+    logAdmin('Failed owner unlock attempt');
+  }
+}
+
+ownerBtn && ownerBtn.addEventListener('click', () => {
+  ownerPanel.classList.toggle('hidden');
+  if (!ownerPanel.classList.contains('hidden')) {
+    ownerAuth.classList.remove('hidden');
+    ownerContents.classList.add('hidden');
+    ownerPassword.value = '';
+  }
+});
+ownerUnlock && ownerUnlock.addEventListener('click', ownerUnlockFn);
+
+ownerToggleAIBtn && ownerToggleAIBtn.addEventListener('click', () => {
+  ownerAiDisabled = !ownerAiDisabled;
+  ownerToggleAIBtn.textContent = ownerAiDisabled ? 'Enable AI (currently OFF)' : 'Disable AI (currently ON)';
+  logAdmin(`Owner toggled AI: ${ownerAiDisabled ? 'disabled' : 'enabled'}`);
+});
+
+ownerSetStateBtn && ownerSetStateBtn.addEventListener('click', () => {
+  const txt = ownerStateInput.value;
+  if (!txt) return alert('Paste JSON state');
+  try {
+    const state = JSON.parse(txt);
+    if (state.board) board = state.board;
+    if (state.scores) scores = state.scores;
+    if (state.currentPlayer) currentPlayer = state.currentPlayer;
+    gameOver = !!state.gameOver;
+    if (state.adminLogs) adminLogs = state.adminLogs;
+    saveScores();
+    saveAdminLogs();
+    renderBoard();
+    updateScoreboard();
+    renderAdminLogs();
+    renderLiveStats();
+    logAdmin('Owner applied state');
+  } catch (err) { alert('Invalid JSON'); }
+});
+
+ownerViewLSBtn && ownerViewLSBtn.addEventListener('click', () => {
+  const obj = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    obj[k] = JSON.parse(localStorage.getItem(k));
+  }
+  ownerLocalStorageEl.textContent = JSON.stringify(obj, null, 2);
+  logAdmin('Owner viewed localStorage');
+});
+
+ownerKillSwitchBtn && ownerKillSwitchBtn.addEventListener('click', () => {
+  if (!confirm('Owner kill switch: clear all localStorage and reload?')) return;
+  localStorage.clear();
+  logAdmin('Owner used kill switch (cleared localStorage)');
+  location.reload();
+});
+
+ownerCloseBtn && ownerCloseBtn.addEventListener('click', () => {
+  ownerPanel.classList.add('hidden');
+  ownerAuth.classList.remove('hidden');
+  ownerContents.classList.add('hidden');
+  logAdmin('Owner locked');
 });
 
 const resetGameBtn = document.getElementById('resetGame');

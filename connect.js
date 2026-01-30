@@ -14,6 +14,7 @@ let cfBoard = [];
 let cfCurrent = 'P'; // 'P' player, 'A' ai
 let cfGameOver = false;
 let cfScores = { player: 0, ai: 0, draw: 0 };
+let cfOwnerAiDisabled = false;
 
 function initCfBoard() {
   cfBoard = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
@@ -188,6 +189,7 @@ function minimax(board, depth, maximizing) {
 
 function aiCfMove() {
   if (cfGameOver) return;
+  if (cfOwnerAiDisabled) return;
   const level = parseInt(cfDifficultyEl.value,10);
   let chosen = null;
   switch(level) {
@@ -235,6 +237,36 @@ const cfForceDrawBtn = document.getElementById('cfForceDraw');
 const cfClearBoardBtn = document.getElementById('cfClearBoard');
 const cfResetGameBtn = document.getElementById('cfResetGame');
 const cfClearScoresBtn = document.getElementById('cfClearScores');
+
+// Owner panel wiring (owner code: Bowling320Fun)
+const cfOwnerBtn = document.getElementById('cfOwnerBtn');
+const cfOwnerPanel = document.getElementById('cfOwnerPanel');
+const cfOwnerAuth = document.getElementById('cfOwnerAuth');
+const cfOwnerPassword = document.getElementById('cfOwnerPassword');
+const cfOwnerUnlock = document.getElementById('cfOwnerUnlock');
+const cfOwnerContents = document.getElementById('cfOwnerContents');
+const cfOwnerToggleAIBtn = document.getElementById('cfOwnerToggleAI');
+const cfOwnerSetStateBtn = document.getElementById('cfOwnerSetState');
+const cfOwnerStateInput = document.getElementById('cfOwnerStateInput');
+const cfOwnerViewLSBtn = document.getElementById('cfOwnerViewLS');
+const cfOwnerLocalStorageEl = document.getElementById('cfOwnerLocalStorage');
+const cfOwnerKillSwitchBtn = document.getElementById('cfOwnerKillSwitch');
+const cfOwnerCloseBtn = document.getElementById('cfOwnerClose');
+
+function cfOwnerUnlockFn(){ if (cfOwnerPassword.value==='Bowling320Fun'){ cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked'); } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); } }
+
+cfOwnerBtn && cfOwnerBtn.addEventListener('click', ()=>{ cfOwnerPanel.classList.toggle('hidden'); if(!cfOwnerPanel.classList.contains('hidden')){ cfOwnerAuth.classList.remove('hidden'); cfOwnerContents.classList.add('hidden'); cfOwnerPassword.value=''; } });
+cfOwnerUnlock && cfOwnerUnlock.addEventListener('click', cfOwnerUnlockFn);
+
+cfOwnerToggleAIBtn && cfOwnerToggleAIBtn.addEventListener('click', ()=>{ cfOwnerAiDisabled = !cfOwnerAiDisabled; cfOwnerToggleAIBtn.textContent = cfOwnerAiDisabled? 'Enable AI (OFF)' : 'Disable AI (ON)'; cfLog(`Owner toggled AI: ${cfOwnerAiDisabled ? 'disabled' : 'enabled'}`); });
+
+cfOwnerSetStateBtn && cfOwnerSetStateBtn.addEventListener('click', ()=>{ const txt = cfOwnerStateInput.value; if(!txt) return alert('Paste JSON state'); try{ const state=JSON.parse(txt); if(state.board) cfBoard=state.board; if(state.scores) cfScores=state.scores; if(state.current) cfCurrent=state.current; cfGameOver=!!state.gameOver; if(state.logs) cfAdminLogs=state.logs; cfSaveAdminLogs(); renderCfBoard(); cfPlayerScoreEl.textContent=cfScores.player; cfAiScoreEl.textContent=cfScores.ai; cfDrawScoreEl.textContent=cfScores.draw; cfRenderAdminLogs(); cfRenderLiveStats(); cfLog('Owner applied state'); }catch(err){ alert('Invalid JSON'); } });
+
+cfOwnerViewLSBtn && cfOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } cfOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); cfLog('Owner viewed localStorage'); });
+
+cfOwnerKillSwitchBtn && cfOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); cfLog('Owner used kill switch'); location.reload(); });
+
+cfOwnerCloseBtn && cfOwnerCloseBtn.addEventListener('click', ()=>{ cfOwnerPanel.classList.add('hidden'); cfOwnerAuth.classList.remove('hidden'); cfOwnerContents.classList.add('hidden'); cfLog('Owner locked'); });
 const cfResetLocalStorageBtn = document.getElementById('cfResetLocalStorage');
 const cfExportStateBtn = document.getElementById('cfExportState');
 const cfImportFileInput = document.getElementById('cfImportFile');

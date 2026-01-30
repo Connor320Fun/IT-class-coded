@@ -41,6 +41,7 @@
 
     <!-- Admin -->
     <button id="chessAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="chessOwnerBtn" class="owner-btn">Owner Panel</button>
     <div id="chessAdminPanel" class="admin-panel hidden">
       <h2>Admin Panel</h2>
       <div id="chessAdminAuth">
@@ -75,6 +76,27 @@
         <h3>Admin Logs</h3>
         <div id="chessAdminLogs" class="admin-logs"></div>
         <button id="chessCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="chessOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="chessOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="chessOwnerPassword" type="password" />
+        <button id="chessOwnerUnlock">Unlock</button>
+      </div>
+      <div id="chessOwnerContents" class="locked hidden">
+        <div>
+          <button id="chessOwnerViewLS">View LocalStorage</button>
+          <button id="chessOwnerKillSwitch">Kill Switch</button>
+        </div>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="chessOwnerStateInput" rows="6" style="width:100%"></textarea>
+          <button id="chessOwnerSetState">Apply State</button>
+        </div>
+        <div id="chessOwnerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+        <button id="chessOwnerClose">Lock</button>
       </div>
     </div>
   </div>

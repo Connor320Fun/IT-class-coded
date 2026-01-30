@@ -40,6 +40,7 @@
 
     <!-- Admin -->
     <button id="chAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="chOwnerBtn" class="owner-btn">Owner Panel</button>
     <div id="chAdminPanel" class="admin-panel hidden">
       <h2>Admin Panel</h2>
       <div id="chAdminAuth">
@@ -74,6 +75,27 @@
         <h3>Admin Logs</h3>
         <div id="chAdminLogs" class="admin-logs"></div>
         <button id="chCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="chOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="chOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="chOwnerPassword" type="password" />
+        <button id="chOwnerUnlock">Unlock</button>
+      </div>
+      <div id="chOwnerContents" class="locked hidden">
+        <div>
+          <button id="chOwnerViewLS">View LocalStorage</button>
+          <button id="chOwnerKillSwitch">Kill Switch</button>
+        </div>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="chOwnerStateInput" rows="6" style="width:100%"></textarea>
+          <button id="chOwnerSetState">Apply State</button>
+        </div>
+        <div id="chOwnerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+        <button id="chOwnerClose">Lock</button>
       </div>
     </div>
   </div>

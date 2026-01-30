@@ -28,6 +28,29 @@
       </select>
       <button id="cfNewGame">New Game</button>
     </div>
+    <div id="cfOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="cfOwnerAuth">
+        <label for="cfOwnerPassword">Enter owner code:</label>
+        <input id="cfOwnerPassword" type="password" placeholder="owner code" />
+        <button id="cfOwnerUnlock">Unlock</button>
+      </div>
+      <div id="cfOwnerContents" class="locked hidden">
+        <div>
+          <button id="cfOwnerToggleAI">Toggle AI (enable/disable)</button>
+          <button id="cfOwnerViewLS">View LocalStorage</button>
+          <button id="cfOwnerKillSwitch">Kill Switch</button>
+        </div>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="cfOwnerStateInput" rows="6" style="width:100%"></textarea>
+          <button id="cfOwnerSetState">Apply State</button>
+        </div>
+        <h3>LocalStorage</h3>
+        <div id="cfOwnerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+        <button id="cfOwnerClose">Lock</button>
+      </div>
+    </div>
 
     <div class="scoreboard">
       <div>Player: <span id="cfPlayerScore">0</span></div>
@@ -41,6 +64,7 @@
 
     <!-- ADMIN PANEL FOR CONNECT FOUR -->
     <button id="cfAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="cfOwnerBtn" class="owner-btn">Owner Panel</button>
     <div id="cfAdminPanel" class="admin-panel hidden">
       <h2>Admin Panel</h2>
       <div id="cfAdminAuth">

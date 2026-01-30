@@ -95,6 +95,32 @@ const bsAdminLogsEl = document.getElementById('bsAdminLogs');
 const bsCloseAdminBtn = document.getElementById('bsCloseAdmin');
 
 let bsLogs = JSON.parse(localStorage.getItem('bs_admin_logs')||'[]');
+let bsOwnerDisabled = false;
+const bsOwnerBtn = document.getElementById('bsOwnerBtn');
+const bsOwnerPanel = document.getElementById('bsOwnerPanel');
+const bsOwnerAuth = document.getElementById('bsOwnerAuth');
+const bsOwnerPassword = document.getElementById('bsOwnerPassword');
+const bsOwnerUnlock = document.getElementById('bsOwnerUnlock');
+const bsOwnerContents = document.getElementById('bsOwnerContents');
+const bsOwnerSetStateBtn = document.getElementById('bsOwnerSetState');
+const bsOwnerStateInput = document.getElementById('bsOwnerStateInput');
+const bsOwnerViewLSBtn = document.getElementById('bsOwnerViewLS');
+const bsOwnerLocalStorageEl = document.getElementById('bsOwnerLocalStorage');
+const bsOwnerKillSwitchBtn = document.getElementById('bsOwnerKillSwitch');
+const bsOwnerCloseBtn = document.getElementById('bsOwnerClose');
+
+function bsOwnerUnlockFn(){ if(bsOwnerPassword.value==='Bowling320Fun'){ bsOwnerAuth.classList.add('hidden'); bsOwnerContents.classList.remove('hidden'); bsLog('Owner unlocked'); } else { alert('Incorrect owner code'); bsLog('Failed owner unlock attempt'); } }
+
+bsOwnerBtn && bsOwnerBtn.addEventListener('click', ()=>{ bsOwnerPanel.classList.toggle('hidden'); if(!bsOwnerPanel.classList.contains('hidden')){ bsOwnerAuth.classList.remove('hidden'); bsOwnerContents.classList.add('hidden'); bsOwnerPassword.value=''; } });
+bsOwnerUnlock && bsOwnerUnlock.addEventListener('click', bsOwnerUnlockFn);
+
+bsOwnerSetStateBtn && bsOwnerSetStateBtn.addEventListener('click', ()=>{ const txt = bsOwnerStateInput.value; if(!txt) return alert('Paste JSON state'); try{ const state = JSON.parse(txt); if(state.player) bsPlayer=state.player; if(state.ai) bsAi=state.ai; if(state.scores) bsScores=state.scores; if(state.logs) bsLogs=state.logs; renderBs(); bsPlayerScoreEl.textContent=bsScores.player; bsAiScoreEl.textContent=bsScores.ai; bsDrawScoreEl.textContent=bsScores.draw; bsSaveLogs(); bsRenderLogs(); bsLog('Owner applied state'); }catch(err){ alert('Invalid JSON'); } });
+
+bsOwnerViewLSBtn && bsOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } bsOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); bsLog('Owner viewed localStorage'); });
+
+bsOwnerKillSwitchBtn && bsOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); bsLog('Owner used kill switch'); location.reload(); });
+
+bsOwnerCloseBtn && bsOwnerCloseBtn.addEventListener('click', ()=>{ bsOwnerPanel.classList.add('hidden'); bsOwnerAuth.classList.remove('hidden'); bsOwnerContents.classList.add('hidden'); bsLog('Owner locked'); });
 function bsSaveLogs(){ localStorage.setItem('bs_admin_logs', JSON.stringify(bsLogs)); }
 function bsLog(a){ bsLogs.unshift(`${new Date().toISOString()} - ${a}`); if(bsLogs.length>200) bsLogs.pop(); bsSaveLogs(); bsRenderLogs(); }
 function bsRenderLogs(){ if(bsAdminLogsEl) bsAdminLogsEl.innerHTML = bsLogs.map(l=>`<div>${l}</div>`).join(''); }

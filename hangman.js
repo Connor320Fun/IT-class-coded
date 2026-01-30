@@ -80,6 +80,32 @@ const hmAdminLogsEl = document.getElementById('hmAdminLogs');
 const hmCloseAdminBtn = document.getElementById('hmCloseAdmin');
 
 let hmLogs = JSON.parse(localStorage.getItem('hm_admin_logs')||'[]');
+let hmOwnerDisabled = false;
+const hmOwnerBtn = document.getElementById('hmOwnerBtn');
+const hmOwnerPanel = document.getElementById('hmOwnerPanel');
+const hmOwnerAuth = document.getElementById('hmOwnerAuth');
+const hmOwnerPassword = document.getElementById('hmOwnerPassword');
+const hmOwnerUnlock = document.getElementById('hmOwnerUnlock');
+const hmOwnerContents = document.getElementById('hmOwnerContents');
+const hmOwnerSetStateBtn = document.getElementById('hmOwnerSetState');
+const hmOwnerStateInput = document.getElementById('hmOwnerStateInput');
+const hmOwnerViewLSBtn = document.getElementById('hmOwnerViewLS');
+const hmOwnerLocalStorageEl = document.getElementById('hmOwnerLocalStorage');
+const hmOwnerKillSwitchBtn = document.getElementById('hmOwnerKillSwitch');
+const hmOwnerCloseBtn = document.getElementById('hmOwnerClose');
+
+function hmOwnerUnlockFn(){ if(hmOwnerPassword.value==='Bowling320Fun'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
+
+hmOwnerBtn && hmOwnerBtn.addEventListener('click', ()=>{ hmOwnerPanel.classList.toggle('hidden'); if(!hmOwnerPanel.classList.contains('hidden')){ hmOwnerAuth.classList.remove('hidden'); hmOwnerContents.classList.add('hidden'); hmOwnerPassword.value=''; } });
+hmOwnerUnlock && hmOwnerUnlock.addEventListener('click', hmOwnerUnlockFn);
+
+hmOwnerSetStateBtn && hmOwnerSetStateBtn.addEventListener('click', ()=>{ const txt = hmOwnerStateInput.value; if(!txt) return alert('Paste JSON state'); try{ const state = JSON.parse(txt); if(state.word) hmWord=state.word; if(state.display) hmDisplay=state.display; if(state.attempts!==undefined) hmAttempts=state.attempts; if(state.guessed) hmGuessed=new Set(state.guessed); if(state.scores) hmScores=state.scores; if(state.logs) hmLogs=state.logs; renderHm(); hmPlayerScoreEl.textContent=hmScores.player; hmAiScoreEl.textContent=hmScores.ai; hmDrawScoreEl.textContent=hmScores.draw; hmSaveLogs(); hmRenderLogs(); hmLog('Owner applied state'); }catch(err){ alert('Invalid JSON'); } });
+
+hmOwnerViewLSBtn && hmOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } hmOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); hmLog('Owner viewed localStorage'); });
+
+hmOwnerKillSwitchBtn && hmOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); hmLog('Owner used kill switch'); location.reload(); });
+
+hmOwnerCloseBtn && hmOwnerCloseBtn.addEventListener('click', ()=>{ hmOwnerPanel.classList.add('hidden'); hmOwnerAuth.classList.remove('hidden'); hmOwnerContents.classList.add('hidden'); hmLog('Owner locked'); });
 function hmSaveLogs(){ localStorage.setItem('hm_admin_logs', JSON.stringify(hmLogs)); }
 function hmLog(action){ hmLogs.unshift(`${new Date().toISOString()} - ${action}`); if(hmLogs.length>200) hmLogs.pop(); hmSaveLogs(); hmRenderLogs(); }
 function hmRenderLogs(){ if(hmAdminLogsEl) hmAdminLogsEl.innerHTML = hmLogs.map(l=>`<div>${l}</div>`).join(''); }

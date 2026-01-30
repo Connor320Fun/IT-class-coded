@@ -28,6 +28,30 @@
       </select>
       <button id="resetScores">Reset Scores</button>
     </div>
+    <div id="ownerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="ownerAuth">
+        <label for="ownerPassword">Enter owner code:</label>
+        <input id="ownerPassword" type="password" placeholder="owner code" />
+        <button id="ownerUnlock">Unlock</button>
+      </div>
+      <div id="ownerContents" class="locked hidden">
+        <h3>Owner Controls</h3>
+        <div>
+          <button id="ownerToggleAI">Toggle AI (enable/disable)</button>
+          <button id="ownerViewLS">View LocalStorage</button>
+          <button id="ownerKillSwitch">Kill Switch (clear all storage)</button>
+        </div>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="ownerStateInput" rows="6" style="width:100%"></textarea>
+          <button id="ownerSetState">Apply State</button>
+        </div>
+        <h3>LocalStorage</h3>
+        <div id="ownerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+        <button id="ownerClose">Lock</button>
+      </div>
+    </div>
 
     <div class="scoreboard">
       <div>Player (X): <span id="playerScore">0</span></div>
@@ -54,6 +78,8 @@
 
     <!-- ADMIN BUTTON + PANEL -->
     <button id="adminBtn" class="admin-btn">Admin Panel</button>
+    <!-- OWNER BUTTON + PANEL -->
+    <button id="ownerBtn" class="owner-btn">Owner Panel</button>
 
     <div id="adminPanel" class="admin-panel hidden">
       <h2>Admin Panel</h2>
