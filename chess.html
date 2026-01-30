@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Chess vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+  </nav>
+
+  <div class="app">
+    <h1>Chess vs AI</h1>
+
+    <div class="controls">
+      <label for="chessDifficulty">Difficulty:</label>
+      <select id="chessDifficulty">
+        <option value="1">Level 1 - Random</option>
+        <option value="2">Level 2 - Prefer captures</option>
+        <option value="3">Level 3 - Material heuristics</option>
+        <option value="4">Level 4 - Depth 2</option>
+        <option value="5">Level 5 - Depth 3</option>
+      </select>
+      <button id="chessNewGame">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="chessPlayerScore">0</span></div>
+      <div>AI: <span id="chessAiScore">0</span></div>
+      <div>Draws: <span id="chessDrawScore">0</span></div>
+    </div>
+
+    <div id="chessStatus" class="status">Your turn (White)</div>
+    <div id="chessBoard" class="chess-board"></div>
+
+    <!-- Admin -->
+    <button id="chessAdminBtn" class="admin-btn">Admin Panel</button>
+    <div id="chessAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="chessAdminAuth">
+        <label>Enter code:</label>
+        <input id="chessAdminPassword" type="password" />
+        <button id="chessAdminUnlock">Unlock</button>
+      </div>
+      <div id="chessAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="chessAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div>
+          <button id="chessForceAiWin">Force AI Win</button>
+          <button id="chessForcePlayerWin">Force Player Win</button>
+        </div>
+        <div>
+          <button id="chessClearScores">Clear Scores</button>
+          <button id="chessResetLocalStorage">Reset LocalStorage</button>
+        </div>
+        <div>
+          <button id="chessExportState">Export State</button>
+          <input id="chessImportFile" type="file" accept="application/json" />
+        </div>
+        <h3>Live Stats</h3>
+        <div id="chessLiveStats" class="live-scores"></div>
+        <h3>Admin Logs</h3>
+        <div id="chessAdminLogs" class="admin-logs"></div>
+        <button id="chessCloseAdmin">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="chess.js"></script>
+</body>
+</html>
