@@ -240,3 +240,8 @@ h1 {
 .nav a:hover {
   background: rgba(229,231,235,0.06);
 }
+
+/* Battleship styles */
+.bs-board{ display:grid; grid-template-columns: repeat(6,36px); gap:6px; justify-content:center; margin-top:8px; }
+.bs-cell{ width:36px; height:36px; background:#0b1220; border-radius:4px; display:flex; align-items:center; justify-content:center; color:white; cursor:pointer }
+.bs-cell:hover{ background:#111827 }

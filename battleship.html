@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Battleship vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+  </nav>
+
+  <div class="app">
+    <h1>Battleship vs AI</h1>
+
+    <div class="controls">
+      <label for="bsDifficulty">Difficulty:</label>
+      <select id="bsDifficulty">
+        <option value="1">Level 1 - Random</option>
+        <option value="2">Level 2</option>
+        <option value="3">Level 3</option>
+        <option value="4">Level 4</option>
+        <option value="5">Level 5 - Smart</option>
+      </select>
+      <button id="bsNewGame">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="bsPlayerScore">0</span></div>
+      <div>AI: <span id="bsAiScore">0</span></div>
+      <div>Draws: <span id="bsDrawScore">0</span></div>
+    </div>
+
+    <div id="bsStatus" class="status">Press New Game</div>
+
+    <h3>Your Board</h3>
+    <div id="bsPlayerBoard" class="bs-board"></div>
+
+    <h3>AI Board (click to fire)</h3>
+    <div id="bsAiBoard" class="bs-board"></div>
+
+    <!-- Admin -->
+    <button id="bsAdminBtn" class="admin-btn">Admin Panel</button>
+    <div id="bsAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="bsAdminAuth">
+        <label>Enter code:</label>
+        <input id="bsAdminPassword" type="password" />
+        <button id="bsAdminUnlock">Unlock</button>
+      </div>
+      <div id="bsAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="bsAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div>
+          <button id="bsForceAiWin">Force AI Win</button>
+          <button id="bsForcePlayerWin">Force Player Win</button>
+        </div>
+        <div>
+          <button id="bsClearScores">Clear Scores</button>
+          <button id="bsResetLocalStorage">Reset LocalStorage</button>
+        </div>
+        <div>
+          <button id="bsExportState">Export State</button>
+          <input id="bsImportFile" type="file" accept="application/json" />
+        </div>
+        <h3>Logs</h3>
+        <div id="bsAdminLogs" class="admin-logs"></div>
+        <button id="bsCloseAdmin">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="battleship.js"></script>
+</body>
+</html>

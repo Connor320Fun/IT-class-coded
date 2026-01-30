@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Hangman vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+  </nav>
+
+  <div class="app">
+    <h1>Hangman vs AI</h1>
+
+    <div class="controls">
+      <label for="hmDifficulty">Difficulty:</label>
+      <select id="hmDifficulty">
+        <option value="1">Level 1 - Easy</option>
+        <option value="2">Level 2</option>
+        <option value="3">Level 3</option>
+        <option value="4">Level 4</option>
+        <option value="5">Level 5 - Hard</option>
+      </select>
+      <button id="hmNewGame">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="hmPlayerScore">0</span></div>
+      <div>AI: <span id="hmAiScore">0</span></div>
+      <div>Draws: <span id="hmDrawScore">0</span></div>
+    </div>
+
+    <div id="hmStatus" class="status">Press New Game</div>
+    <div id="hmWord" class="status" style="font-size:24px; letter-spacing:6px;"></div>
+    <div id="hmLetters" class="status"></div>
+
+    <!-- Admin -->
+    <button id="hmAdminBtn" class="admin-btn">Admin Panel</button>
+    <div id="hmAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="hmAdminAuth">
+        <label>Enter code:</label>
+        <input id="hmAdminPassword" type="password" />
+        <button id="hmAdminUnlock">Unlock</button>
+      </div>
+      <div id="hmAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="hmAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div>
+          <button id="hmForcePlayerWin">Force Player Win</button>
+          <button id="hmForceAiWin">Force AI Win</button>
+        </div>
+        <div>
+          <button id="hmClearScores">Clear Scores</button>
+          <button id="hmResetLocalStorage">Reset LocalStorage</button>
+        </div>
+        <div>
+          <button id="hmExportState">Export State</button>
+          <input id="hmImportFile" type="file" accept="application/json" />
+        </div>
+        <h3>Logs</h3>
+        <div id="hmAdminLogs" class="admin-logs"></div>
+        <button id="hmCloseAdmin">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="hangman.js"></script>
+</body>
+</html>
