@@ -233,6 +233,7 @@ const cfForceAiWinBtn = document.getElementById('cfForceAiWin');
 const cfForcePlayerWinBtn = document.getElementById('cfForcePlayerWin');
 const cfForceDrawBtn = document.getElementById('cfForceDraw');
 const cfClearBoardBtn = document.getElementById('cfClearBoard');
+const cfResetGameBtn = document.getElementById('cfResetGame');
 const cfClearScoresBtn = document.getElementById('cfClearScores');
 const cfResetLocalStorageBtn = document.getElementById('cfResetLocalStorage');
 const cfExportStateBtn = document.getElementById('cfExportState');
@@ -289,6 +290,8 @@ cfForceDrawBtn && cfForceDrawBtn.addEventListener('click', ()=>{
 });
 
 cfClearBoardBtn && cfClearBoardBtn.addEventListener('click', ()=>{ cfNewGame(); cfLog('Cleared board (new game)'); });
+
+cfResetGameBtn && cfResetGameBtn.addEventListener('click', ()=>{ cfNewGame(); cfLog('Game reset'); });
 
 cfClearScoresBtn && cfClearScoresBtn.addEventListener('click', ()=>{ cfScores={player:0,ai:0,draw:0}; cfPlayerScoreEl.textContent=0; cfAiScoreEl.textContent=0; cfDrawScoreEl.textContent=0; localStorage.removeItem('cf_scores'); cfLog('Cleared scores'); });
 

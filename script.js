@@ -476,6 +476,12 @@ closeAdminBtn && closeAdminBtn.addEventListener('click', () => {
   logAdmin('Admin locked');
 });
 
+const resetGameBtn = document.getElementById('resetGame');
+resetGameBtn && resetGameBtn.addEventListener('click', () => {
+  newGame();
+  logAdmin('Game reset');
+});
+
 // Ensure live stats update on key events
 const originalRenderBoard = renderBoard;
 renderBoard = function() {

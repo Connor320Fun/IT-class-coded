@@ -214,6 +214,7 @@ const chessAdminDifficulty = document.getElementById('chessAdminDifficulty');
 const chessForceAiWinBtn = document.getElementById('chessForceAiWin');
 const chessForcePlayerWinBtn = document.getElementById('chessForcePlayerWin');
 const chessClearScoresBtn = document.getElementById('chessClearScores');
+const chessResetGameBtn = document.getElementById('chessResetGame');
 const chessResetLocalStorageBtn = document.getElementById('chessResetLocalStorage');
 const chessExportStateBtn = document.getElementById('chessExportState');
 const chessImportFile = document.getElementById('chessImportFile');
@@ -235,6 +236,7 @@ chessForceAiWinBtn && chessForceAiWinBtn.addEventListener('click', ()=>{ // remo
 chessForcePlayerWinBtn && chessForcePlayerWinBtn.addEventListener('click', ()=>{ for(let r=0;r<8;r++) for(let c=0;c<8;c++) if(chessBoard[r][c]==='k') chessBoard[r][c]=null; renderChess(); chessGameOver=true; handleChessResult('W'); chessLog('Forced player win'); });
 chessClearScoresBtn && chessClearScoresBtn.addEventListener('click', ()=>{ chessScores={player:0,ai:0,draw:0}; chessPlayerScoreEl.textContent=0; chessAiScoreEl.textContent=0; chessDrawScoreEl.textContent=0; localStorage.removeItem('chess_scores'); chessLog('Cleared scores'); });
 chessResetLocalStorageBtn && chessResetLocalStorageBtn.addEventListener('click', ()=>{ localStorage.clear(); chessAdminLogs=[]; chessSaveLogs(); chessRenderLogs(); chessLog('Reset localStorage'); });
+chessResetGameBtn && chessResetGameBtn.addEventListener('click', ()=>{ initChess(); chessLog('Game reset'); });
 chessExportStateBtn && chessExportStateBtn.addEventListener('click', ()=>{ const state={board:chessBoard,scores:chessScores,current:chessCurrent,gameOver:chessGameOver,logs:chessAdminLogs}; const dataStr='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state)); const a=document.createElement('a'); a.setAttribute('href',dataStr); a.setAttribute('download','chess_state.json'); document.body.appendChild(a); a.click(); a.remove(); chessLog('Exported state'); });
 chessImportFile && chessImportFile.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=(ev)=>{ try{ const state=JSON.parse(ev.target.result); if(state.board) chessBoard=state.board; if(state.scores) chessScores=state.scores; if(state.current) chessCurrent=state.current; chessGameOver=!!state.gameOver; if(state.logs) chessAdminLogs=state.logs; renderChess(); chessPlayerScoreEl.textContent=chessScores.player; chessAiScoreEl.textContent=chessScores.ai; chessDrawScoreEl.textContent=chessScores.draw; chessSaveLogs(); chessRenderLogs(); chessLog('Imported state'); }catch(err){ alert('Invalid file'); } }; r.readAsText(f); });
 chessCloseAdminBtn && chessCloseAdminBtn.addEventListener('click', ()=>{ chessAdminPanel.classList.add('hidden'); chessAdminAuth.classList.remove('hidden'); chessAdminContents.classList.add('hidden'); chessLog('Admin locked'); });

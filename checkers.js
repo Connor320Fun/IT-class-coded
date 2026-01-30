@@ -130,6 +130,7 @@ const chAdminDifficulty = document.getElementById('chAdminDifficulty');
 const chForceAiWinBtn = document.getElementById('chForceAiWin');
 const chForcePlayerWinBtn = document.getElementById('chForcePlayerWin');
 const chClearScoresBtn = document.getElementById('chClearScores');
+const chResetGameBtn = document.getElementById('chResetGame');
 const chResetLocalStorageBtn = document.getElementById('chResetLocalStorage');
 const chExportStateBtn = document.getElementById('chExportState');
 const chImportFile = document.getElementById('chImportFile');
@@ -151,6 +152,7 @@ chForceAiWinBtn && chForceAiWinBtn.addEventListener('click', ()=>{ // clear play
 chForcePlayerWinBtn && chForcePlayerWinBtn.addEventListener('click', ()=>{ for(let r=0;r<CH_SIZE;r++) for(let c=0;c<CH_SIZE;c++) if(chBoard[r][c]==='b') chBoard[r][c]=null; renderChBoard(); handleChResult('X'); chLog('Forced player win'); });
 chClearScoresBtn && chClearScoresBtn.addEventListener('click', ()=>{ chScores={player:0,ai:0,draw:0}; chPlayerScoreEl.textContent=0; chAiScoreEl.textContent=0; chDrawScoreEl.textContent=0; localStorage.removeItem('ch_scores'); chLog('Cleared scores'); });
 chResetLocalStorageBtn && chResetLocalStorageBtn.addEventListener('click', ()=>{ localStorage.clear(); chLogs=[]; chSaveLogs(); chRenderLogs(); chLog('Reset localStorage'); });
+chResetGameBtn && chResetGameBtn.addEventListener('click', ()=>{ chNew(); chLog('Game reset'); });
 chExportStateBtn && chExportStateBtn.addEventListener('click', ()=>{ const state={board:chBoard,scores:chScores,logs:chLogs}; const dataStr='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state)); const a=document.createElement('a'); a.setAttribute('href',dataStr); a.setAttribute('download','checkers_state.json'); document.body.appendChild(a); a.click(); a.remove(); chLog('Exported state'); });
 chImportFile && chImportFile.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=(ev)=>{ try{ const state=JSON.parse(ev.target.result); if(state.board) chBoard=state.board; if(state.scores) chScores=state.scores; if(state.logs) chLogs=state.logs; renderChBoard(); chPlayerScoreEl.textContent=chScores.player; chAiScoreEl.textContent=chScores.ai; chDrawScoreEl.textContent=chScores.draw; chSaveLogs(); chRenderLogs(); chLog('Imported state'); }catch(err){ alert('Invalid file'); } }; r.readAsText(f); });
 chCloseAdminBtn && chCloseAdminBtn.addEventListener('click', ()=>{ chAdminPanel.classList.add('hidden'); chAdminAuth.classList.remove('hidden'); chAdminContents.classList.add('hidden'); chLog('Admin locked'); });

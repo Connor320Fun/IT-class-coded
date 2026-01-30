@@ -87,6 +87,7 @@ const bsAdminDifficulty = document.getElementById('bsAdminDifficulty');
 const bsForceAiWinBtn = document.getElementById('bsForceAiWin');
 const bsForcePlayerWinBtn = document.getElementById('bsForcePlayerWin');
 const bsClearScoresBtn = document.getElementById('bsClearScores');
+const bsResetGameBtn = document.getElementById('bsResetGame');
 const bsResetLocalStorageBtn = document.getElementById('bsResetLocalStorage');
 const bsExportStateBtn = document.getElementById('bsExportState');
 const bsImportFile = document.getElementById('bsImportFile');
@@ -109,6 +110,7 @@ bsForceAiWinBtn && bsForceAiWinBtn.addEventListener('click', ()=>{ // force AI w
 bsForcePlayerWinBtn && bsForcePlayerWinBtn.addEventListener('click', ()=>{ for(let r=0;r<BS_SIZE;r++) for(let c=0;c<BS_SIZE;c++) if(bsAi[r][c]===1) bsAi[r][c]=2; bsAiShips=0; renderBs(); checkBsEnd(); bsLog('Forced player win'); });
 bsClearScoresBtn && bsClearScoresBtn.addEventListener('click', ()=>{ bsScores={player:0,ai:0,draw:0}; bsPlayerScoreEl.textContent=0; bsAiScoreEl.textContent=0; bsDrawScoreEl.textContent=0; localStorage.removeItem('bs_scores'); bsLog('Cleared scores'); });
 bsResetLocalStorageBtn && bsResetLocalStorageBtn.addEventListener('click', ()=>{ localStorage.clear(); bsLogs=[]; bsSaveLogs(); bsRenderLogs(); bsLog('Reset localStorage'); });
+bsResetGameBtn && bsResetGameBtn.addEventListener('click', ()=>{ bsNew(); bsLog('Game reset'); });
 bsExportStateBtn && bsExportStateBtn.addEventListener('click', ()=>{ const state={player:bsPlayer,ai:bsAi,scores:bsScores,logs:bsLogs}; const dataStr='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state)); const a=document.createElement('a'); a.setAttribute('href',dataStr); a.setAttribute('download','battleship_state.json'); document.body.appendChild(a); a.click(); a.remove(); bsLog('Exported state'); });
 bsImportFile && bsImportFile.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=(ev)=>{ try{ const state=JSON.parse(ev.target.result); if(state.player) bsPlayer=state.player; if(state.ai) bsAi=state.ai; if(state.scores) bsScores=state.scores; if(state.logs) bsLogs=state.logs; renderBs(); bsPlayerScoreEl.textContent=bsScores.player; bsAiScoreEl.textContent=bsScores.ai; bsDrawScoreEl.textContent=bsScores.draw; bsSaveLogs(); bsRenderLogs(); bsLog('Imported state'); }catch(err){ alert('Invalid file'); } }; r.readAsText(f); });
 bsCloseAdminBtn && bsCloseAdminBtn.addEventListener('click', ()=>{ bsAdminPanel.classList.add('hidden'); bsAdminAuth.classList.remove('hidden'); bsAdminContents.classList.add('hidden'); bsLog('Admin locked'); });

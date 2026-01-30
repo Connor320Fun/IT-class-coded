@@ -75,6 +75,7 @@ const hmClearScoresBtn = document.getElementById('hmClearScores');
 const hmResetLocalStorageBtn = document.getElementById('hmResetLocalStorage');
 const hmExportStateBtn = document.getElementById('hmExportState');
 const hmImportFile = document.getElementById('hmImportFile');
+const hmResetGameBtn = document.getElementById('hmResetGame');
 const hmAdminLogsEl = document.getElementById('hmAdminLogs');
 const hmCloseAdminBtn = document.getElementById('hmCloseAdmin');
 
@@ -92,6 +93,7 @@ hmForcePlayerWinBtn && hmForcePlayerWinBtn.addEventListener('click', ()=>{ hmDis
 hmForceAiWinBtn && hmForceAiWinBtn.addEventListener('click', ()=>{ hmAttempts=0; renderHm(); hmScores.ai++; hmAiScoreEl.textContent=hmScores.ai; hmLog('Forced AI win'); hmStatus.textContent=`AI wins! Word: ${hmWord}`; hmGameOver=true; });
 hmClearScoresBtn && hmClearScoresBtn.addEventListener('click', ()=>{ hmScores = {player:0,ai:0,draw:0}; hmPlayerScoreEl.textContent=0; hmAiScoreEl.textContent=0; hmDrawScoreEl.textContent=0; localStorage.removeItem('hm_scores'); hmLog('Cleared scores'); });
 hmResetLocalStorageBtn && hmResetLocalStorageBtn.addEventListener('click', ()=>{ localStorage.clear(); hmLogs=[]; hmSaveLogs(); hmRenderLogs(); hmLog('Reset localStorage'); });
+hmResetGameBtn && hmResetGameBtn.addEventListener('click', ()=>{ hmNew(); hmLog('Game reset'); });
 hmExportStateBtn && hmExportStateBtn.addEventListener('click', ()=>{ const state={word:hmWord,display:hmDisplay,attempts:hmAttempts,guessed:[...hmGuessed],scores:hmScores,logs:hmLogs}; const dataStr='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state)); const a=document.createElement('a'); a.setAttribute('href',dataStr); a.setAttribute('download','hangman_state.json'); document.body.appendChild(a); a.click(); a.remove(); hmLog('Exported state'); });
 hmImportFile && hmImportFile.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=(ev)=>{ try{ const state=JSON.parse(ev.target.result); if(state.word) hmWord=state.word; if(state.display) hmDisplay=state.display; if(state.attempts!==undefined) hmAttempts=state.attempts; if(state.guessed) hmGuessed=new Set(state.guessed); if(state.scores) hmScores=state.scores; if(state.logs) hmLogs=state.logs; renderHm(); hmPlayerScoreEl.textContent=hmScores.player; hmAiScoreEl.textContent=hmScores.ai; hmDrawScoreEl.textContent=hmScores.draw; hmSaveLogs(); hmRenderLogs(); hmLog('Imported state'); }catch(err){ alert('Invalid file'); } }; r.readAsText(f); });
 hmCloseAdminBtn && hmCloseAdminBtn.addEventListener('click', ()=>{ hmAdminPanel.classList.add('hidden'); hmAdminAuth.classList.remove('hidden'); hmAdminContents.classList.add('hidden'); hmLog('Admin locked'); });
