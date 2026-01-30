@@ -31,6 +31,52 @@
 
     <div id="cfBoard" class="cf-board" role="grid"></div>
 
+    <!-- ADMIN PANEL FOR CONNECT FOUR -->
+    <button id="cfAdminBtn" class="admin-btn">Admin Panel</button>
+    <div id="cfAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="cfAdminAuth">
+        <label for="cfAdminPassword">Enter code:</label>
+        <input id="cfAdminPassword" type="password" placeholder="****" />
+        <button id="cfAdminUnlock">Unlock</button>
+      </div>
+      <div id="cfAdminContents" class="locked hidden">
+        <label>Set Difficulty:</label>
+        <select id="cfAdminDifficulty">
+          <option value="1">Level 1</option>
+          <option value="2">Level 2</option>
+          <option value="3">Level 3</option>
+          <option value="4">Level 4</option>
+          <option value="5">Level 5</option>
+        </select>
+        <div>
+          <button id="cfForceAiWin">Force AI Win</button>
+          <button id="cfForcePlayerWin">Force Player Win</button>
+          <button id="cfForceDraw">Force Draw</button>
+        </div>
+        <div>
+          <button id="cfClearBoard">Clear Board</button>
+          <button id="cfClearScores">Clear Scores</button>
+          <button id="cfResetLocalStorage">Reset LocalStorage</button>
+        </div>
+        <div>
+          <button id="cfExportState">Export State</button>
+          <input id="cfImportFile" type="file" accept="application/json" />
+        </div>
+        <h3>Live Stats</h3>
+        <div id="cfLiveStats">
+          <div id="cfLiveBoard" class="live-board"></div>
+          <div id="cfLiveScores" class="live-scores"></div>
+        </div>
+        <h3>Admin Logs</h3>
+        <div id="cfAdminLogs" class="admin-logs"></div>
+        <div>
+          <button id="cfClearLogs">Clear Logs</button>
+          <button id="cfExportLogs">Export Logs</button>
+        </div>
+        <button id="cfCloseAdmin">Lock</button>
+      </div>
+    </div>
   </div>
 
   <script src="connect.js"></script>

@@ -220,3 +220,91 @@ cfNewGameBtn.addEventListener('click', cfNewGame);
 // init
 initCfBoard();
 renderCfBoard();
+
+// Connect Four admin logic
+const cfAdminBtn = document.getElementById('cfAdminBtn');
+const cfAdminPanel = document.getElementById('cfAdminPanel');
+const cfAdminAuth = document.getElementById('cfAdminAuth');
+const cfAdminPassword = document.getElementById('cfAdminPassword');
+const cfAdminUnlock = document.getElementById('cfAdminUnlock');
+const cfAdminContents = document.getElementById('cfAdminContents');
+const cfAdminDifficulty = document.getElementById('cfAdminDifficulty');
+const cfForceAiWinBtn = document.getElementById('cfForceAiWin');
+const cfForcePlayerWinBtn = document.getElementById('cfForcePlayerWin');
+const cfForceDrawBtn = document.getElementById('cfForceDraw');
+const cfClearBoardBtn = document.getElementById('cfClearBoard');
+const cfClearScoresBtn = document.getElementById('cfClearScores');
+const cfResetLocalStorageBtn = document.getElementById('cfResetLocalStorage');
+const cfExportStateBtn = document.getElementById('cfExportState');
+const cfImportFileInput = document.getElementById('cfImportFile');
+const cfClearLogsBtn = document.getElementById('cfClearLogs');
+const cfExportLogsBtn = document.getElementById('cfExportLogs');
+const cfCloseAdminBtn = document.getElementById('cfCloseAdmin');
+const cfAdminLogsEl = document.getElementById('cfAdminLogs');
+const cfLiveBoardEl = document.getElementById('cfLiveBoard');
+const cfLiveScoresEl = document.getElementById('cfLiveScores');
+
+let cfAdminUnlocked = false;
+let cfAdminLogs = JSON.parse(localStorage.getItem('cf_admin_logs') || '[]');
+
+function cfSaveAdminLogs() { localStorage.setItem('cf_admin_logs', JSON.stringify(cfAdminLogs)); }
+function cfLog(action) { const entry = `${new Date().toISOString()} - ${action}`; cfAdminLogs.unshift(entry); if (cfAdminLogs.length>200) cfAdminLogs.pop(); cfSaveAdminLogs(); cfRenderAdminLogs(); }
+function cfRenderAdminLogs() { if(!cfAdminLogsEl) return; cfAdminLogsEl.innerHTML = cfAdminLogs.map(l=>`<div>${l}</div>`).join(''); }
+function cfRenderLiveStats() {
+  if (cfLiveBoardEl) { cfLiveBoardEl.innerHTML=''; for(let i=0;i<ROWS*COLS;i++){ const el=document.createElement('div'); el.className='cell'; const r=Math.floor(i/COLS), c=i%COLS; el.textContent = cfBoard[r][c]? (cfBoard[r][c]==='P'?'●':'○') : ''; cfLiveBoardEl.appendChild(el);} }
+  if (cfLiveScoresEl) cfLiveScoresEl.textContent = `Player: ${cfScores.player}  AI: ${cfScores.ai}  Draws: ${cfScores.draw}`;
+}
+
+function cfUnlockAdmin() {
+  if (cfAdminPassword.value === '0320') {
+    cfAdminUnlocked = true;
+    cfAdminAuth.classList.add('hidden');
+    cfAdminContents.classList.remove('hidden');
+    cfLog('Admin unlocked');
+  } else {
+    alert('Incorrect code'); cfLog('Failed admin unlock attempt');
+  }
+}
+
+cfAdminBtn && cfAdminBtn.addEventListener('click', ()=>{
+  cfAdminPanel.classList.toggle('hidden');
+  if (!cfAdminPanel.classList.contains('hidden')) { cfAdminAuth.classList.remove('hidden'); cfAdminContents.classList.add('hidden'); cfAdminPassword.value=''; cfRenderAdminLogs(); cfRenderLiveStats(); }
+});
+cfAdminUnlock && cfAdminUnlock.addEventListener('click', cfUnlockAdmin);
+
+cfAdminDifficulty && cfAdminDifficulty.addEventListener('change', ()=>{ cfDifficultyEl.value = cfAdminDifficulty.value; cfLog(`Difficulty set to ${cfAdminDifficulty.value}`); });
+
+function cfForceWinFor(symbol) {
+  // place a simple horizontal win on bottom row
+  for(let r=ROWS-1;r>=0;r--){ if (r===ROWS-1){ cfBoard = Array.from({length:ROWS},()=>Array(COLS).fill(null)); for(let c=0;c<4;c++){ cfBoard[r][c]=symbol; } renderCfBoard(); handleCfResult(symbol); cfLog(`Forced ${symbol} win`); return; }}
+}
+
+cfForceAiWinBtn && cfForceAiWinBtn.addEventListener('click', ()=>cfForceWinFor('A'));
+cfForcePlayerWinBtn && cfForcePlayerWinBtn.addEventListener('click', ()=>cfForceWinFor('P'));
+
+cfForceDrawBtn && cfForceDrawBtn.addEventListener('click', ()=>{
+  // fill board in a non-winning pattern
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) cfBoard[r][c] = ((r+c)%2===0)?'P':'A';
+  renderCfBoard(); handleCfResult('draw'); cfLog('Forced draw');
+});
+
+cfClearBoardBtn && cfClearBoardBtn.addEventListener('click', ()=>{ cfNewGame(); cfLog('Cleared board (new game)'); });
+
+cfClearScoresBtn && cfClearScoresBtn.addEventListener('click', ()=>{ cfScores={player:0,ai:0,draw:0}; cfPlayerScoreEl.textContent=0; cfAiScoreEl.textContent=0; cfDrawScoreEl.textContent=0; localStorage.removeItem('cf_scores'); cfLog('Cleared scores'); });
+
+cfResetLocalStorageBtn && cfResetLocalStorageBtn.addEventListener('click', ()=>{ localStorage.clear(); cfScores={player:0,ai:0,draw:0}; cfAdminLogs=[]; cfSaveAdminLogs(); cfPlayerScoreEl.textContent=0; cfAiScoreEl.textContent=0; cfDrawScoreEl.textContent=0; cfRenderAdminLogs(); cfRenderLiveStats(); cfLog('Reset localStorage'); });
+
+cfExportStateBtn && cfExportStateBtn.addEventListener('click', ()=>{ const state={board:cfBoard,scores:cfScores,current:cfCurrent,gameOver:cfGameOver,logs:cfAdminLogs}; const dataStr='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state)); const a=document.createElement('a'); a.setAttribute('href',dataStr); a.setAttribute('download','connect_state.json'); document.body.appendChild(a); a.click(); a.remove(); cfLog('Exported state'); });
+
+cfImportFileInput && cfImportFileInput.addEventListener('change',(e)=>{ const file=e.target.files[0]; if(!file) return; const r=new FileReader(); r.onload=(ev)=>{ try{ const state=JSON.parse(ev.target.result); if(state.board) cfBoard=state.board; if(state.scores) cfScores=state.scores; if(state.current) cfCurrent=state.current; cfGameOver=!!state.gameOver; if(state.logs) cfAdminLogs=state.logs; renderCfBoard(); cfPlayerScoreEl.textContent=cfScores.player; cfAiScoreEl.textContent=cfScores.ai; cfDrawScoreEl.textContent=cfScores.draw; cfSaveAdminLogs(); cfRenderAdminLogs(); cfRenderLiveStats(); cfLog('Imported state'); }catch(err){ alert('Invalid file'); } }; r.readAsText(file); });
+
+cfClearLogsBtn && cfClearLogsBtn.addEventListener('click', ()=>{ cfAdminLogs=[]; cfSaveAdminLogs(); cfRenderAdminLogs(); cfLog('Cleared logs'); });
+
+cfExportLogsBtn && cfExportLogsBtn.addEventListener('click', ()=>{ const dataStr='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(cfAdminLogs)); const a=document.createElement('a'); a.setAttribute('href',dataStr); a.setAttribute('download','connect_admin_logs.json'); document.body.appendChild(a); a.click(); a.remove(); cfLog('Exported logs'); });
+
+cfCloseAdminBtn && cfCloseAdminBtn.addEventListener('click', ()=>{ cfAdminPanel.classList.add('hidden'); cfAdminUnlocked=false; cfAdminAuth.classList.remove('hidden'); cfAdminContents.classList.add('hidden'); cfLog('Admin locked'); });
+
+// wire live stats updates
+const origRenderCfBoard = renderCfBoard;
+renderCfBoard = function(){ origRenderCfBoard(); cfRenderLiveStats(); };
+
