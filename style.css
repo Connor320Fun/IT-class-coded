@@ -222,3 +222,21 @@ h1 {
   cursor: pointer;
 }
 .cf-cell:hover { background: #111827; }
+
+/* Navigation */
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 12px 0;
+}
+.nav a {
+  color: #e5e7eb;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: transparent;
+}
+.nav a:hover {
+  background: rgba(229,231,235,0.06);
+}
