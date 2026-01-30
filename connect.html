@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Connect Four vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <h1>Connect Four vs AI</h1>
+
+    <div class="controls">
+      <label for="cfDifficulty">Difficulty:</label>
+      <select id="cfDifficulty">
+        <option value="1">Level 1 - Random</option>
+        <option value="2">Level 2 - Easy</option>
+        <option value="3">Level 3 - Medium</option>
+        <option value="4">Level 4 - Hard</option>
+        <option value="5">Level 5 - Impossible</option>
+      </select>
+      <button id="cfNewGame">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="cfPlayerScore">0</span></div>
+      <div>AI: <span id="cfAiScore">0</span></div>
+      <div>Draws: <span id="cfDrawScore">0</span></div>
+    </div>
+
+    <div id="cfStatus" class="status">Your turn</div>
+
+    <div id="cfBoard" class="cf-board" role="grid"></div>
+
+  </div>
+
+  <script src="connect.js"></script>
+</body>
+</html>

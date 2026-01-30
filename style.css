@@ -200,3 +200,25 @@ h1 {
   font-size: 13px;
   margin-bottom: 8px;
 }
+
+/* Connect Four styles */
+.cf-board {
+  display: grid;
+  grid-template-columns: repeat(7, 48px);
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.cf-cell {
+  width: 48px;
+  height: 48px;
+  background: #0b1220;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+}
+.cf-cell:hover { background: #111827; }
