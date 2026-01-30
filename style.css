@@ -117,16 +117,14 @@ h1 {
   background: #2563eb;
 }
 
-/* Admin panel styles */
 .admin-btn {
-  margin-top: 12px;
   width: 100%;
-  padding: 8px 0;
-  border-radius: 8px;
-  border: none;
+  margin-top: 10px;
+  padding: 8px;
   background: #6b7280;
   color: white;
-  font-size: 14px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -135,26 +133,28 @@ h1 {
 }
 
 .admin-panel {
+  background: #111827;
+  padding: 16px;
+  border-radius: 10px;
   margin-top: 12px;
-  background: #0b1220;
-  padding: 12px;
-  border-radius: 8px;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.admin-panel.hidden {
+.hidden {
   display: none;
 }
 
-.admin-panel h2 {
-  margin-bottom: 8px;
-}
-
-.admin-panel select,
 .admin-panel button {
-  margin: 6px 4px 6px 0;
-  padding: 6px 8px;
+  padding: 6px;
   border-radius: 6px;
   border: none;
-  font-size: 14px;
+  background: #374151;
+  color: white;
+  cursor: pointer;
+}
+
+.admin-panel button:hover {
+  background: #1f2937;
 }
