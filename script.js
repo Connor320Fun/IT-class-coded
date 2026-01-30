@@ -269,3 +269,54 @@ newGameBtn.addEventListener("click", newGame);
 // Init
 loadScores();
 newGame();
+
+// Admin panel logic
+const adminBtn = document.getElementById('adminBtn');
+const adminPanel = document.getElementById('adminPanel');
+const adminDifficulty = document.getElementById('adminDifficulty');
+const forceAiWinBtn = document.getElementById('forceAiWin');
+const forcePlayerWinBtn = document.getElementById('forcePlayerWin');
+const forceDrawBtn = document.getElementById('forceDraw');
+const clearBoardBtn = document.getElementById('clearBoard');
+const closeAdminBtn = document.getElementById('closeAdmin');
+
+function openAdmin() {
+  const code = prompt('Enter admin code:');
+  if (code === '0320') {
+    adminPanel.classList.remove('hidden');
+  } else {
+    alert('Incorrect code.');
+  }
+}
+
+adminBtn && adminBtn.addEventListener('click', openAdmin);
+
+adminDifficulty && adminDifficulty.addEventListener('change', () => {
+  difficultyEl.value = adminDifficulty.value;
+});
+
+function forceWinFor(symbol) {
+  // choose a winning combo (first one) and set that symbol
+  const combo = winningCombos[0];
+  // fill board with the opposite symbol to avoid accidental extra wins
+  const opposite = symbol === 'O' ? 'X' : 'O';
+  board = Array(9).fill(opposite);
+  combo.forEach((i) => (board[i] = symbol));
+  renderBoard();
+  handleResult(symbol);
+}
+
+forceAiWinBtn && forceAiWinBtn.addEventListener('click', () => forceWinFor('O'));
+forcePlayerWinBtn && forcePlayerWinBtn.addEventListener('click', () => forceWinFor('X'));
+
+forceDrawBtn && forceDrawBtn.addEventListener('click', () => {
+  board = ['X','O','X','X','O','O','O','X','X'];
+  renderBoard();
+  handleResult('draw');
+});
+
+clearBoardBtn && clearBoardBtn.addEventListener('click', () => newGame());
+
+closeAdminBtn && closeAdminBtn.addEventListener('click', () => {
+  adminPanel.classList.add('hidden');
+});

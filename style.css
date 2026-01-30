@@ -116,3 +116,45 @@ h1 {
 .new-game:hover {
   background: #2563eb;
 }
+
+/* Admin panel styles */
+.admin-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 8px 0;
+  border-radius: 8px;
+  border: none;
+  background: #6b7280;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.admin-btn:hover {
+  background: #4b5563;
+}
+
+.admin-panel {
+  margin-top: 12px;
+  background: #0b1220;
+  padding: 12px;
+  border-radius: 8px;
+  display: block;
+}
+
+.admin-panel.hidden {
+  display: none;
+}
+
+.admin-panel h2 {
+  margin-bottom: 8px;
+}
+
+.admin-panel select,
+.admin-panel button {
+  margin: 6px 4px 6px 0;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+}
