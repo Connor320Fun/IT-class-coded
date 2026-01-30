@@ -272,5 +272,17 @@ chessCloseAdminBtn && chessCloseAdminBtn.addEventListener('click', ()=>{ chessAd
 // Hook new game button
 chessNewGameBtn && chessNewGameBtn.addEventListener('click', initChess);
 
+// cleanup function to run when navigating away
+function pageCleanup(){
+  // stop AI from acting
+  chessGameOver = true;
+  // hide owner/admin panels if open
+  try{ chessOwnerPanel && chessOwnerPanel.classList.add('hidden'); chessOwnerAuth && chessOwnerAuth.classList.remove('hidden'); chessOwnerContents && chessOwnerContents.classList.add('hidden'); }catch(e){}
+  try{ chessAdminPanel && chessAdminPanel.classList.add('hidden'); chessAdminAuth && chessAdminAuth.classList.remove('hidden'); chessAdminContents && chessAdminContents.classList.add('hidden'); }catch(e){}
+}
+
+// call cleanup when any top-nav link is clicked
+document.querySelectorAll('.nav a').forEach(a=> a.addEventListener('click', ()=>{ pageCleanup(); }));
+
 // start
 initChess();
