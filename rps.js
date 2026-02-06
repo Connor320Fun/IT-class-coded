@@ -92,17 +92,35 @@ const rpsOwnerClearScoresBtn = document.getElementById('rpsOwnerClearScores');
 const rpsOwnerClearLogsBtn = document.getElementById('rpsOwnerClearLogs');
 const rpsOwnerClearLSBtn = document.getElementById('rpsOwnerClearLS');
 const rpsOwnerLogsEl = document.getElementById('rpsOwnerLogs');
+const rpsOwnerNewGameBtn = document.getElementById('rpsOwnerNewGame');
+const rpsOwnerReloadBtn = document.getElementById('rpsOwnerReloadApp');
+const rpsOwnerKillSwitchBtn = document.getElementById('rpsOwnerKillSwitch');
+const rpsOwnerForcePlayerWinBtn = document.getElementById('rpsOwnerForcePlayerWin');
+const rpsOwnerForceAiWinBtn = document.getElementById('rpsOwnerForceAiWin');
+const rpsOwnerDifficultyEl = document.getElementById('rpsOwnerDifficulty');
+const rpsOwnerApplyDifficultyBtn = document.getElementById('rpsOwnerApplyDifficulty');
+const rpsOwnerStateInputEl = document.getElementById('rpsOwnerStateInput');
+const rpsOwnerSetStateBtn = document.getElementById('rpsOwnerSetState');
+const rpsOwnerExportStateBtn = document.getElementById('rpsOwnerExportState');
 
 function rpsOwnerUnlockAndAdmin(){ if(rpsOwnerPassword.value==='Bowling320Fun'){ rpsOwnerAuth.classList.add('hidden'); rpsOwnerContents.classList.remove('hidden'); rpsLog('Owner unlocked'); rpsAdminAuth.classList.add('hidden'); rpsAdminContents.classList.remove('hidden'); rpsRenderLogs(); } else { alert('Incorrect owner code'); rpsLog('Failed owner unlock attempt'); } }
 
 rpsOwnerBtn && rpsOwnerBtn.addEventListener('click', ()=>{ rpsOwnerPanel.classList.toggle('hidden'); if(!rpsOwnerPanel.classList.contains('hidden')){ rpsOwnerAuth.classList.remove('hidden'); rpsOwnerContents.classList.add('hidden'); rpsOwnerPassword.value=''; } });
 rpsOwnerUnlock && rpsOwnerUnlock.addEventListener('click', rpsOwnerUnlockAndAdmin);
 rpsOwnerCloseBtn && rpsOwnerCloseBtn.addEventListener('click', ()=>{ rpsOwnerPanel.classList.add('hidden'); rpsOwnerAuth.classList.remove('hidden'); rpsOwnerContents.classList.add('hidden'); rpsLog('Owner locked'); });
+rpsOwnerNewGameBtn && rpsOwnerNewGameBtn.addEventListener('click', ()=>{ rpsPlayerScore=0; rpsAiScore=0; rpsDrawScore=0; rpsPlayerScoreEl.textContent=0; rpsAiScoreEl.textContent=0; rpsDrawScoreEl.textContent=0; rpsHistory=[]; rpsStatus.textContent='Game reset'; rpsLog('Owner started new game'); });
+rpsOwnerReloadBtn && rpsOwnerReloadBtn.addEventListener('click', ()=>{ rpsLog('Owner reloaded app'); location.reload(); });
+rpsOwnerKillSwitchBtn && rpsOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); rpsLog('Owner used kill switch'); location.reload(); });
 rpsOwnerViewStatsBtn && rpsOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { playerScore: rpsPlayerScore, aiScore: rpsAiScore, draws: rpsDrawScore }; alert(JSON.stringify(stats, null, 2)); rpsLog('Owner viewed stats'); });
 rpsOwnerClearScoresBtn && rpsOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; rpsPlayerScore=0; rpsAiScore=0; rpsDrawScore=0; rpsPlayerScoreEl.textContent=0; rpsAiScoreEl.textContent=0; rpsDrawScoreEl.textContent=0; localStorage.removeItem('rps_scores'); rpsLog('Owner cleared scores'); });
 rpsOwnerClearLogsBtn && rpsOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!confirm('Clear all logs?')) return; rpsLogs=[]; rpsSaveLogs(); rpsRenderLogs(); rpsOwnerLogsEl.innerHTML=''; rpsLog('Owner cleared logs'); });
 rpsOwnerViewLSBtn && rpsOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } rpsOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); rpsLog('Owner viewed localStorage'); });
 rpsOwnerClearLSBtn && rpsOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); rpsLog('Owner cleared localStorage'); alert('Storage cleared'); });
+rpsOwnerForcePlayerWinBtn && rpsOwnerForcePlayerWinBtn.addEventListener('click', ()=>{ rpsPlayerScore++; rpsPlayerScoreEl.textContent = rpsPlayerScore; rpsStatus.textContent = 'Player wins (forced by owner)'; rpsLog('Owner forced player win'); });
+rpsOwnerForceAiWinBtn && rpsOwnerForceAiWinBtn.addEventListener('click', ()=>{ rpsAiScore++; rpsAiScoreEl.textContent = rpsAiScore; rpsStatus.textContent = 'AI wins (forced by owner)'; rpsLog('Owner forced AI win'); });
+rpsOwnerApplyDifficultyBtn && rpsOwnerApplyDifficultyBtn.addEventListener('click', ()=>{ rpsDifficultyEl.value = rpsOwnerDifficultyEl.value; rpsLog(`Owner set difficulty to ${rpsOwnerDifficultyEl.value}`); });
+rpsOwnerSetStateBtn && rpsOwnerSetStateBtn.addEventListener('click', ()=>{ try{ const state = JSON.parse(rpsOwnerStateInputEl.value); if(state.playerScore !== undefined) rpsPlayerScore = state.playerScore; if(state.aiScore !== undefined) rpsAiScore = state.aiScore; if(state.drawScore !== undefined) rpsDrawScore = state.drawScore; if(state.history) rpsHistory = state.history; rpsPlayerScoreEl.textContent = rpsPlayerScore; rpsAiScoreEl.textContent = rpsAiScore; rpsDrawScoreEl.textContent = rpsDrawScore; rpsLog('Owner applied state'); alert('State applied'); }catch(e){ alert('Invalid JSON'); } });
+rpsOwnerExportStateBtn && rpsOwnerExportStateBtn.addEventListener('click', ()=>{ const state = { playerScore: rpsPlayerScore, aiScore: rpsAiScore, drawScore: rpsDrawScore, history: rpsHistory }; rpsOwnerStateInputEl.value = JSON.stringify(state, null, 2); rpsLog('Owner exported state'); });
 
 function rpsSaveLogs(){ localStorage.setItem('rps_admin_logs', JSON.stringify(rpsLogs)); }
 function rpsLog(a){ rpsLogs.unshift(`${new Date().toISOString()} - ${a}`); if(rpsLogs.length>200) rpsLogs.pop(); rpsSaveLogs(); rpsRenderLogs(); if(rpsOwnerLogsEl) rpsOwnerLogsEl.innerHTML = rpsLogs.map(l=>`<div>${l}</div>`).join(''); }

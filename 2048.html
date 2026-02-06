@@ -79,11 +79,45 @@
         <button id="twOwnerUnlock">Unlock</button>
       </div>
       <div id="twOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="twOwnerNewGame">New Game</button>
+          <button id="twOwnerReloadApp">Reload App</button>
+          <button id="twOwnerKillSwitch">Kill Switch</button>
+        </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="twOwnerForcePlayerWin">Force Player Win</button>
+          <button id="twOwnerForceAiWin">Force AI Win</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="twOwnerDifficulty">Set Difficulty:</label>
+          <select id="twOwnerDifficulty">
+            <option value="1">Level 1 - Easy</option>
+            <option value="2">Level 2 - Medium</option>
+            <option value="3">Level 3 - Hard</option>
+            <option value="4">Level 4 - Expert</option>
+            <option value="5">Level 5 - Insane</option>
+          </select>
+          <button id="twOwnerApplyDifficulty">Apply</button>
+        </div>
+
         <h3>Scores & Data</h3>
         <div>
           <button id="twOwnerViewStats">View Stats</button>
           <button id="twOwnerClearScores">Clear Scores</button>
           <button id="twOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="twOwnerStateInput" rows="4" style="width:100%"></textarea>
+          <button id="twOwnerSetState">Apply State</button>
+          <button id="twOwnerExportState">Export State</button>
         </div>
 
         <h3>LocalStorage</h3>

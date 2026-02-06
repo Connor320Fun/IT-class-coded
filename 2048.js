@@ -163,17 +163,35 @@ const twOwnerClearScoresBtn = document.getElementById('twOwnerClearScores');
 const twOwnerClearLogsBtn = document.getElementById('twOwnerClearLogs');
 const twOwnerClearLSBtn = document.getElementById('twOwnerClearLS');
 const twOwnerLogsEl = document.getElementById('twOwnerLogs');
+const twOwnerNewGameBtn = document.getElementById('twOwnerNewGame');
+const twOwnerReloadBtn = document.getElementById('twOwnerReloadApp');
+const twOwnerKillSwitchBtn = document.getElementById('twOwnerKillSwitch');
+const twOwnerForcePlayerWinBtn = document.getElementById('twOwnerForcePlayerWin');
+const twOwnerForceAiWinBtn = document.getElementById('twOwnerForceAiWin');
+const twOwnerDifficultyEl = document.getElementById('twOwnerDifficulty');
+const twOwnerApplyDifficultyBtn = document.getElementById('twOwnerApplyDifficulty');
+const twOwnerStateInputEl = document.getElementById('twOwnerStateInput');
+const twOwnerSetStateBtn = document.getElementById('twOwnerSetState');
+const twOwnerExportStateBtn = document.getElementById('twOwnerExportState');
 
 function twOwnerUnlockAndAdmin(){ if(twOwnerPassword.value==='Bowling320Fun'){ twOwnerAuth.classList.add('hidden'); twOwnerContents.classList.remove('hidden'); twLog('Owner unlocked'); twAdminAuth.classList.add('hidden'); twAdminContents.classList.remove('hidden'); twRenderLogs(); } else { alert('Incorrect owner code'); twLog('Failed owner unlock attempt'); } }
 
 twOwnerBtn && twOwnerBtn.addEventListener('click', ()=>{ twOwnerPanel.classList.toggle('hidden'); if(!twOwnerPanel.classList.contains('hidden')){ twOwnerAuth.classList.remove('hidden'); twOwnerContents.classList.add('hidden'); twOwnerPassword.value=''; } });
 twOwnerUnlock && twOwnerUnlock.addEventListener('click', twOwnerUnlockAndAdmin);
 twOwnerCloseBtn && twOwnerCloseBtn.addEventListener('click', ()=>{ twOwnerPanel.classList.add('hidden'); twOwnerAuth.classList.remove('hidden'); twOwnerContents.classList.add('hidden'); twLog('Owner locked'); });
+twOwnerNewGameBtn && twOwnerNewGameBtn.addEventListener('click', ()=>{ twNew(); twLog('Owner started new game'); });
+twOwnerReloadBtn && twOwnerReloadBtn.addEventListener('click', ()=>{ twLog('Owner reloaded app'); location.reload(); });
+twOwnerKillSwitchBtn && twOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); twLog('Owner used kill switch'); location.reload(); });
 twOwnerViewStatsBtn && twOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { playerScore: twPlayerScore, aiScore: twAiScore }; alert(JSON.stringify(stats, null, 2)); twLog('Owner viewed stats'); });
 twOwnerClearScoresBtn && twOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; twPlayerScore=0; twAiScore=0; twPlayerScoreEl.textContent=0; twAiScoreEl.textContent=0; localStorage.removeItem('tw_scores'); twLog('Owner cleared scores'); });
 twOwnerClearLogsBtn && twOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!confirm('Clear all logs?')) return; twLogs=[]; twSaveLogs(); twRenderLogs(); twOwnerLogsEl.innerHTML=''; twLog('Owner cleared logs'); });
 twOwnerViewLSBtn && twOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } twOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); twLog('Owner viewed localStorage'); });
 twOwnerClearLSBtn && twOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); twLog('Owner cleared localStorage'); alert('Storage cleared'); });
+twOwnerForcePlayerWinBtn && twOwnerForcePlayerWinBtn.addEventListener('click', ()=>{ twPlayerScore += 2048; twPlayerScoreEl.textContent = twPlayerScore; twStatus.textContent = 'Player wins (forced by owner)'; twGameOver = true; twLog('Owner forced player win'); });
+twOwnerForceAiWinBtn && twOwnerForceAiWinBtn.addEventListener('click', ()=>{ twAiScore++; twAiScoreEl.textContent = twAiScore; twStatus.textContent = 'AI wins (forced by owner)'; twGameOver = true; twLog('Owner forced AI win'); });
+twOwnerApplyDifficultyBtn && twOwnerApplyDifficultyBtn.addEventListener('click', ()=>{ twDifficultyEl.value = twOwnerDifficultyEl.value; twLog(`Owner set difficulty to ${twOwnerDifficultyEl.value}`); });
+twOwnerSetStateBtn && twOwnerSetStateBtn.addEventListener('click', ()=>{ try{ const state = JSON.parse(twOwnerStateInputEl.value); if(state.board) twBoard = state.board; if(state.playerScore !== undefined) twPlayerScore = state.playerScore; if(state.aiScore !== undefined) twAiScore = state.aiScore; twPlayerScoreEl.textContent = twPlayerScore; twAiScoreEl.textContent = twAiScore; twRender(); twLog('Owner applied state'); alert('State applied'); }catch(e){ alert('Invalid JSON'); } });
+twOwnerExportStateBtn && twOwnerExportStateBtn.addEventListener('click', ()=>{ const state = { board: twBoard, playerScore: twPlayerScore, aiScore: twAiScore }; twOwnerStateInputEl.value = JSON.stringify(state, null, 2); twLog('Owner exported state'); });
 
 function twSaveLogs(){ localStorage.setItem('tw_admin_logs', JSON.stringify(twLogs)); }
 function twLog(a){ twLogs.unshift(`${new Date().toISOString()} - ${a}`); if(twLogs.length>200) twLogs.pop(); twSaveLogs(); twRenderLogs(); if(twOwnerLogsEl) twOwnerLogsEl.innerHTML = twLogs.map(l=>`<div>${l}</div>`).join(''); }

@@ -83,11 +83,45 @@
         <button id="rpsOwnerUnlock">Unlock</button>
       </div>
       <div id="rpsOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="rpsOwnerNewGame">New Game</button>
+          <button id="rpsOwnerReloadApp">Reload App</button>
+          <button id="rpsOwnerKillSwitch">Kill Switch</button>
+        </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="rpsOwnerForcePlayerWin">Force Player Win</button>
+          <button id="rpsOwnerForceAiWin">Force AI Win</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="rpsOwnerDifficulty">Set Difficulty:</label>
+          <select id="rpsOwnerDifficulty">
+            <option value="1">Level 1 - Random</option>
+            <option value="2">Level 2 - Medium</option>
+            <option value="3">Level 3 - Hard</option>
+            <option value="4">Level 4 - Expert</option>
+            <option value="5">Level 5 - Impossible</option>
+          </select>
+          <button id="rpsOwnerApplyDifficulty">Apply</button>
+        </div>
+
         <h3>Scores & Data</h3>
         <div>
           <button id="rpsOwnerViewStats">View Stats</button>
           <button id="rpsOwnerClearScores">Clear Scores</button>
           <button id="rpsOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="rpsOwnerStateInput" rows="4" style="width:100%"></textarea>
+          <button id="rpsOwnerSetState">Apply State</button>
+          <button id="rpsOwnerExportState">Export State</button>
         </div>
 
         <h3>LocalStorage</h3>
