@@ -28,7 +28,7 @@ function mmNew() {
 }
 
 function mmRenderBoard() {
-  mmStatus.textContent = `Guesses: ${mmGuesses.length} | Code: ${mmMode==='reveal'?mmCode.join(''):mm '****'}`;
+  mmStatus.textContent = `Guesses: ${mmGuesses.length} | Code: ${mmMode==='reveal'?mmCode.join(''):'****'}`;
 }
 
 function mmCheckGuess(guess) {
