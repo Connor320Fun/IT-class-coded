@@ -4,62 +4,158 @@ const mmNewGameBtn = document.getElementById('mmNewGame');
 const mmDifficultyEl = document.getElementById('mmDifficulty');
 const mmPlayerScoreEl = document.getElementById('mmPlayerScore');
 const mmAiScoreEl = document.getElementById('mmAiScore');
+const mmPlayerCodeEl = document.getElementById('mmPlayerCode');
+const mmColorPickerEl = document.getElementById('mmColorPicker');
+const mmSetCodeBtn = document.getElementById('mmSetCode');
+const mmGuessHistoryEl = document.getElementById('mmGuessHistory');
 
-let mmCode = [];
+let mmPlayerCode = [];
 let mmGuesses = [];
 let mmPlayerScore = 0;
 let mmAiScore = 0;
 let mmGameOver = false;
+let mmCodeSet = false;
 let mmLogs = JSON.parse(localStorage.getItem('mm_admin_logs')||'[]');
-let mmMode = 'player';
 
-function mmGenerateCode() {
-  mmCode = [];
-  for(let i=0;i<4;i++) mmCode.push(MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)]);
+function mmRenderColorPicker() {
+  mmColorPickerEl.innerHTML = '';
+  MM_COLORS.forEach(color => {
+    const btn = document.createElement('button');
+    btn.textContent = color;
+    btn.style.padding = '10px 15px';
+    btn.style.fontSize = '20px';
+    btn.style.cursor = 'pointer';
+    btn.addEventListener('click', () => {
+      if(mmPlayerCode.length < 4) {
+        mmPlayerCode.push(color);
+        mmRenderPlayerCode();
+      }
+    });
+    mmColorPickerEl.appendChild(btn);
+  });
+  const clearBtn = document.createElement('button');
+  clearBtn.textContent = 'Clear';
+  clearBtn.style.padding = '10px 15px';
+  clearBtn.style.backgroundColor = '#ff4444';
+  clearBtn.addEventListener('click', () => {
+    mmPlayerCode = [];
+    mmRenderPlayerCode();
+  });
+  mmColorPickerEl.appendChild(clearBtn);
 }
 
-function mmNew() {
-  mmGenerateCode();
-  mmGuesses = [];
-  mmGameOver = false;
-  mmMode = 'player';
-  mmStatus.textContent = 'Guess the code! (4 colors)';
-  mmRenderBoard();
+function mmRenderPlayerCode() {
+  mmPlayerCodeEl.innerHTML = '';
+  for(let i = 0; i < 4; i++) {
+    const cell = document.createElement('div');
+    cell.textContent = mmPlayerCode[i] || '?';
+    cell.style.width = '40px';
+    cell.style.height = '40px';
+    cell.style.display = 'flex';
+    cell.style.alignItems = 'center';
+    cell.style.justifyContent = 'center';
+    cell.style.fontSize = '24px';
+    cell.style.border = '2px solid #333';
+    cell.style.borderRadius = '4px';
+    cell.style.backgroundColor = '#1a1a1a';
+    mmPlayerCodeEl.appendChild(cell);
+  }
+  mmSetCodeBtn.disabled = mmPlayerCode.length !== 4;
 }
 
-function mmRenderBoard() {
-  mmStatus.textContent = `Guesses: ${mmGuesses.length} | Code: ${mmMode==='reveal'?mmCode.join(''):'****'}`;
+function mmSetCode() {
+  if(mmPlayerCode.length !== 4) {
+    alert('Pick exactly 4 colors');
+    return;
+  }
+  mmCodeSet = true;
+  mmSetCodeBtn.disabled = true;
+  mmColorPickerEl.style.display = 'none';
+  mmStatus.textContent = 'Code locked! AI is guessing...';
+  mmLog('Player set code');
+  setTimeout(mmAiMakeGuess, 500);
 }
 
 function mmCheckGuess(guess) {
   let correct = 0, wrongPosition = 0;
-  let codeCopy = [...mmCode];
+  let codeCopy = [...mmPlayerCode];
   let guessCopy = [...guess];
   for(let i=0;i<4;i++) if(guessCopy[i]===codeCopy[i]) { correct++; codeCopy[i]=null; guessCopy[i]=null; }
   for(let i=0;i<4;i++) if(guessCopy[i]&&codeCopy.includes(guessCopy[i])) { wrongPosition++; codeCopy[codeCopy.indexOf(guessCopy[i])]=null; }
   return {correct, wrongPosition};
 }
 
-function mmMakeGuess() {
-  if(mmGameOver) return;
-  let guess = [MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)],MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)],MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)],MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)]];
+function mmAiMakeGuess() {
+  if(mmGameOver || !mmCodeSet) return;
+  const difficulty = parseInt(mmDifficultyEl.value, 10);
+  let guess = [];
+  
+  if(difficulty === 1) {
+    for(let i=0;i<4;i++) guess.push(MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)]);
+  } else {
+    if(mmGuesses.length === 0) {
+      guess = ['🔴','🔴','🟢','🟢'];
+    } else {
+      for(let i=0;i<4;i++) guess.push(MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)]);
+    }
+  }
+  
   mmGuesses.push(guess);
   const result = mmCheckGuess(guess);
-  if(result.correct===4) {
+  
+  const guessDiv = document.createElement('div');
+  guessDiv.innerHTML = `<strong>Guess ${mmGuesses.length}:</strong> ${guess.join('')} | Correct: ${result.correct}, Wrong position: ${result.wrongPosition}`;
+  guessDiv.style.padding = '8px';
+  guessDiv.style.borderBottom = '1px solid #333';
+  mmGuessHistoryEl.appendChild(guessDiv);
+  mmGuessHistoryEl.scrollTop = mmGuessHistoryEl.scrollHeight;
+  
+  if(result.correct === 4) {
     mmStatus.textContent = 'AI guessed the code!';
     mmGameOver = true;
     mmAiScore++;
     mmAiScoreEl.textContent = mmAiScore;
     mmLog('AI guessed code');
+    localStorage.setItem('mm_scores', JSON.stringify({player: mmPlayerScore, ai: mmAiScore}));
   } else if(mmGuesses.length >= 12) {
-    mmStatus.textContent = 'Game Over! Code was: '+mmCode.join('');
+    mmStatus.textContent = 'AI failed! Your code was: ' + mmPlayerCode.join('');
     mmGameOver = true;
     mmPlayerScore++;
     mmPlayerScoreEl.textContent = mmPlayerScore;
     mmLog('AI failed to guess');
+    localStorage.setItem('mm_scores', JSON.stringify({player: mmPlayerScore, ai: mmAiScore}));
+  } else {
+    setTimeout(mmAiMakeGuess, 800);
   }
-  mmRenderBoard();
 }
+
+function mmNew() {
+  mmPlayerCode = [];
+  mmGuesses = [];
+  mmGameOver = false;
+  mmCodeSet = false;
+  mmSetCodeBtn.disabled = false;
+  mmColorPickerEl.style.display = 'flex';
+  mmGuessHistoryEl.innerHTML = '';
+  mmStatus.textContent = 'Pick 4 colors for your secret code';
+  mmRenderPlayerCode();
+  mmRenderColorPicker();
+  mmLog('New game started');
+}
+
+function mmLoadScores() {
+  const saved = localStorage.getItem('mm_scores');
+  if(saved) {
+    const scores = JSON.parse(saved);
+    mmPlayerScore = scores.player;
+    mmAiScore = scores.ai;
+    mmPlayerScoreEl.textContent = mmPlayerScore;
+    mmAiScoreEl.textContent = mmAiScore;
+  }
+}
+
+mmNewGameBtn && mmNewGameBtn.addEventListener('click', mmNew);
+mmSetCodeBtn && mmSetCodeBtn.addEventListener('click', mmSetCode);
 
 // Admin Panel
 const mmAdminBtn = document.getElementById('mmAdminBtn');
@@ -101,6 +197,13 @@ const mmOwnerClearScoresBtn = document.getElementById('mmOwnerClearScores');
 const mmOwnerClearLogsBtn = document.getElementById('mmOwnerClearLogs');
 const mmOwnerClearLSBtn = document.getElementById('mmOwnerClearLS');
 const mmOwnerLogsEl = document.getElementById('mmOwnerLogs');
+const mmOwnerForceAiWinBtn = document.getElementById('mmOwnerForceAiWin');
+const mmOwnerForcePlayerWinBtn = document.getElementById('mmOwnerForcePlayerWin');
+const mmOwnerDifficultyEl = document.getElementById('mmOwnerDifficulty');
+const mmOwnerApplyDifficultyBtn = document.getElementById('mmOwnerApplyDifficulty');
+const mmOwnerStateInputEl = document.getElementById('mmOwnerStateInput');
+const mmOwnerSetStateBtn = document.getElementById('mmOwnerSetState');
+const mmOwnerExportStateBtn = document.getElementById('mmOwnerExportState');
 
 function mmOwnerUnlockAndAdmin(){ if(mmOwnerPassword.value==='Bowling320Fun'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); mmAdminAuth.classList.add('hidden'); mmAdminContents.classList.remove('hidden'); mmRenderLogs(); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
 
@@ -115,9 +218,15 @@ mmOwnerClearLogsBtn && mmOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!c
 mmOwnerViewLSBtn && mmOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } mmOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); mmLog('Owner viewed localStorage'); });
 mmOwnerKillSwitchBtn && mmOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); mmLog('Owner used kill switch'); location.reload(); });
 mmOwnerClearLSBtn && mmOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); mmLog('Owner cleared localStorage'); alert('Storage cleared'); });
+mmOwnerForceAiWinBtn && mmOwnerForceAiWinBtn.addEventListener('click', ()=>{ mmGameOver = true; mmAiScore++; mmAiScoreEl.textContent = mmAiScore; mmStatus.textContent = 'AI wins (forced by owner)'; mmLog('Owner forced AI win'); });
+mmOwnerForcePlayerWinBtn && mmOwnerForcePlayerWinBtn.addEventListener('click', ()=>{ mmGameOver = true; mmPlayerScore++; mmPlayerScoreEl.textContent = mmPlayerScore; mmStatus.textContent = 'Player wins (forced by owner)'; mmLog('Owner forced player win'); });
+mmOwnerApplyDifficultyBtn && mmOwnerApplyDifficultyBtn.addEventListener('click', ()=>{ mmDifficultyEl.value = mmOwnerDifficultyEl.value; mmLog(`Owner set difficulty to ${mmOwnerDifficultyEl.value}`); });
+mmOwnerSetStateBtn && mmOwnerSetStateBtn.addEventListener('click', ()=>{ try{ const state = JSON.parse(mmOwnerStateInputEl.value); if(state.playerCode) mmPlayerCode = state.playerCode; if(state.guesses) mmGuesses = state.guesses; if(state.playerScore !== undefined) mmPlayerScore = state.playerScore; if(state.aiScore !== undefined) mmAiScore = state.aiScore; mmPlayerScoreEl.textContent = mmPlayerScore; mmAiScoreEl.textContent = mmAiScore; mmLog('Owner applied state'); alert('State applied'); }catch(e){ alert('Invalid JSON'); } });
+mmOwnerExportStateBtn && mmOwnerExportStateBtn.addEventListener('click', ()=>{ const state = { playerCode: mmPlayerCode, guesses: mmGuesses, playerScore: mmPlayerScore, aiScore: mmAiScore }; mmOwnerStateInputEl.value = JSON.stringify(state, null, 2); mmLog('Owner exported state'); });
 
 function mmSaveLogs(){ localStorage.setItem('mm_admin_logs', JSON.stringify(mmLogs)); }
 function mmLog(a){ mmLogs.unshift(`${new Date().toISOString()} - ${a}`); if(mmLogs.length>200) mmLogs.pop(); mmSaveLogs(); mmRenderLogs(); if(mmOwnerLogsEl) mmOwnerLogsEl.innerHTML = mmLogs.map(l=>`<div>${l}</div>`).join(''); }
 function mmRenderLogs(){ if(mmAdminLogsEl) mmAdminLogsEl.innerHTML = mmLogs.map(l=>`<div>${l}</div>`).join(''); }
 
+mmLoadScores();
 mmNew();

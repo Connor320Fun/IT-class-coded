@@ -40,7 +40,19 @@
       <div>AI: <span id="mmAiScore">0</span></div>
     </div>
 
-    <div id="mmStatus" class="status">Guess the code!</div>
+    <div id="mmStatus" class="status">Set your 4-color code, then AI will guess!</div>
+
+    <h3>Your Secret Code</h3>
+    <div id="mmPlayerCodeUI" style="display:flex; gap:10px; margin:10px 0;">
+      <div id="mmPlayerCode" style="display:flex; gap:5px;"></div>
+      <button id="mmSetCode" style="padding:8px 12px;">Lock Code & Start</button>
+    </div>
+
+    <h3>Color Picker</h3>
+    <div id="mmColorPicker" style="display:flex; gap:5px; margin:10px 0; flex-wrap:wrap;"></div>
+
+    <h3>AI Guesses</h3>
+    <div id="mmGuessHistory" style="max-height:300px; overflow-y:auto; border:1px solid #333; padding:10px; background:#0a0a0a;"></div>
 
     <!-- Admin -->
     <button id="mmAdminBtn" class="admin-btn">Admin Panel</button>
@@ -85,11 +97,38 @@
           <button id="mmOwnerKillSwitch">Kill Switch</button>
         </div>
         
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="mmOwnerForceAiWin">Force AI Win</button>
+          <button id="mmOwnerForcePlayerWin">Force Player Win</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="mmOwnerDifficulty">Set Difficulty:</label>
+          <select id="mmOwnerDifficulty">
+            <option value="1">Level 1 - Random</option>
+            <option value="2">Level 2 - Medium</option>
+            <option value="3">Level 3 - Hard</option>
+            <option value="4">Level 4 - Expert</option>
+            <option value="5">Level 5 - Impossible</option>
+          </select>
+          <button id="mmOwnerApplyDifficulty">Apply</button>
+        </div>
+
         <h3>Scores & Data</h3>
         <div>
           <button id="mmOwnerViewStats">View Stats</button>
           <button id="mmOwnerClearScores">Clear Scores</button>
           <button id="mmOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="mmOwnerStateInput" rows="4" style="width:100%"></textarea>
+          <button id="mmOwnerSetState">Apply State</button>
+          <button id="mmOwnerExportState">Export State</button>
         </div>
 
         <h3>LocalStorage</h3>
