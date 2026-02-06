@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rock Paper Scissors vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+    <a href="minesweeper.html">Minesweeper</a>
+    <a href="snake.html">Snake</a>
+    <a href="mastermind.html">Mastermind</a>
+    <a href="rps.html">Rock Paper Scissors</a>
+    <a href="2048.html">2048</a>
+  </nav>
+
+  <div class="app">
+    <h1>Rock Paper Scissors vs AI</h1>
+
+    <div class="controls">
+      <label for="rpsDifficulty">Difficulty:</label>
+      <select id="rpsDifficulty">
+        <option value="1">Level 1 - Random</option>
+        <option value="2">Level 2 - Learns</option>
+        <option value="3">Level 3 - Smart</option>
+        <option value="4">Level 4 - Very Smart</option>
+        <option value="5">Level 5 - Expert</option>
+      </select>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="rpsPlayerScore">0</span></div>
+      <div>AI: <span id="rpsAiScore">0</span></div>
+      <div>Draws: <span id="rpsDrawScore">0</span></div>
+    </div>
+
+    <div id="rpsStatus" class="status">Pick your choice!</div>
+    <div style="display:flex; gap:8px; justify-content:center; margin:12px 0;">
+      <button id="rpsRock" style="padding:10px 16px;background:#ef4444;color:white;border:none;border-radius:6px;cursor:pointer;font-size:16px;">🪨 Rock</button>
+      <button id="rpsPaper" style="padding:10px 16px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer;font-size:16px;">📄 Paper</button>
+      <button id="rpsScissors" style="padding:10px 16px;background:#10b981;color:white;border:none;border-radius:6px;cursor:pointer;font-size:16px;">✂️ Scissors</button>
+    </div>
+
+    <!-- Admin -->
+    <button id="rpsAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="rpsOwnerBtn" class="owner-btn">Owner Panel</button>
+    <div id="rpsAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="rpsAdminAuth">
+        <label>Enter code:</label>
+        <input id="rpsAdminPassword" type="password" />
+        <button id="rpsAdminUnlock">Unlock</button>
+      </div>
+      <div id="rpsAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="rpsAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div>
+          <button id="rpsClearScores">Clear Scores</button>
+          <button id="rpsResetLocalStorage">Reset LocalStorage</button>
+        </div>
+        <h3>Logs</h3>
+        <div id="rpsAdminLogs" class="admin-logs"></div>
+        <button id="rpsCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="rpsOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="rpsOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="rpsOwnerPassword" type="password" />
+        <button id="rpsOwnerUnlock">Unlock</button>
+      </div>
+      <div id="rpsOwnerContents" class="locked hidden">
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="rpsOwnerViewStats">View Stats</button>
+          <button id="rpsOwnerClearScores">Clear Scores</button>
+          <button id="rpsOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="rpsOwnerViewLS">View LocalStorage</button>
+          <button id="rpsOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="rpsOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="rpsOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
+        <button id="rpsOwnerClose">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="rps.js"></script>
+</body>
+</html>

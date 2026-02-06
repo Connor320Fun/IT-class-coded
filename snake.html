@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Snake vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+    <a href="minesweeper.html">Minesweeper</a>
+    <a href="snake.html">Snake</a>
+    <a href="mastermind.html">Mastermind</a>
+    <a href="rps.html">Rock Paper Scissors</a>
+    <a href="2048.html">2048</a>
+  </nav>
+
+  <div class="app">
+    <h1>Snake vs AI</h1>
+
+    <div class="controls">
+      <label for="snDifficulty">Difficulty:</label>
+      <select id="snDifficulty">
+        <option value="1">Level 1 - Slow</option>
+        <option value="2">Level 2 - Medium</option>
+        <option value="3">Level 3 - Fast</option>
+        <option value="4">Level 4 - Very Fast</option>
+        <option value="5">Level 5 - Lightning</option>
+      </select>
+      <button id="snNewGame">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="snPlayerScore">0</span></div>
+      <div>AI: <span id="snAiScore">0</span></div>
+    </div>
+
+    <div id="snStatus" class="status">Press New Game</div>
+    <div id="snBoard" class="sn-board"></div>
+
+    <!-- Admin -->
+    <button id="snAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="snOwnerBtn" class="owner-btn">Owner Panel</button>
+    <div id="snAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="snAdminAuth">
+        <label>Enter code:</label>
+        <input id="snAdminPassword" type="password" />
+        <button id="snAdminUnlock">Unlock</button>
+      </div>
+      <div id="snAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="snAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div>
+          <button id="snForcePlayerWin">Force Player Win</button>
+          <button id="snForceAiWin">Force AI Win</button>
+        </div>
+        <div>
+          <button id="snClearScores">Clear Scores</button>
+          <button id="snResetGame">Reset Game</button>
+          <button id="snResetLocalStorage">Reset LocalStorage</button>
+        </div>
+        <h3>Logs</h3>
+        <div id="snAdminLogs" class="admin-logs"></div>
+        <button id="snCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="snOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="snOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="snOwnerPassword" type="password" />
+        <button id="snOwnerUnlock">Unlock</button>
+      </div>
+      <div id="snOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="snOwnerNewGame">New Game</button>
+          <button id="snOwnerReloadApp">Reload App</button>
+          <button id="snOwnerKillSwitch">Kill Switch</button>
+        </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="snOwnerForcePlayerWin">Force Player Win</button>
+          <button id="snOwnerForceAiWin">Force AI Win</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="snOwnerDifficulty">Set Difficulty:</label>
+          <select id="snOwnerDifficulty">
+            <option value="1">Level 1 - Slow</option>
+            <option value="2">Level 2 - Medium</option>
+            <option value="3">Level 3 - Fast</option>
+            <option value="4">Level 4 - Very Fast</option>
+            <option value="5">Level 5 - Lightning</option>
+          </select>
+          <button id="snOwnerApplyDifficulty">Apply</button>
+        </div>
+
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="snOwnerViewStats">View Stats</button>
+          <button id="snOwnerClearScores">Clear Scores</button>
+          <button id="snOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="snOwnerViewLS">View LocalStorage</button>
+          <button id="snOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="snOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="snOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
+        <button id="snOwnerClose">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="snake.js"></script>
+</body>
+</html>

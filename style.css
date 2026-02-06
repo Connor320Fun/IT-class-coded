@@ -324,3 +324,20 @@ body { padding-top: 56px; }
 .chess-cell:nth-child(odd){ background:#f3f4f6; color:#111827 }
 .chess-cell:nth-child(even){ background:#111827; color:#e5e7eb }
 .chess-cell:hover{ outline:2px solid rgba(59,130,246,0.6); cursor:pointer }
+
+/* Minesweeper styles */
+.ms-board { display:grid; grid-template-columns: repeat(8,36px); gap:4px; justify-content:center; margin-top:12px; }
+.ms-cell { width:36px; height:36px; background:#374151; border-radius:4px; display:flex; align-items:center; justify-content:center; color:white; cursor:pointer; font-size:14px; user-select:none; }
+.ms-cell:hover { background:#4b5563; }
+
+/* Snake styles */
+.sn-board { display:grid; grid-template-columns: repeat(16,20px); gap:2px; justify-content:center; margin-top:12px; }
+.sn-cell { width:20px; height:20px; border-radius:2px; }
+
+/* Mastermind styles */
+.mm-colors { display:flex; gap:8px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
+.mm-color-pick { width:40px; height:40px; border-radius:50%; cursor:pointer; border:2px solid #e5e7eb; }
+
+/* 2048 styles - handled via inline */
+
+/* RPS styles - handled via inline buttons */

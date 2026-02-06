@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Mastermind vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+    <a href="minesweeper.html">Minesweeper</a>
+    <a href="snake.html">Snake</a>
+    <a href="mastermind.html">Mastermind</a>
+    <a href="rps.html">Rock Paper Scissors</a>
+    <a href="2048.html">2048</a>
+  </nav>
+
+  <div class="app">
+    <h1>Mastermind vs AI</h1>
+
+    <div class="controls">
+      <label for="mmDifficulty">Difficulty:</label>
+      <select id="mmDifficulty">
+        <option value="1">Level 1 - Random</option>
+        <option value="2">Level 2 - Medium</option>
+        <option value="3">Level 3 - Hard</option>
+        <option value="4">Level 4 - Expert</option>
+        <option value="5">Level 5 - Impossible</option>
+      </select>
+      <button id="mmNewGame">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="mmPlayerScore">0</span></div>
+      <div>AI: <span id="mmAiScore">0</span></div>
+    </div>
+
+    <div id="mmStatus" class="status">Guess the code!</div>
+
+    <!-- Admin -->
+    <button id="mmAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="mmOwnerBtn" class="owner-btn">Owner Panel</button>
+    <div id="mmAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="mmAdminAuth">
+        <label>Enter code:</label>
+        <input id="mmAdminPassword" type="password" />
+        <button id="mmAdminUnlock">Unlock</button>
+      </div>
+      <div id="mmAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="mmAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div>
+          <button id="mmClearScores">Clear Scores</button>
+          <button id="mmResetGame">Reset Game</button>
+        </div>
+        <h3>Logs</h3>
+        <div id="mmAdminLogs" class="admin-logs"></div>
+        <button id="mmCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="mmOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="mmOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="mmOwnerPassword" type="password" />
+        <button id="mmOwnerUnlock">Unlock</button>
+      </div>
+      <div id="mmOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="mmOwnerNewGame">New Game</button>
+          <button id="mmOwnerReloadApp">Reload App</button>
+          <button id="mmOwnerKillSwitch">Kill Switch</button>
+        </div>
+        
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="mmOwnerViewStats">View Stats</button>
+          <button id="mmOwnerClearScores">Clear Scores</button>
+          <button id="mmOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="mmOwnerViewLS">View LocalStorage</button>
+          <button id="mmOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="mmOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="mmOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
+        <button id="mmOwnerClose">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="mastermind.js"></script>
+</body>
+</html>

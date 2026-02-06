@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Minesweeper vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+    <a href="minesweeper.html">Minesweeper</a>
+    <a href="snake.html">Snake</a>
+    <a href="mastermind.html">Mastermind</a>
+    <a href="rps.html">Rock Paper Scissors</a>
+    <a href="2048.html">2048</a>
+  </nav>
+
+  <div class="app">
+    <h1>Minesweeper vs AI</h1>
+
+    <div class="controls">
+      <label for="msDifficulty">Difficulty:</label>
+      <select id="msDifficulty">
+        <option value="1">Level 1 - Easy</option>
+        <option value="2">Level 2 - Medium</option>
+        <option value="3">Level 3 - Hard</option>
+        <option value="4">Level 4 - Expert</option>
+        <option value="5">Level 5 - Insane</option>
+      </select>
+      <button id="msNewGame">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="msPlayerScore">0</span></div>
+      <div>AI: <span id="msAiScore">0</span></div>
+      <div>Draws: <span id="msDrawScore">0</span></div>
+    </div>
+
+    <div id="msStatus" class="status">Press New Game</div>
+    <div id="msBoard" class="ms-board"></div>
+
+    <!-- Admin -->
+    <button id="msAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="msOwnerBtn" class="owner-btn">Owner Panel</button>
+    <div id="msAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="msAdminAuth">
+        <label>Enter code:</label>
+        <input id="msAdminPassword" type="password" />
+        <button id="msAdminUnlock">Unlock</button>
+      </div>
+      <div id="msAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="msAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div>
+          <button id="msForcePlayerWin">Force Player Win</button>
+          <button id="msForceAiWin">Force AI Win</button>
+        </div>
+        <div>
+          <button id="msClearScores">Clear Scores</button>
+          <button id="msResetGame">Reset Game</button>
+          <button id="msResetLocalStorage">Reset LocalStorage</button>
+        </div>
+        <div>
+          <button id="msExportState">Export State</button>
+          <input id="msImportFile" type="file" accept="application/json" />
+        </div>
+        <h3>Logs</h3>
+        <div id="msAdminLogs" class="admin-logs"></div>
+        <button id="msCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="msOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="msOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="msOwnerPassword" type="password" />
+        <button id="msOwnerUnlock">Unlock</button>
+      </div>
+      <div id="msOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="msOwnerNewGame">New Game</button>
+          <button id="msOwnerReloadApp">Reload App</button>
+          <button id="msOwnerKillSwitch">Kill Switch</button>
+        </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="msOwnerForcePlayerWin">Force Player Win</button>
+          <button id="msOwnerForceAiWin">Force AI Win</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="msOwnerDifficulty">Set Difficulty:</label>
+          <select id="msOwnerDifficulty">
+            <option value="1">Level 1 - Easy</option>
+            <option value="2">Level 2 - Medium</option>
+            <option value="3">Level 3 - Hard</option>
+            <option value="4">Level 4 - Expert</option>
+            <option value="5">Level 5 - Insane</option>
+          </select>
+          <button id="msOwnerApplyDifficulty">Apply</button>
+        </div>
+
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="msOwnerViewStats">View Stats</button>
+          <button id="msOwnerClearScores">Clear Scores</button>
+          <button id="msOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
+        <div>
+          <label>Set state (JSON):</label>
+          <textarea id="msOwnerStateInput" rows="4" style="width:100%"></textarea>
+          <button id="msOwnerSetState">Apply State</button>
+          <button id="msOwnerExportState">Export State</button>
+        </div>
+
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="msOwnerViewLS">View LocalStorage</button>
+          <button id="msOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="msOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="msOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
+        <button id="msOwnerClose">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="minesweeper.js"></script>
+</body>
+</html>
