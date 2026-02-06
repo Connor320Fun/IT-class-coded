@@ -151,6 +151,19 @@ const chOwnerViewLSBtn = document.getElementById('chOwnerViewLS');
 const chOwnerLocalStorageEl = document.getElementById('chOwnerLocalStorage');
 const chOwnerKillSwitchBtn = document.getElementById('chOwnerKillSwitch');
 const chOwnerCloseBtn = document.getElementById('chOwnerClose');
+const chOwnerNewGameBtn = document.getElementById('chOwnerNewGame');
+const chOwnerReloadBtn = document.getElementById('chOwnerReloadApp');
+const chOwnerForceAiWinBtn2 = document.getElementById('chOwnerForceAiWin');
+const chOwnerForcePlayerWinBtn2 = document.getElementById('chOwnerForcePlayerWin');
+const chOwnerSkipTurnBtn = document.getElementById('chOwnerSkipTurn');
+const chOwnerDifficultyEl = document.getElementById('chOwnerDifficulty');
+const chOwnerApplyDiffBtn = document.getElementById('chOwnerApplyDifficulty');
+const chOwnerViewStatsBtn = document.getElementById('chOwnerViewStats');
+const chOwnerClearScoresBtn = document.getElementById('chOwnerClearScores');
+const chOwnerClearLogsBtn = document.getElementById('chOwnerClearLogs');
+const chOwnerExportStateBtn = document.getElementById('chOwnerExportState');
+const chOwnerClearLSBtn = document.getElementById('chOwnerClearLS');
+const chOwnerLogsEl = document.getElementById('chOwnerLogs');
 
 function chOwnerUnlockFn(){ if(chOwnerPassword.value==='Bowling320Fun'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
 // also unlock admin for owner
@@ -166,8 +179,19 @@ chOwnerViewLSBtn && chOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={
 chOwnerKillSwitchBtn && chOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); chLog('Owner used kill switch'); location.reload(); });
 
 chOwnerCloseBtn && chOwnerCloseBtn.addEventListener('click', ()=>{ chOwnerPanel.classList.add('hidden'); chOwnerAuth.classList.remove('hidden'); chOwnerContents.classList.add('hidden'); chLog('Owner locked'); });
+chOwnerNewGameBtn && chOwnerNewGameBtn.addEventListener('click', ()=>{ chNewGame(); chLog('Owner started new game'); });
+chOwnerReloadBtn && chOwnerReloadBtn.addEventListener('click', ()=>{ chLog('Owner reloaded app'); location.reload(); });
+chOwnerForceAiWinBtn2 && chOwnerForceAiWinBtn2.addEventListener('click', ()=>{ chBoard = Array(8).fill(null).map(()=>Array(8).fill(0)); chCurrent = 'A'; renderChBoard(); chGameOver = true; chScores.ai++; chAiScoreEl.textContent = chScores.ai; chLog('Owner forced AI win'); });
+chOwnerForcePlayerWinBtn2 && chOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ chBoard = Array(8).fill(null).map(()=>Array(8).fill(0)); chCurrent = 'P'; renderChBoard(); chGameOver = true; chScores.player++; chPlayerScoreEl.textContent = chScores.player; chLog('Owner forced player win'); });
+chOwnerSkipTurnBtn && chOwnerSkipTurnBtn.addEventListener('click', ()=>{ chCurrent = chCurrent === 'P' ? 'A' : 'P'; if(chCurrent === 'A' && !chGameOver) setTimeout(chAiTurn, 300); renderChBoard(); chLog('Owner skipped turn'); });
+chOwnerApplyDiffBtn && chOwnerApplyDiffBtn.addEventListener('click', ()=>{ chDifficultyEl.value = chOwnerDifficultyEl.value; chLog(`Owner set difficulty to ${chOwnerDifficultyEl.value}`); alert('Difficulty updated'); });
+chOwnerViewStatsBtn && chOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { gameOver: chGameOver, current: chCurrent, scores: chScores }; alert(JSON.stringify(stats, null, 2)); chLog('Owner viewed stats'); });
+chOwnerClearScoresBtn && chOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; chScores={player:0,ai:0,draw:0}; chPlayerScoreEl.textContent=0; chAiScoreEl.textContent=0; chDrawScoreEl.textContent=0; localStorage.removeItem('ch_scores'); chLog('Owner cleared scores'); });
+chOwnerClearLogsBtn && chOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!confirm('Clear all logs?')) return; chLogs=[]; chSaveLogs(); chRenderLogs(); chOwnerLogsEl.innerHTML=''; chLog('Owner cleared logs'); });
+chOwnerExportStateBtn && chOwnerExportStateBtn.addEventListener('click', ()=>{ const state={board:chBoard,scores:chScores,logs:chLogs}; chOwnerStateInput.value = JSON.stringify(state); chLog('Owner exported state'); });
+chOwnerClearLSBtn && chOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); chLog('Owner cleared localStorage'); alert('Storage cleared'); });
 function chSaveLogs(){ localStorage.setItem('ch_admin_logs', JSON.stringify(chLogs)); }
-function chLog(a){ chLogs.unshift(`${new Date().toISOString()} - ${a}`); if(chLogs.length>200) chLogs.pop(); chSaveLogs(); chRenderLogs(); }
+function chLog(a){ chLogs.unshift(`${new Date().toISOString()} - ${a}`); if(chLogs.length>200) chLogs.pop(); chSaveLogs(); chRenderLogs(); if(chOwnerLogsEl) chOwnerLogsEl.innerHTML = chLogs.map(l=>`<div>${l}</div>`).join(''); }
 function chRenderLogs(){ if(chAdminLogsEl) chAdminLogsEl.innerHTML = chLogs.map(l=>`<div>${l}</div>`).join(''); }
 
 function chUnlock(){ if(chAdminPassword.value==='0320'){ chAdminAuth.classList.add('hidden'); chAdminContents.classList.remove('hidden'); chLog('Admin unlocked'); } else { alert('Incorrect code'); chLog('Failed admin unlock attempt'); } }

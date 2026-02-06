@@ -86,16 +86,58 @@
         <button id="chessOwnerUnlock">Unlock</button>
       </div>
       <div id="chessOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
         <div>
-          <button id="chessOwnerViewLS">View LocalStorage</button>
+          <button id="chessOwnerNewGame">New Game</button>
+          <button id="chessOwnerReloadApp">Reload App</button>
           <button id="chessOwnerKillSwitch">Kill Switch</button>
         </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="chessOwnerForceAiWin">Force AI Win</button>
+          <button id="chessOwnerForcePlayerWin">Force Player Win</button>
+          <button id="chessOwnerSkipTurn">Skip Turn</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="chessOwnerDifficulty">Set Difficulty:</label>
+          <select id="chessOwnerDifficulty">
+            <option value="1">Level 1 - Random</option>
+            <option value="2">Level 2 - Prefer captures</option>
+            <option value="3">Level 3 - Material heuristics</option>
+            <option value="4">Level 4 - Depth 2</option>
+            <option value="5">Level 5 - Depth 3</option>
+          </select>
+          <button id="chessOwnerApplyDifficulty">Apply</button>
+        </div>
+
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="chessOwnerViewStats">View Stats</button>
+          <button id="chessOwnerClearScores">Clear Scores</button>
+          <button id="chessOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
         <div>
           <label>Set state (JSON):</label>
-          <textarea id="chessOwnerStateInput" rows="6" style="width:100%"></textarea>
+          <textarea id="chessOwnerStateInput" rows="4" style="width:100%"></textarea>
           <button id="chessOwnerSetState">Apply State</button>
+          <button id="chessOwnerExportState">Export State</button>
         </div>
-        <div id="chessOwnerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="chessOwnerViewLS">View LocalStorage</button>
+          <button id="chessOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="chessOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="chessOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
         <button id="chessOwnerClose">Lock</button>
       </div>
     </div>

@@ -108,6 +108,19 @@ const bsOwnerViewLSBtn = document.getElementById('bsOwnerViewLS');
 const bsOwnerLocalStorageEl = document.getElementById('bsOwnerLocalStorage');
 const bsOwnerKillSwitchBtn = document.getElementById('bsOwnerKillSwitch');
 const bsOwnerCloseBtn = document.getElementById('bsOwnerClose');
+const bsOwnerNewGameBtn = document.getElementById('bsOwnerNewGame');
+const bsOwnerReloadBtn = document.getElementById('bsOwnerReloadApp');
+const bsOwnerForceAiWinBtn2 = document.getElementById('bsOwnerForceAiWin');
+const bsOwnerForcePlayerWinBtn2 = document.getElementById('bsOwnerForcePlayerWin');
+const bsOwnerSkipTurnBtn = document.getElementById('bsOwnerSkipTurn');
+const bsOwnerDifficultyEl = document.getElementById('bsOwnerDifficulty');
+const bsOwnerApplyDiffBtn = document.getElementById('bsOwnerApplyDifficulty');
+const bsOwnerViewStatsBtn = document.getElementById('bsOwnerViewStats');
+const bsOwnerClearScoresBtn = document.getElementById('bsOwnerClearScores');
+const bsOwnerClearLogsBtn = document.getElementById('bsOwnerClearLogs');
+const bsOwnerExportStateBtn = document.getElementById('bsOwnerExportState');
+const bsOwnerClearLSBtn = document.getElementById('bsOwnerClearLS');
+const bsOwnerLogsEl = document.getElementById('bsOwnerLogs');
 
 function bsOwnerUnlockFn(){ if(bsOwnerPassword.value==='Bowling320Fun'){ bsOwnerAuth.classList.add('hidden'); bsOwnerContents.classList.remove('hidden'); bsLog('Owner unlocked'); } else { alert('Incorrect owner code'); bsLog('Failed owner unlock attempt'); } }
 // also grant admin access to owner
@@ -123,8 +136,19 @@ bsOwnerViewLSBtn && bsOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={
 bsOwnerKillSwitchBtn && bsOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); bsLog('Owner used kill switch'); location.reload(); });
 
 bsOwnerCloseBtn && bsOwnerCloseBtn.addEventListener('click', ()=>{ bsOwnerPanel.classList.add('hidden'); bsOwnerAuth.classList.remove('hidden'); bsOwnerContents.classList.add('hidden'); bsLog('Owner locked'); });
+bsOwnerNewGameBtn && bsOwnerNewGameBtn.addEventListener('click', ()=>{ bsNew(); bsLog('Owner started new game'); });
+bsOwnerReloadBtn && bsOwnerReloadBtn.addEventListener('click', ()=>{ bsLog('Owner reloaded app'); location.reload(); });
+bsOwnerForceAiWinBtn2 && bsOwnerForceAiWinBtn2.addEventListener('click', ()=>{ for(let r=0;r<BS_SIZE;r++) for(let c=0;c<BS_SIZE;c++) if(bsPlayer[r][c]===1) bsPlayer[r][c]=2; bsPlayerShips=0; renderBs(); checkBsEnd(); bsLog('Owner forced AI win'); });
+bsOwnerForcePlayerWinBtn2 && bsOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ for(let r=0;r<BS_SIZE;r++) for(let c=0;c<BS_SIZE;c++) if(bsAi[r][c]===1) bsAi[r][c]=2; bsAiShips=0; renderBs(); checkBsEnd(); bsLog('Owner forced player win'); });
+bsOwnerSkipTurnBtn && bsOwnerSkipTurnBtn.addEventListener('click', ()=>{ if(bsCurrent==='P') bsCurrent='A'; else bsCurrent='P'; bsStatus.textContent = bsCurrent==='P' ? 'Your turn' : 'AI thinking...'; if(bsCurrent==='A' && !bsGameOver) setTimeout(bsAiFire, 300); renderBs(); bsLog('Owner skipped turn'); });
+bsOwnerApplyDiffBtn && bsOwnerApplyDiffBtn.addEventListener('click', ()=>{ bsDifficultyEl.value = bsOwnerDifficultyEl.value; bsLog(`Owner set difficulty to ${bsOwnerDifficultyEl.value}`); alert('Difficulty updated'); });
+bsOwnerViewStatsBtn && bsOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { player: bsPlayerShips, ai: bsAiShips, gameOver: bsGameOver, current: bsCurrent, scores: bsScores }; alert(JSON.stringify(stats, null, 2)); bsLog('Owner viewed stats'); });
+bsOwnerClearScoresBtn && bsOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; bsScores={player:0,ai:0,draw:0}; bsPlayerScoreEl.textContent=0; bsAiScoreEl.textContent=0; bsDrawScoreEl.textContent=0; localStorage.removeItem('bs_scores'); bsLog('Owner cleared scores'); });
+bsOwnerClearLogsBtn && bsOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!confirm('Clear all logs?')) return; bsLogs=[]; bsSaveLogs(); bsRenderLogs(); bsOwnerLogsEl.innerHTML=''; bsLog('Owner cleared logs'); });
+bsOwnerExportStateBtn && bsOwnerExportStateBtn.addEventListener('click', ()=>{ const state={player:bsPlayer,ai:bsAi,scores:bsScores,logs:bsLogs}; bsOwnerStateInput.value = JSON.stringify(state); bsLog('Owner exported state'); });
+bsOwnerClearLSBtn && bsOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); bsLog('Owner cleared localStorage'); alert('Storage cleared'); });
 function bsSaveLogs(){ localStorage.setItem('bs_admin_logs', JSON.stringify(bsLogs)); }
-function bsLog(a){ bsLogs.unshift(`${new Date().toISOString()} - ${a}`); if(bsLogs.length>200) bsLogs.pop(); bsSaveLogs(); bsRenderLogs(); }
+function bsLog(a){ bsLogs.unshift(`${new Date().toISOString()} - ${a}`); if(bsLogs.length>200) bsLogs.pop(); bsSaveLogs(); bsRenderLogs(); if(bsOwnerLogsEl) bsOwnerLogsEl.innerHTML = bsLogs.map(l=>`<div>${l}</div>`).join(''); }
 function bsRenderLogs(){ if(bsAdminLogsEl) bsAdminLogsEl.innerHTML = bsLogs.map(l=>`<div>${l}</div>`).join(''); }
 
 function bsUnlock(){ if(bsAdminPassword.value==='0320'){ bsAdminAuth.classList.add('hidden'); bsAdminContents.classList.remove('hidden'); bsLog('Admin unlocked'); } else { alert('Incorrect code'); bsLog('Failed admin unlock attempt'); } }

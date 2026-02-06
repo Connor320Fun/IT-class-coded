@@ -185,6 +185,45 @@ h1 {
   color: #e5e7eb;
 }
 
+.admin-panel textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  resize: vertical;
+}
+
+.admin-panel h3 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #93c5fd;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 4px;
+}
+
+.admin-panel h3:first-child {
+  margin-top: 0;
+}
+
+.admin-panel > div {
+  margin-bottom: 8px;
+}
+
+.admin-panel label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.locked {
+  max-height: 800px;
+  overflow-y: auto;
+}
+
 .live-board {
   display: grid;
   grid-template-columns: repeat(3, 28px);

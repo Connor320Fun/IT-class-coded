@@ -84,16 +84,58 @@
         <button id="hmOwnerUnlock">Unlock</button>
       </div>
       <div id="hmOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
         <div>
-          <button id="hmOwnerViewLS">View LocalStorage</button>
+          <button id="hmOwnerNewGame">New Game</button>
+          <button id="hmOwnerReloadApp">Reload App</button>
           <button id="hmOwnerKillSwitch">Kill Switch</button>
         </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="hmOwnerForcePlayerWin">Force Player Win</button>
+          <button id="hmOwnerForceAiWin">Force AI Win</button>
+          <button id="hmOwnerSkipTurn">Skip Turn</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="hmOwnerDifficulty">Set Difficulty:</label>
+          <select id="hmOwnerDifficulty">
+            <option value="1">Level 1 - Easy</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5 - Hard</option>
+          </select>
+          <button id="hmOwnerApplyDifficulty">Apply</button>
+        </div>
+
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="hmOwnerViewStats">View Stats</button>
+          <button id="hmOwnerClearScores">Clear Scores</button>
+          <button id="hmOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
         <div>
           <label>Set state (JSON):</label>
-          <textarea id="hmOwnerStateInput" rows="6" style="width:100%"></textarea>
+          <textarea id="hmOwnerStateInput" rows="4" style="width:100%"></textarea>
           <button id="hmOwnerSetState">Apply State</button>
+          <button id="hmOwnerExportState">Export State</button>
         </div>
-        <div id="hmOwnerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="hmOwnerViewLS">View LocalStorage</button>
+          <button id="hmOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="hmOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="hmOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
         <button id="hmOwnerClose">Lock</button>
       </div>
     </div>

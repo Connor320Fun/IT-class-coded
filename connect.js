@@ -245,13 +245,25 @@ const cfOwnerAuth = document.getElementById('cfOwnerAuth');
 const cfOwnerPassword = document.getElementById('cfOwnerPassword');
 const cfOwnerUnlock = document.getElementById('cfOwnerUnlock');
 const cfOwnerContents = document.getElementById('cfOwnerContents');
-const cfOwnerToggleAIBtn = document.getElementById('cfOwnerToggleAI');
 const cfOwnerSetStateBtn = document.getElementById('cfOwnerSetState');
 const cfOwnerStateInput = document.getElementById('cfOwnerStateInput');
 const cfOwnerViewLSBtn = document.getElementById('cfOwnerViewLS');
 const cfOwnerLocalStorageEl = document.getElementById('cfOwnerLocalStorage');
 const cfOwnerKillSwitchBtn = document.getElementById('cfOwnerKillSwitch');
 const cfOwnerCloseBtn = document.getElementById('cfOwnerClose');
+const cfOwnerNewGameBtn = document.getElementById('cfOwnerNewGame');
+const cfOwnerReloadBtn = document.getElementById('cfOwnerReloadApp');
+const cfOwnerForceAiWinBtn2 = document.getElementById('cfOwnerForceAiWin');
+const cfOwnerForcePlayerWinBtn2 = document.getElementById('cfOwnerForcePlayerWin');
+const cfOwnerSkipTurnBtn = document.getElementById('cfOwnerSkipTurn');
+const cfOwnerDifficultyEl = document.getElementById('cfOwnerDifficulty');
+const cfOwnerApplyDiffBtn = document.getElementById('cfOwnerApplyDifficulty');
+const cfOwnerViewStatsBtn = document.getElementById('cfOwnerViewStats');
+const cfOwnerClearScoresBtn = document.getElementById('cfOwnerClearScores');
+const cfOwnerClearLogsBtn = document.getElementById('cfOwnerClearLogs');
+const cfOwnerExportStateBtn = document.getElementById('cfOwnerExportState');
+const cfOwnerClearLSBtn = document.getElementById('cfOwnerClearLS');
+const cfOwnerLogsEl = document.getElementById('cfOwnerLogs');
 
 function cfOwnerUnlockFn(){ if (cfOwnerPassword.value==='Bowling320Fun'){ cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked'); } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); } }
 // also grant admin access when owner unlocks
@@ -275,7 +287,17 @@ cfOwnerViewLSBtn && cfOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={
 cfOwnerKillSwitchBtn && cfOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); cfLog('Owner used kill switch'); location.reload(); });
 
 cfOwnerCloseBtn && cfOwnerCloseBtn.addEventListener('click', ()=>{ cfOwnerPanel.classList.add('hidden'); cfOwnerAuth.classList.remove('hidden'); cfOwnerContents.classList.add('hidden'); cfLog('Owner locked'); });
-const cfResetLocalStorageBtn = document.getElementById('cfResetLocalStorage');
+cfOwnerNewGameBtn && cfOwnerNewGameBtn.addEventListener('click', ()=>{ cfNewGame(); cfLog('Owner started new game'); });
+cfOwnerReloadBtn && cfOwnerReloadBtn.addEventListener('click', ()=>{ cfLog('Owner reloaded app'); location.reload(); });
+cfOwnerForceAiWinBtn2 && cfOwnerForceAiWinBtn2.addEventListener('click', ()=>{ for(let i=0; i<7; i++) cfBoard[0][i]=2; cfCurrent='A'; renderCfBoard(); cfGameOver=true; cfScores.ai++; cfAiScoreEl.textContent=cfScores.ai; cfLog('Owner forced AI win'); });
+cfOwnerForcePlayerWinBtn2 && cfOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ for(let i=0; i<7; i++) cfBoard[5][i]=1; cfCurrent='P'; renderCfBoard(); cfGameOver=true; cfScores.player++; cfPlayerScoreEl.textContent=cfScores.player; cfLog('Owner forced player win'); });
+cfOwnerSkipTurnBtn && cfOwnerSkipTurnBtn.addEventListener('click', ()=>{ cfCurrent = cfCurrent==='P' ? 'A' : 'P'; if(cfCurrent==='A' && !cfGameOver && !cfOwnerAiDisabled) setTimeout(cfAiMove, 300); renderCfBoard(); cfLog('Owner skipped turn'); });
+cfOwnerApplyDiffBtn && cfOwnerApplyDiffBtn.addEventListener('click', ()=>{ cfDifficultyEl.value = cfOwnerDifficultyEl.value; cfLog(`Owner set difficulty to ${cfOwnerDifficultyEl.value}`); alert('Difficulty updated'); });
+cfOwnerViewStatsBtn && cfOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { gameOver: cfGameOver, current: cfCurrent, scores: cfScores }; alert(JSON.stringify(stats, null, 2)); cfLog('Owner viewed stats'); });
+cfOwnerClearScoresBtn && cfOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; cfScores={player:0,ai:0,draw:0}; cfPlayerScoreEl.textContent=0; cfAiScoreEl.textContent=0; cfDrawScoreEl.textContent=0; localStorage.removeItem('cf_scores'); cfLog('Owner cleared scores'); });
+cfOwnerClearLogsBtn && cfOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!confirm('Clear all logs?')) return; cfAdminLogs=[]; cfSaveAdminLogs(); cfRenderAdminLogs(); cfOwnerLogsEl.innerHTML=''; cfLog('Owner cleared logs'); });
+cfOwnerExportStateBtn && cfOwnerExportStateBtn.addEventListener('click', ()=>{ const state={board:cfBoard,scores:cfScores,logs:cfAdminLogs}; cfOwnerStateInput.value = JSON.stringify(state); cfLog('Owner exported state'); });
+cfOwnerClearLSBtn && cfOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); cfLog('Owner cleared localStorage'); alert('Storage cleared'); });
 const cfExportStateBtn = document.getElementById('cfExportState');
 const cfImportFileInput = document.getElementById('cfImportFile');
 const cfClearLogsBtn = document.getElementById('cfClearLogs');
@@ -289,7 +311,7 @@ let cfAdminUnlocked = false;
 let cfAdminLogs = JSON.parse(localStorage.getItem('cf_admin_logs') || '[]');
 
 function cfSaveAdminLogs() { localStorage.setItem('cf_admin_logs', JSON.stringify(cfAdminLogs)); }
-function cfLog(action) { const entry = `${new Date().toISOString()} - ${action}`; cfAdminLogs.unshift(entry); if (cfAdminLogs.length>200) cfAdminLogs.pop(); cfSaveAdminLogs(); cfRenderAdminLogs(); }
+function cfLog(action) { const entry = `${new Date().toISOString()} - ${action}`; cfAdminLogs.unshift(entry); if (cfAdminLogs.length>200) cfAdminLogs.pop(); cfSaveAdminLogs(); cfRenderAdminLogs(); if(cfOwnerLogsEl) cfOwnerLogsEl.innerHTML = cfAdminLogs.map(l=>`<div>${l}</div>`).join(''); }
 function cfRenderAdminLogs() { if(!cfAdminLogsEl) return; cfAdminLogsEl.innerHTML = cfAdminLogs.map(l=>`<div>${l}</div>`).join(''); }
 function cfRenderLiveStats() {
   if (cfLiveBoardEl) { cfLiveBoardEl.innerHTML=''; for(let i=0;i<ROWS*COLS;i++){ const el=document.createElement('div'); el.className='cell'; const r=Math.floor(i/COLS), c=i%COLS; el.textContent = cfBoard[r][c]? (cfBoard[r][c]==='P'?'●':'○') : ''; cfLiveBoardEl.appendChild(el);} }

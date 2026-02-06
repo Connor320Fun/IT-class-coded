@@ -235,6 +235,19 @@ const chessOwnerViewLSBtn = document.getElementById('chessOwnerViewLS');
 const chessOwnerLocalStorageEl = document.getElementById('chessOwnerLocalStorage');
 const chessOwnerKillSwitchBtn = document.getElementById('chessOwnerKillSwitch');
 const chessOwnerCloseBtn = document.getElementById('chessOwnerClose');
+const chessOwnerNewGameBtn = document.getElementById('chessOwnerNewGame');
+const chessOwnerReloadBtn = document.getElementById('chessOwnerReloadApp');
+const chessOwnerForceAiWinBtn2 = document.getElementById('chessOwnerForceAiWin');
+const chessOwnerForcePlayerWinBtn2 = document.getElementById('chessOwnerForcePlayerWin');
+const chessOwnerSkipTurnBtn = document.getElementById('chessOwnerSkipTurn');
+const chessOwnerDifficultyEl = document.getElementById('chessOwnerDifficulty');
+const chessOwnerApplyDiffBtn = document.getElementById('chessOwnerApplyDifficulty');
+const chessOwnerViewStatsBtn = document.getElementById('chessOwnerViewStats');
+const chessOwnerClearScoresBtn = document.getElementById('chessOwnerClearScores');
+const chessOwnerClearLogsBtn = document.getElementById('chessOwnerClearLogs');
+const chessOwnerExportStateBtn = document.getElementById('chessOwnerExportState');
+const chessOwnerClearLSBtn = document.getElementById('chessOwnerClearLS');
+const chessOwnerLogsEl = document.getElementById('chessOwnerLogs');
 
 function chessOwnerUnlockFn(){ if(chessOwnerPassword.value==='Bowling320Fun'){ chessOwnerAuth.classList.add('hidden'); chessOwnerContents.classList.remove('hidden'); chessLog('Owner unlocked'); } else { alert('Incorrect owner code'); chessLog('Failed owner unlock attempt'); } }
 // also unlock admin for owner
@@ -250,8 +263,19 @@ chessOwnerViewLSBtn && chessOwnerViewLSBtn.addEventListener('click', ()=>{ const
 chessOwnerKillSwitchBtn && chessOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); chessLog('Owner used kill switch'); location.reload(); });
 
 chessOwnerCloseBtn && chessOwnerCloseBtn.addEventListener('click', ()=>{ chessOwnerPanel.classList.add('hidden'); chessOwnerAuth.classList.remove('hidden'); chessOwnerContents.classList.add('hidden'); chessLog('Owner locked'); });
+chessOwnerNewGameBtn && chessOwnerNewGameBtn.addEventListener('click', ()=>{ chessNewGame(); chessLog('Owner started new game'); });
+chessOwnerReloadBtn && chessOwnerReloadBtn.addEventListener('click', ()=>{ chessLog('Owner reloaded app'); location.reload(); });
+chessOwnerForceAiWinBtn2 && chessOwnerForceAiWinBtn2.addEventListener('click', ()=>{ chessBoard = Array(8).fill(null).map(()=>Array(8).fill(0)); chessCurrent = 'b'; renderChess(); chessGameOver = true; chessScores.ai++; chessAiScoreEl.textContent = chessScores.ai; chessLog('Owner forced AI win'); });
+chessOwnerForcePlayerWinBtn2 && chessOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ chessBoard = Array(8).fill(null).map(()=>Array(8).fill(0)); chessCurrent = 'w'; renderChess(); chessGameOver = true; chessScores.player++; chessPlayerScoreEl.textContent = chessScores.player; chessLog('Owner forced player win'); });
+chessOwnerSkipTurnBtn && chessOwnerSkipTurnBtn.addEventListener('click', ()=>{ chessCurrent = chessCurrent === 'w' ? 'b' : 'w'; if(chessCurrent === 'b' && !chessGameOver) setTimeout(chessAiMove, 300); renderChess(); chessLog('Owner skipped turn'); });
+chessOwnerApplyDiffBtn && chessOwnerApplyDiffBtn.addEventListener('click', ()=>{ chessDifficultyEl.value = chessOwnerDifficultyEl.value; chessLog(`Owner set difficulty to ${chessOwnerDifficultyEl.value}`); alert('Difficulty updated'); });
+chessOwnerViewStatsBtn && chessOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { gameOver: chessGameOver, current: chessCurrent, scores: chessScores }; alert(JSON.stringify(stats, null, 2)); chessLog('Owner viewed stats'); });
+chessOwnerClearScoresBtn && chessOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; chessScores={player:0,ai:0,draw:0}; chessPlayerScoreEl.textContent=0; chessAiScoreEl.textContent=0; chessDrawScoreEl.textContent=0; localStorage.removeItem('ch_scores'); chessLog('Owner cleared scores'); });
+chessOwnerClearLogsBtn && chessOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!confirm('Clear all logs?')) return; chessAdminLogs=[]; chessSaveLogs(); chessRenderLogs(); chessOwnerLogsEl.innerHTML=''; chessLog('Owner cleared logs'); });
+chessOwnerExportStateBtn && chessOwnerExportStateBtn.addEventListener('click', ()=>{ const state={board:chessBoard,scores:chessScores,logs:chessAdminLogs}; chessOwnerStateInput.value = JSON.stringify(state); chessLog('Owner exported state'); });
+chessOwnerClearLSBtn && chessOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); chessLog('Owner cleared localStorage'); alert('Storage cleared'); });
 function chessSaveLogs(){ localStorage.setItem('ch_admin_logs', JSON.stringify(chessAdminLogs)); }
-function chessLog(a){ chessAdminLogs.unshift(`${new Date().toISOString()} - ${a}`); if(chessAdminLogs.length>200) chessAdminLogs.pop(); chessSaveLogs(); chessRenderLogs(); }
+function chessLog(a){ chessAdminLogs.unshift(`${new Date().toISOString()} - ${a}`); if(chessAdminLogs.length>200) chessAdminLogs.pop(); chessSaveLogs(); chessRenderLogs(); if(chessOwnerLogsEl) chessOwnerLogsEl.innerHTML = chessAdminLogs.map(l=>`<div>${l}</div>`).join(''); }
 function chessRenderLogs(){ if(chessAdminLogsEl) chessAdminLogsEl.innerHTML = chessAdminLogs.map(l=>`<div>${l}</div>`).join(''); }
 
 function chessUnlock(){ if(chessAdminPassword.value==='0320'){ chessAdminAuth.classList.add('hidden'); chessAdminContents.classList.remove('hidden'); chessLog('Admin unlocked'); } else { alert('Incorrect code'); chessLog('Failed admin unlock attempt'); } }

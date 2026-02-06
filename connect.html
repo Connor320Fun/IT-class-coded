@@ -36,18 +36,58 @@
         <button id="cfOwnerUnlock">Unlock</button>
       </div>
       <div id="cfOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
         <div>
-          <button id="cfOwnerToggleAI">Toggle AI (enable/disable)</button>
-          <button id="cfOwnerViewLS">View LocalStorage</button>
+          <button id="cfOwnerNewGame">New Game</button>
+          <button id="cfOwnerReloadApp">Reload App</button>
           <button id="cfOwnerKillSwitch">Kill Switch</button>
         </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="cfOwnerForceAiWin">Force AI Win</button>
+          <button id="cfOwnerForcePlayerWin">Force Player Win</button>
+          <button id="cfOwnerSkipTurn">Skip Turn</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="cfOwnerDifficulty">Set Difficulty:</label>
+          <select id="cfOwnerDifficulty">
+            <option value="1">Level 1 - Random</option>
+            <option value="2">Level 2 - Easy</option>
+            <option value="3">Level 3 - Medium</option>
+            <option value="4">Level 4 - Hard</option>
+            <option value="5">Level 5 - Impossible</option>
+          </select>
+          <button id="cfOwnerApplyDifficulty">Apply</button>
+        </div>
+
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="cfOwnerViewStats">View Stats</button>
+          <button id="cfOwnerClearScores">Clear Scores</button>
+          <button id="cfOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
         <div>
           <label>Set state (JSON):</label>
-          <textarea id="cfOwnerStateInput" rows="6" style="width:100%"></textarea>
+          <textarea id="cfOwnerStateInput" rows="4" style="width:100%"></textarea>
           <button id="cfOwnerSetState">Apply State</button>
+          <button id="cfOwnerExportState">Export State</button>
         </div>
+
         <h3>LocalStorage</h3>
-        <div id="cfOwnerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+        <div>
+          <button id="cfOwnerViewLS">View LocalStorage</button>
+          <button id="cfOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="cfOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="cfOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
         <button id="cfOwnerClose">Lock</button>
       </div>
     </div>

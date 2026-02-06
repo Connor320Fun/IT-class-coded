@@ -85,16 +85,58 @@
         <button id="chOwnerUnlock">Unlock</button>
       </div>
       <div id="chOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
         <div>
-          <button id="chOwnerViewLS">View LocalStorage</button>
+          <button id="chOwnerNewGame">New Game</button>
+          <button id="chOwnerReloadApp">Reload App</button>
           <button id="chOwnerKillSwitch">Kill Switch</button>
         </div>
+        
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="chOwnerForceAiWin">Force AI Win</button>
+          <button id="chOwnerForcePlayerWin">Force Player Win</button>
+          <button id="chOwnerSkipTurn">Skip Turn</button>
+        </div>
+
+        <h3>Difficulty Override</h3>
+        <div>
+          <label for="chOwnerDifficulty">Set Difficulty:</label>
+          <select id="chOwnerDifficulty">
+            <option value="1">Level 1 - Random</option>
+            <option value="2">Level 2 - Prefer captures</option>
+            <option value="3">Level 3 - Greedy</option>
+            <option value="4">Level 4 - Lookahead</option>
+            <option value="5">Level 5 - Strong</option>
+          </select>
+          <button id="chOwnerApplyDifficulty">Apply</button>
+        </div>
+
+        <h3>Scores & Data</h3>
+        <div>
+          <button id="chOwnerViewStats">View Stats</button>
+          <button id="chOwnerClearScores">Clear Scores</button>
+          <button id="chOwnerClearLogs">Clear Logs</button>
+        </div>
+
+        <h3>State Management</h3>
         <div>
           <label>Set state (JSON):</label>
-          <textarea id="chOwnerStateInput" rows="6" style="width:100%"></textarea>
+          <textarea id="chOwnerStateInput" rows="4" style="width:100%"></textarea>
           <button id="chOwnerSetState">Apply State</button>
+          <button id="chOwnerExportState">Export State</button>
         </div>
-        <div id="chOwnerLocalStorage" style="max-height:200px;overflow:auto;background:#111;color:#eee;padding:8px;"></div>
+
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="chOwnerViewLS">View LocalStorage</button>
+          <button id="chOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="chOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+
+        <h3>Admin Logs</h3>
+        <div id="chOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+
         <button id="chOwnerClose">Lock</button>
       </div>
     </div>

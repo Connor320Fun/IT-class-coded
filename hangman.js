@@ -93,6 +93,19 @@ const hmOwnerViewLSBtn = document.getElementById('hmOwnerViewLS');
 const hmOwnerLocalStorageEl = document.getElementById('hmOwnerLocalStorage');
 const hmOwnerKillSwitchBtn = document.getElementById('hmOwnerKillSwitch');
 const hmOwnerCloseBtn = document.getElementById('hmOwnerClose');
+const hmOwnerNewGameBtn = document.getElementById('hmOwnerNewGame');
+const hmOwnerReloadBtn = document.getElementById('hmOwnerReloadApp');
+const hmOwnerForcePlayerWinBtn2 = document.getElementById('hmOwnerForcePlayerWin');
+const hmOwnerForceAiWinBtn2 = document.getElementById('hmOwnerForceAiWin');
+const hmOwnerSkipTurnBtn = document.getElementById('hmOwnerSkipTurn');
+const hmOwnerDifficultyEl = document.getElementById('hmOwnerDifficulty');
+const hmOwnerApplyDiffBtn = document.getElementById('hmOwnerApplyDifficulty');
+const hmOwnerViewStatsBtn = document.getElementById('hmOwnerViewStats');
+const hmOwnerClearScoresBtn = document.getElementById('hmOwnerClearScores');
+const hmOwnerClearLogsBtn = document.getElementById('hmOwnerClearLogs');
+const hmOwnerExportStateBtn = document.getElementById('hmOwnerExportState');
+const hmOwnerClearLSBtn = document.getElementById('hmOwnerClearLS');
+const hmOwnerLogsEl = document.getElementById('hmOwnerLogs');
 
 function hmOwnerUnlockFn(){ if(hmOwnerPassword.value==='Bowling320Fun'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
 // also open admin panel for owner
@@ -108,8 +121,19 @@ hmOwnerViewLSBtn && hmOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={
 hmOwnerKillSwitchBtn && hmOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); hmLog('Owner used kill switch'); location.reload(); });
 
 hmOwnerCloseBtn && hmOwnerCloseBtn.addEventListener('click', ()=>{ hmOwnerPanel.classList.add('hidden'); hmOwnerAuth.classList.remove('hidden'); hmOwnerContents.classList.add('hidden'); hmLog('Owner locked'); });
+hmOwnerNewGameBtn && hmOwnerNewGameBtn.addEventListener('click', ()=>{ hmNewGame(); hmLog('Owner started new game'); });
+hmOwnerReloadBtn && hmOwnerReloadBtn.addEventListener('click', ()=>{ hmLog('Owner reloaded app'); location.reload(); });
+hmOwnerForcePlayerWinBtn2 && hmOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ hmDisplay = hmWord; hmAttempts = 10; renderHm(); hmGameOver = true; hmScores.player++; hmPlayerScoreEl.textContent = hmScores.player; hmLog('Owner forced player win'); });
+hmOwnerForceAiWinBtn2 && hmOwnerForceAiWinBtn2.addEventListener('click', ()=>{ hmAttempts = 0; renderHm(); hmGameOver = true; hmScores.ai++; hmAiScoreEl.textContent = hmScores.ai; hmLog('Owner forced AI win'); });
+hmOwnerSkipTurnBtn && hmOwnerSkipTurnBtn.addEventListener('click', ()=>{ hmLog('Owner skipped turn'); });
+hmOwnerApplyDiffBtn && hmOwnerApplyDiffBtn.addEventListener('click', ()=>{ hmDifficultyEl.value = hmOwnerDifficultyEl.value; hmLog(`Owner set difficulty to ${hmOwnerDifficultyEl.value}`); alert('Difficulty updated'); });
+hmOwnerViewStatsBtn && hmOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { word: hmWord, display: hmDisplay, attempts: hmAttempts, scores: hmScores }; alert(JSON.stringify(stats, null, 2)); hmLog('Owner viewed stats'); });
+hmOwnerClearScoresBtn && hmOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; hmScores={player:0,ai:0,draw:0}; hmPlayerScoreEl.textContent=0; hmAiScoreEl.textContent=0; hmDrawScoreEl.textContent=0; localStorage.removeItem('hm_scores'); hmLog('Owner cleared scores'); });
+hmOwnerClearLogsBtn && hmOwnerClearLogsBtn.addEventListener('click', ()=>{ if(!confirm('Clear all logs?')) return; hmLogs=[]; hmSaveLogs(); hmRenderLogs(); hmOwnerLogsEl.innerHTML=''; hmLog('Owner cleared logs'); });
+hmOwnerExportStateBtn && hmOwnerExportStateBtn.addEventListener('click', ()=>{ const state={word:hmWord,display:hmDisplay,attempts:hmAttempts,scores:hmScores,logs:hmLogs}; hmOwnerStateInput.value = JSON.stringify(state); hmLog('Owner exported state'); });
+hmOwnerClearLSBtn && hmOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); hmLog('Owner cleared localStorage'); alert('Storage cleared'); });
 function hmSaveLogs(){ localStorage.setItem('hm_admin_logs', JSON.stringify(hmLogs)); }
-function hmLog(action){ hmLogs.unshift(`${new Date().toISOString()} - ${action}`); if(hmLogs.length>200) hmLogs.pop(); hmSaveLogs(); hmRenderLogs(); }
+function hmLog(action){ hmLogs.unshift(`${new Date().toISOString()} - ${action}`); if(hmLogs.length>200) hmLogs.pop(); hmSaveLogs(); hmRenderLogs(); if(hmOwnerLogsEl) hmOwnerLogsEl.innerHTML = hmLogs.map(l=>`<div>${l}</div>`).join(''); }
 function hmRenderLogs(){ if(hmAdminLogsEl) hmAdminLogsEl.innerHTML = hmLogs.map(l=>`<div>${l}</div>`).join(''); }
 
 function hmUnlock(){ if(hmAdminPassword.value==='0320'){ hmAdminAuth.classList.add('hidden'); hmAdminContents.classList.remove('hidden'); hmLog('Admin unlocked'); } else { alert('Incorrect code'); hmLog('Failed admin unlock attempt'); } }
