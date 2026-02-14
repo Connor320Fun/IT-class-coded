@@ -123,7 +123,7 @@ document.addEventListener('keydown', (e)=>{
   if(e.key==='ArrowLeft') twMove('left');
   if(e.key==='ArrowRight') twMove('right');
   if(e.key==='ArrowUp') twMove('up');
-  if(e.key==='ArrowDown') twMove('down');
+  if(e.key==='s') twMove('down');
 });
 
 // Admin Panel
