@@ -340,4 +340,90 @@ body { padding-top: 56px; }
 
 /* 2048 styles - handled via inline */
 
-/* RPS styles - handled via inline buttons */
+/* RPS styles - handled via inline buttons *//* Auth and leaderboard styles */
+.auth-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 18px;
+}
+
+.auth-panel {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 100%;
+  padding: 16px;
+  color: #f8fafc;
+}
+
+.auth-panel h2 {
+  margin-bottom: 10px;
+  color: #93c5fd;
+}
+
+.auth-login input {
+  width: calc(100% - 12px);
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.auth-login button {
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-login button:hover {
+  background: #2563eb;
+}
+
+.auth-message {
+  margin-top: 8px;
+  min-height: 20px;
+  color: #fbbf24;
+}
+
+.auth-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.auth-table th,
+.auth-table td {
+  border: 1px solid #374151;
+  padding: 6px;
+  text-align: left;
+}
+
+.auth-table th {
+  background: #1f2937;
+}
+body.no-user .app {
+  filter: blur(1px);
+  pointer-events: none;
+  user-select: none;
+}
+
+body.no-user .nav {
+  pointer-events: none;
+}
