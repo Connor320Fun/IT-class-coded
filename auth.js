@@ -117,6 +117,7 @@
       if (welcome) welcome.textContent = `Welcome, ${user}!`;
       if (leaderboard) renderLeaderboard(getCurrentGameId());
       renderUserManagement();
+      updateGameAdminPanels();
       document.body.classList.remove('no-user');
 
       // Ensure game UI is interactable as soon as login completes.
@@ -151,6 +152,7 @@
       if (usernameInput) {
         usernameInput.focus();
       }
+      updateGameAdminPanels();
     }
   }
 
@@ -425,8 +427,66 @@
         if (!usersList[u]) return;
         delete usersList[u];
         saveUsers(usersList);
+        if (u === currentUser()) {
+          setCurrentUser(null);
+        }
         showMessage(`User ${u} removed.`);
         renderUserManagement();
+        updateGameAdminPanels();
+      });
+    });
+  }
+
+  function updateGameAdminPanels() {
+    const user = currentUser();
+    const isAdmin = isAdminUser(user);
+    const containers = Array.from(document.querySelectorAll('[id$="AdminContents"], [id$="OwnerContents"]'));
+    containers.forEach(container => {
+      let panel = container.querySelector('#authGameUserManagement');
+      if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'authGameUserManagement';
+        panel.style.marginTop = '20px';
+        panel.style.padding = '10px';
+        panel.style.borderTop = '1px solid #444';
+        container.appendChild(panel);
+      }
+      if (!isAdmin) {
+        panel.style.display = 'none';
+        return;
+      }
+
+      panel.style.display = 'block';
+      const users = loadUsers();
+      const rows = Object.keys(users).sort().map(u => {
+        const userObj = protectionNormalize(users[u]);
+        const role = userObj.role || 'user';
+        const canDelete = u !== user;
+        const deleteBtn = canDelete ? `<button class="auth-user-delete" data-user="${u}">Remove</button>` : '';
+        return `<tr><td>${u}</td><td>${role}</td><td>${deleteBtn}</td></tr>`;
+      }).join('');
+
+      panel.innerHTML = `
+        <h3>Accounts</h3>
+        <table class="auth-table"><thead><tr><th>User</th><th>Role</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>
+        <p><small>Only admin/owner sees and can remove accounts from here.</small></p>
+      `;
+
+      panel.querySelectorAll('.auth-user-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const u = e.target.getAttribute('data-user');
+          if (!u) return;
+          const usersList = loadUsers();
+          if (!usersList[u]) return;
+          delete usersList[u];
+          saveUsers(usersList);
+          if (u === currentUser()) {
+            setCurrentUser(null);
+          }
+          showMessage(`User ${u} removed.`);
+          renderUserManagement();
+          updateGameAdminPanels();
+        });
       });
     });
   }
