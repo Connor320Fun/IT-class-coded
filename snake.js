@@ -52,7 +52,7 @@ function snUpdateLoop() {
   if (snPlayerDir === 'up') newHead.y--;
   if (snPlayerDir === 'down') newHead.y++;
   if (newHead.x < 0 || newHead.x >= SN_SIZE || newHead.y < 0 || newHead.y >= SN_SIZE || snPlayerSnake.some(s => s.x === newHead.x && s.y === newHead.y)) {
-    snStatus.textContent = '💀 Game Over!';
+    snStatus.textContent = '💀 Game Over! Click New Game';
     snGameOver = true;
     snGameRunning = false;
     if (snUpdateTimer) {
@@ -77,8 +77,9 @@ function snUpdateLoop() {
 
   snAiMove();
   renderSn();
-  snGameRunning = true;
-  snUpdateTimer = setTimeout(snUpdateLoop, 200 / parseInt(snDifficultyEl.value));
+
+  const interval = Math.max(50, Math.floor(200 / Math.max(1, parseInt(snDifficultyEl.value) || 1)));
+  snUpdateTimer = setTimeout(snUpdateLoop, interval);
 }
 
 function snAiMove() {
@@ -115,12 +116,12 @@ function snNew() {
   snAiFood = {x:3,y:3};
   snAiDir = 'left';
   snGameOver = false;
-  snGameRunning = false;
+  snGameRunning = true;
   snStatus.textContent = 'Use arrow keys to move!';
   renderSn();
 
-  // start loop after reset (guarantee a fresh run after death)
-  snUpdateTimer = setTimeout(snUpdateLoop, 200 / Math.max(1, parseInt(snDifficultyEl.value) || 1));
+  // start loop immediately after reset (guarantee a fresh run after death)
+  snUpdateLoop();
 }
 
 snNewGameBtn && snNewGameBtn.addEventListener('click', snNew);
