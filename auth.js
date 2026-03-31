@@ -234,8 +234,12 @@
     // keyboard lock when not logged
     document.addEventListener('keydown', (e) => {
       if (!isLoggedIn()) {
+        const target = e.target;
+        const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
         const allowed = ['Tab', 'Enter', 'Escape'];
-        if (!allowed.includes(e.key)) e.preventDefault();
+        if (!isInput && !allowed.includes(e.key)) {
+          e.preventDefault();
+        }
       }
     }, true);
 
