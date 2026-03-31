@@ -15,6 +15,7 @@ let mmPlayerScore = 0;
 let mmAiScore = 0;
 let mmGameOver = false;
 let mmCodeSet = false;
+let mmCandidates = [];
 let mmLogs = JSON.parse(localStorage.getItem('mm_admin_logs')||'[]');
 
 function mmRenderColorPicker() {
@@ -63,6 +64,41 @@ function mmRenderPlayerCode() {
   mmSetCodeBtn.disabled = mmPlayerCode.length !== 4;
 }
 
+function mmGenerateCandidates() {
+  const candidates = [];
+  for (let a = 0; a < MM_COLORS.length; a++) {
+    for (let b = 0; b < MM_COLORS.length; b++) {
+      for (let c = 0; c < MM_COLORS.length; c++) {
+        for (let d = 0; d < MM_COLORS.length; d++) {
+          candidates.push([MM_COLORS[a], MM_COLORS[b], MM_COLORS[c], MM_COLORS[d]]);
+        }
+      }
+    }
+  }
+  return candidates;
+}
+
+function mmCheckGuessFeedback(guess, code) {
+  let correct = 0;
+  let wrongPosition = 0;
+  const codeCopy = [...code];
+  const guessCopy = [...guess];
+  for (let i = 0; i < 4; i++) {
+    if (guessCopy[i] === codeCopy[i]) {
+      correct++;
+      codeCopy[i] = null;
+      guessCopy[i] = null;
+    }
+  }
+  for (let i = 0; i < 4; i++) {
+    if (guessCopy[i] && codeCopy.includes(guessCopy[i])) {
+      wrongPosition++;
+      codeCopy[codeCopy.indexOf(guessCopy[i])] = null;
+    }
+  }
+  return {correct, wrongPosition};
+}
+
 function mmSetCode() {
   if(mmPlayerCode.length !== 4) {
     alert('Pick exactly 4 colors');
@@ -86,38 +122,48 @@ function mmCheckGuess(guess) {
 }
 
 function mmAiMakeGuess() {
-  if(mmGameOver || !mmCodeSet) return;
+  if (mmGameOver || !mmCodeSet) return;
   const difficulty = parseInt(mmDifficultyEl.value, 10);
   let guess = [];
-  
-  if(difficulty === 1) {
-    for(let i=0;i<4;i++) guess.push(MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)]);
+
+  if (difficulty === 1) {
+    for (let i = 0; i < 4; i++) guess.push(MM_COLORS[Math.floor(Math.random() * MM_COLORS.length)]);
   } else {
-    if(mmGuesses.length === 0) {
-      guess = ['🔴','🔴','🟢','🟢'];
+    if (mmGuesses.length === 0) {
+      guess = ['🔴', '🔴', '🟢', '🟢'];
     } else {
-      for(let i=0;i<4;i++) guess.push(MM_COLORS[Math.floor(Math.random()*MM_COLORS.length)]);
+      if (mmCandidates.length === 0) {
+        mmCandidates = mmGenerateCandidates();
+      }
+      guess = mmCandidates[Math.floor(Math.random() * mmCandidates.length)] || ['🔴', '🟢', '🔵', '🟡'];
     }
   }
-  
+
   mmGuesses.push(guess);
   const result = mmCheckGuess(guess);
-  
+
+  if (difficulty !== 1) {
+    mmCandidates = mmCandidates.filter(code => {
+      const feedback = mmCheckGuessFeedback(guess, code);
+      return feedback.correct === result.correct && feedback.wrongPosition === result.wrongPosition;
+    });
+  }
+
   const guessDiv = document.createElement('div');
   guessDiv.innerHTML = `<strong>Guess ${mmGuesses.length}:</strong> ${guess.join('')} | Correct: ${result.correct}, Wrong position: ${result.wrongPosition}`;
   guessDiv.style.padding = '8px';
   guessDiv.style.borderBottom = '1px solid #333';
   mmGuessHistoryEl.appendChild(guessDiv);
   mmGuessHistoryEl.scrollTop = mmGuessHistoryEl.scrollHeight;
-  
-  if(result.correct === 4) {
+
+  if (result.correct === 4) {
     mmStatus.textContent = 'AI guessed the code!';
     mmGameOver = true;
     mmAiScore++;
     mmAiScoreEl.textContent = mmAiScore;
     mmLog('AI guessed code');
     localStorage.setItem('mm_scores', JSON.stringify({player: mmPlayerScore, ai: mmAiScore}));
-  } else if(mmGuesses.length >= 12) {
+  } else if (mmGuesses.length >= 12) {
     mmStatus.textContent = 'AI failed! Your code was: ' + mmPlayerCode.join('');
     mmGameOver = true;
     mmPlayerScore++;
@@ -132,6 +178,7 @@ function mmAiMakeGuess() {
 function mmNew() {
   mmPlayerCode = [];
   mmGuesses = [];
+  mmCandidates = mmGenerateCandidates();
   mmGameOver = false;
   mmCodeSet = false;
   mmSetCodeBtn.disabled = false;

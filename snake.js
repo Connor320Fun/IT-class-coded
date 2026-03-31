@@ -18,6 +18,7 @@ let snAiScore = 0;
 let snGameOver = false;
 let snLogs = JSON.parse(localStorage.getItem('sn_admin_logs')||'[]');
 let snGameRunning = false;
+let snUpdateTimer = null;
 
 function renderSn() {
   snBoardEl.innerHTML='';
@@ -38,31 +39,37 @@ function renderSn() {
 }
 
 function snUpdate() {
-  if(snGameOver) return;
+  if (snGameOver) {
+    snGameRunning = false;
+    return;
+  }
   snPlayerDir = snPlayerNextDir;
   const head = snPlayerSnake[0];
-  let newHead = {x:head.x, y:head.y};
-  if(snPlayerDir==='right') newHead.x++;
-  if(snPlayerDir==='left') newHead.x--;
-  if(snPlayerDir==='up') newHead.y--;
-  if(snPlayerDir==='down') newHead.y++;
-  if(newHead.x<0||newHead.x>=SN_SIZE||newHead.y<0||newHead.y>=SN_SIZE||snPlayerSnake.some(s=>s.x===newHead.x&&s.y===newHead.y)) {
-    snStatus.textContent='💀 Game Over!';
-    snGameOver=true;
+  let newHead = {x: head.x, y: head.y};
+  if (snPlayerDir === 'right') newHead.x++;
+  if (snPlayerDir === 'left') newHead.x--;
+  if (snPlayerDir === 'up') newHead.y--;
+  if (snPlayerDir === 'down') newHead.y++;
+  if (newHead.x < 0 || newHead.x >= SN_SIZE || newHead.y < 0 || newHead.y >= SN_SIZE || snPlayerSnake.some(s => s.x === newHead.x && s.y === newHead.y)) {
+    snStatus.textContent = '💀 Game Over!';
+    snGameOver = true;
+    snGameRunning = false;
     snAiScore++;
-    snAiScoreEl.textContent=snAiScore;
+    snAiScoreEl.textContent = snAiScore;
     snLog('Player collided');
   } else {
     snPlayerSnake.unshift(newHead);
-    if(newHead.x===snPlayerFood.x&&newHead.y===snPlayerFood.y) {
+    if (newHead.x === snPlayerFood.x && newHead.y === snPlayerFood.y) {
       snPlayerScore++;
-      snPlayerScoreEl.textContent=snPlayerScore;
-      snPlayerFood = {x:Math.floor(Math.random()*SN_SIZE), y:Math.floor(Math.random()*SN_SIZE)};
+      snPlayerScoreEl.textContent = snPlayerScore;
+      snPlayerFood = {x: Math.floor(Math.random() * SN_SIZE), y: Math.floor(Math.random() * SN_SIZE)};
     } else snPlayerSnake.pop();
     snAiMove();
   }
   renderSn();
-  if(!snGameOver) setTimeout(snUpdate, 200/parseInt(snDifficultyEl.value));
+  if (!snGameOver) {
+    snUpdateTimer = setTimeout(snUpdate, 200 / parseInt(snDifficultyEl.value));
+  }
 }
 
 function snAiMove() {
@@ -87,6 +94,7 @@ function snAiMove() {
 }
 
 function snNew() {
+  if (snUpdateTimer) clearTimeout(snUpdateTimer);
   snPlayerSnake = [{x:8,y:8}];
   snPlayerFood = {x:10,y:10};
   snPlayerDir = 'right';
@@ -95,12 +103,10 @@ function snNew() {
   snAiFood = {x:3,y:3};
   snAiDir = 'left';
   snGameOver = false;
+  snGameRunning = true;
   snStatus.textContent='Use arrow keys to move!';
   renderSn();
-  if(!snGameRunning) {
-    snGameRunning = true;
-    snUpdate();
-  }
+  snUpdate();
 }
 
 snNewGameBtn && snNewGameBtn.addEventListener('click', snNew);
