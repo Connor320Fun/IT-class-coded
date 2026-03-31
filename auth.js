@@ -7,7 +7,12 @@
   function loadUsers() {
     const data = localStorage.getItem(USERS_KEY);
     try {
-      return data ? JSON.parse(data) : {};
+      const raw = data ? JSON.parse(data) : {};
+      const normalized = {};
+      for (const [user, details] of Object.entries(raw)) {
+        normalized[user] = protectionNormalize(details);
+      }
+      return normalized;
     } catch (e) {
       return {};
     }
@@ -37,6 +42,22 @@
 
   function normalizedUsername(username) {
     return username.trim().toLowerCase();
+  }
+
+  function protectionNormalize(userObj) {
+    if (typeof userObj === 'string') {
+      return { password: userObj, role: 'user' };
+    }
+    return userObj;
+  }
+
+  function isAdminUser(username) {
+    const users = loadUsers();
+    const normalized = normalizedUsername(username);
+    const entry = users[normalized];
+    if (!entry) return false;
+    const userObj = protectionNormalize(entry);
+    return userObj.role === 'admin' || userObj.role === 'owner';
   }
 
   function getCurrentGameId() {
@@ -95,6 +116,7 @@
       if (loginForm) loginForm.classList.add('hidden');
       if (welcome) welcome.textContent = `Welcome, ${user}!`;
       if (leaderboard) renderLeaderboard(getCurrentGameId());
+      renderUserManagement();
       document.body.classList.remove('no-user');
 
       // Ensure game UI is interactable as soon as login completes.
@@ -206,6 +228,12 @@
     leaderboardContainer.className = 'auth-leaderboard';
     panel.appendChild(leaderboardContainer);
 
+    const managementContainer = document.createElement('div');
+    managementContainer.id = 'authUserManagement';
+    managementContainer.className = 'auth-user-management';
+    managementContainer.style.display = 'none';
+    panel.appendChild(managementContainer);
+
     overlay.appendChild(panel);
     document.body.appendChild(overlay);
 
@@ -214,7 +242,8 @@
       const password = passwordInput.value;
       if (!username || !password) { showMessage('Enter username and password.'); return; }
       const users = loadUsers();
-      if (!users[username] || users[username] !== hashPass(password)) {
+      const user = users[username];
+      if (!user || protectionNormalize(user).password !== hashPass(password)) {
         showMessage('Invalid credentials');
         return;
       }
@@ -223,6 +252,7 @@
       status.textContent = `Welcome back, ${username}`;
       loginContainer.classList.add('hidden');
       logoutBtn.classList.remove('hidden');
+      renderUserManagement();
       navigateToLeaderBoard();
     });
 
@@ -232,12 +262,14 @@
       if (!username || !password) { showMessage('Enter username and password.'); return; }
       const users = loadUsers();
       if (users[username]) { showMessage('Username already exists'); return; }
-      users[username] = hashPass(password);
+      const role = Object.keys(users).length === 0 ? 'admin' : 'user';
+      users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
       showMessage('Account created and logged in.');
       loginContainer.classList.add('hidden');
       logoutBtn.classList.remove('hidden');
+      renderUserManagement();
       navigateToLeaderBoard();
     });
 
@@ -326,6 +358,46 @@
 
     const rows = board.map((entry, idx) => `<tr><td>${idx + 1}</td><td>${entry.user}</td><td>${entry.score}</td><td>${new Date(entry.timestamp).toLocaleString()}</td></tr>`).join('');
     container.innerHTML = `<h3>${title}</h3><table class="auth-table"><thead><tr><th>#</th><th>User</th><th>Score</th><th>Updated</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function renderUserManagement() {
+    const current = currentUser();
+    const management = document.getElementById('authUserManagement');
+    if (!management) return;
+
+    if (!current || !isAdminUser(current)) {
+      management.style.display = 'none';
+      return;
+    }
+
+    management.style.display = 'block';
+    const users = loadUsers();
+    const rows = Object.keys(users).sort().map(u => {
+      const userObj = protectionNormalize(users[u]);
+      const role = userObj.role || 'user';
+      const canDelete = u !== current;
+      const deleteBtn = canDelete ? `<button class="auth-user-delete" data-user="${u}">Remove</button>` : '';
+      return `<tr><td>${u}</td><td>${role}</td><td>${deleteBtn}</td></tr>`;
+    }).join('');
+
+    management.innerHTML = `
+      <h3>Accounts (admin panel)</h3>
+      <table class="auth-table"><thead><tr><th>User</th><th>Role</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>
+      <p><small>Only admin/owner sees this view.</small></p>
+    `;
+
+    management.querySelectorAll('.auth-user-delete').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const u = e.target.getAttribute('data-user');
+        if (!u) return;
+        const usersList = loadUsers();
+        if (!usersList[u]) return;
+        delete usersList[u];
+        saveUsers(usersList);
+        showMessage(`User ${u} removed.`);
+        renderUserManagement();
+      });
+    });
   }
 
   window.auth = {
