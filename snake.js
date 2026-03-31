@@ -38,11 +38,12 @@ function renderSn() {
   }
 }
 
-function snUpdate() {
+function snUpdateLoop() {
   if (snGameOver) {
     snGameRunning = false;
     return;
   }
+  snGameRunning = true;
   snPlayerDir = snPlayerNextDir;
   const head = snPlayerSnake[0];
   let newHead = {x: head.x, y: head.y};
@@ -57,19 +58,23 @@ function snUpdate() {
     snAiScore++;
     snAiScoreEl.textContent = snAiScore;
     snLog('Player collided');
+    renderSn();
+    return;
+  }
+
+  snPlayerSnake.unshift(newHead);
+  if (newHead.x === snPlayerFood.x && newHead.y === snPlayerFood.y) {
+    snPlayerScore++;
+    snPlayerScoreEl.textContent = snPlayerScore;
+    snPlayerFood = {x: Math.floor(Math.random() * SN_SIZE), y: Math.floor(Math.random() * SN_SIZE)};
   } else {
-    snPlayerSnake.unshift(newHead);
-    if (newHead.x === snPlayerFood.x && newHead.y === snPlayerFood.y) {
-      snPlayerScore++;
-      snPlayerScoreEl.textContent = snPlayerScore;
-      snPlayerFood = {x: Math.floor(Math.random() * SN_SIZE), y: Math.floor(Math.random() * SN_SIZE)};
-    } else snPlayerSnake.pop();
-    snAiMove();
+    snPlayerSnake.pop();
   }
+
+  snAiMove();
   renderSn();
-  if (!snGameOver) {
-    snUpdateTimer = setTimeout(snUpdate, 200 / parseInt(snDifficultyEl.value));
-  }
+  snGameRunning = true;
+  snUpdateTimer = setTimeout(snUpdateLoop, 200 / parseInt(snDifficultyEl.value));
 }
 
 function snAiMove() {
@@ -94,7 +99,10 @@ function snAiMove() {
 }
 
 function snNew() {
-  if (snUpdateTimer) clearTimeout(snUpdateTimer);
+  if (snUpdateTimer) {
+    clearTimeout(snUpdateTimer);
+    snUpdateTimer = null;
+  }
   snPlayerSnake = [{x:8,y:8}];
   snPlayerFood = {x:10,y:10};
   snPlayerDir = 'right';
@@ -103,10 +111,10 @@ function snNew() {
   snAiFood = {x:3,y:3};
   snAiDir = 'left';
   snGameOver = false;
-  snGameRunning = true;
-  snStatus.textContent='Use arrow keys to move!';
+  snGameRunning = false;
+  snStatus.textContent = 'Use arrow keys to move!';
   renderSn();
-  snUpdate();
+  snUpdateLoop();
 }
 
 snNewGameBtn && snNewGameBtn.addEventListener('click', snNew);
