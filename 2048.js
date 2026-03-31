@@ -80,8 +80,8 @@ function twMove(dir) {
     for(let j=0;j<4;j++) {
       const col = [];
       for(let i=0;i<4;i++) col.push(twBoard[i][j]);
-      if(dir==='up') {
-        let newCol = col.filter(v=>v!==0);
+      if(dir==='up' || dir==='down') {
+        let newCol = dir==='up' ? col.filter(v=>v!==0) : [...col].reverse().filter(v=>v!==0);
         for(let i=0;i<newCol.length-1;i++) {
           if(newCol[i]===newCol[i+1]) {
             newCol[i]*=2;
@@ -90,6 +90,7 @@ function twMove(dir) {
           }
         }
         newCol = [...newCol, ...Array(4-newCol.length).fill(0)];
+        if(dir==='down') newCol.reverse();
         for(let i=0;i<4;i++) twBoard[i][j] = newCol[i];
       }
     }
@@ -123,7 +124,7 @@ document.addEventListener('keydown', (e)=>{
   if(e.key==='ArrowLeft') twMove('left');
   if(e.key==='ArrowRight') twMove('right');
   if(e.key==='ArrowUp') twMove('up');
-  if(e.key==='s') twMove('down');
+  if(e.key==='ArrowDown') twMove('down');
 });
 
 // Admin Panel
@@ -196,5 +197,7 @@ twOwnerExportStateBtn && twOwnerExportStateBtn.addEventListener('click', ()=>{ c
 function twSaveLogs(){ localStorage.setItem('tw_admin_logs', JSON.stringify(twLogs)); }
 function twLog(a){ twLogs.unshift(`${new Date().toISOString()} - ${a}`); if(twLogs.length>200) twLogs.pop(); twSaveLogs(); twRenderLogs(); if(twOwnerLogsEl) twOwnerLogsEl.innerHTML = twLogs.map(l=>`<div>${l}</div>`).join(''); }
 function twRenderLogs(){ if(twAdminLogsEl) twAdminLogsEl.innerHTML = twLogs.map(l=>`<div>${l}</div>`).join(''); }
+
+twNew();
 
 twNew();

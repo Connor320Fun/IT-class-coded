@@ -63,9 +63,25 @@ function renderMs() {
 
 function msReveal(r, c) {
   if(msRevealed[r][c] || msFlags[r][c]) return;
-  if(msBoard[r][c]==='M') { msStatus.textContent='💣 Game Over! You hit a mine!'; msGameOver=true; msScores.ai++; msAiScoreEl.textContent=msScores.ai; msLog('Player hit mine'); } else {
-    if(msBoard[r][c]===0) { for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++) { const nr=r+dr,nc=c+dc; if(nr>=0&&nr<MS_SIZE&&nc>=0&&nc<MS_SIZE&&!msRevealed[nr][nc]) msReveal(nr,nc); } }
+  if(msBoard[r][c]==='M') {
+    msStatus.textContent='💣 Game Over! You hit a mine!';
+    msGameOver=true;
+    msScores.ai++;
+    msAiScoreEl.textContent=msScores.ai;
+    msLog('Player hit mine');
+  } else {
     msRevealed[r][c]=true;
+    if(msBoard[r][c]===0) {
+      for(let dr=-1;dr<=1;dr++) {
+        for(let dc=-1;dc<=1;dc++) {
+          if(dr===0 && dc===0) continue;
+          const nr=r+dr, nc=c+dc;
+          if(nr>=0 && nr<MS_SIZE && nc>=0 && nc<MS_SIZE && !msRevealed[nr][nc]) {
+            msReveal(nr,nc);
+          }
+        }
+      }
+    }
     checkMsEnd();
   }
   renderMs();
