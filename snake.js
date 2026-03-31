@@ -39,12 +39,14 @@ function renderSn() {
 }
 
 function snUpdateLoop() {
+  // Always clear any pending timer so we don't get overlap from the previous game state.
+  if (snUpdateTimer) {
+    clearTimeout(snUpdateTimer);
+    snUpdateTimer = null;
+  }
+
   if (snGameOver) {
     snGameRunning = false;
-    if (snUpdateTimer) {
-      clearTimeout(snUpdateTimer);
-      snUpdateTimer = null;
-    }
     return;
   }
 
@@ -61,10 +63,6 @@ function snUpdateLoop() {
     snStatus.textContent = '💀 Game Over! Click New Game';
     snGameOver = true;
     snGameRunning = false;
-    if (snUpdateTimer) {
-      clearTimeout(snUpdateTimer);
-      snUpdateTimer = null;
-    }
     snAiScore++;
     snAiScoreEl.textContent = snAiScore;
     snLog('Player collided');
@@ -126,8 +124,8 @@ function snNew() {
   snStatus.textContent = 'Use arrow keys to move!';
   renderSn();
 
-  const interval = Math.max(50, Math.floor(200 / Math.max(1, parseInt(snDifficultyEl.value) || 1)));
-  snUpdateTimer = setTimeout(snUpdateLoop, interval);
+  // Start update loop immediately, and loop continues via setTimeout in snUpdateLoop.
+  snUpdateLoop();
 }
 
 snNewGameBtn && snNewGameBtn.addEventListener('click', snNew);
