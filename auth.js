@@ -125,7 +125,15 @@
         appNode.style.pointerEvents = 'auto';
         appNode.style.filter = 'none';
       }
+      const adminToggle = document.getElementById('authAdminToggle');
+      if (adminToggle) {
+        adminToggle.style.display = isAdminUser(user) ? 'block' : 'none';
+      }
     } else {
+      const adminToggle = document.getElementById('authAdminToggle');
+      if (adminToggle) {
+        adminToggle.style.display = 'none';
+      }
       if (overlay) {
         overlay.classList.remove('hidden');
         overlay.style.display = 'flex';
@@ -236,6 +244,29 @@
 
     overlay.appendChild(panel);
     document.body.appendChild(overlay);
+
+    // Admin toggle button (visible only to admin/owner users)
+    let adminToggle = document.getElementById('authAdminToggle');
+    if (!adminToggle) {
+      adminToggle = document.createElement('button');
+      adminToggle.id = 'authAdminToggle';
+      adminToggle.textContent = 'Open Admin Panel';
+      adminToggle.style.position = 'fixed';
+      adminToggle.style.bottom = '10px';
+      adminToggle.style.right = '10px';
+      adminToggle.style.zIndex = '10000';
+      adminToggle.style.display = 'none';
+      document.body.appendChild(adminToggle);
+      adminToggle.addEventListener('click', () => {
+        const overlayEl = document.getElementById('authOverlay');
+        if (!overlayEl) return;
+        overlayEl.classList.remove('hidden');
+        overlayEl.style.display = 'flex';
+        overlayEl.style.pointerEvents = 'auto';
+        overlayEl.style.opacity = '1';
+        overlayEl.style.zIndex = '9999';
+      });
+    }
 
     loginBtn.addEventListener('click', () => {
       const username = normalizedUsername(usernameInput.value);
