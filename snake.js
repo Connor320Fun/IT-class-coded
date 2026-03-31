@@ -86,25 +86,62 @@ function snUpdateLoop() {
   snUpdateTimer = setTimeout(snUpdateLoop, interval);
 }
 
+function snAiCanMove(dir) {
+  const head = snAiSnake[0];
+  let next = {x: head.x, y: head.y};
+  if(dir==='right') next.x++;
+  if(dir==='left') next.x--;
+  if(dir==='up') next.y--;
+  if(dir==='down') next.y++;
+  if(next.x<0||next.x>=SN_SIZE||next.y<0||next.y>=SN_SIZE) return false;
+  if(snAiSnake.some(s=>s.x===next.x&&s.y===next.y)) return false;
+  return true;
+}
+
+function snAiChooseDir() {
+  const prefer = [];
+  const head = snAiSnake[0];
+  if(snAiFood.x > head.x) prefer.push('right');
+  if(snAiFood.x < head.x) prefer.push('left');
+  if(snAiFood.y > head.y) prefer.push('down');
+  if(snAiFood.y < head.y) prefer.push('up');
+  const fallback = ['up','down','left','right'];
+
+  for(const d of prefer) {
+    if(snAiCanMove(d)) return d;
+  }
+  for(const d of fallback) {
+    if(snAiCanMove(d)) return d;
+  }
+  return snAiDir;
+}
+
 function snAiMove() {
+  // choose safe direction each tick
+  snAiDir = snAiChooseDir();
   const head = snAiSnake[0];
   let newHead = {x:head.x, y:head.y};
   if(snAiDir==='right') newHead.x++;
   if(snAiDir==='left') newHead.x--;
   if(snAiDir==='up') newHead.y--;
   if(snAiDir==='down') newHead.y++;
+
   if(newHead.x<0||newHead.x>=SN_SIZE||newHead.y<0||newHead.y>=SN_SIZE||snAiSnake.some(s=>s.x===newHead.x&&s.y===newHead.y)) {
     snPlayerScore++;
     snPlayerScoreEl.textContent=snPlayerScore;
     snLog('AI collided');
-  } else {
-    snAiSnake.unshift(newHead);
-    if(newHead.x===snAiFood.x&&newHead.y===snAiFood.y) {
-      snAiScore++;
-      snAiScoreEl.textContent=snAiScore;
-      snAiFood = {x:Math.floor(Math.random()*SN_SIZE), y:Math.floor(Math.random()*SN_SIZE)};
-    } else snAiSnake.pop();
+    // respawn AI after collision to keep game moving
+    snAiSnake = [{x: Math.floor(Math.random()*SN_SIZE), y: Math.floor(Math.random()*SN_SIZE)}];
+    snAiDir = 'left';
+    return;
   }
+
+  snAiSnake.unshift(newHead);
+  if(newHead.x===snAiFood.x&&newHead.y===snAiFood.y) {
+    snAiScore++;
+    snAiScoreEl.textContent=snAiScore;
+    snAiFood = {x:Math.floor(Math.random()*SN_SIZE), y:Math.floor(Math.random()*SN_SIZE)};
+  } else snAiSnake.pop();
 }
 
 function snNew() {
