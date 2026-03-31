@@ -508,7 +508,10 @@
       if (!username || !password || users[username]) {
         return false;
       }
-      users[username] = hashPass(password);
+      const isFirstUser = Object.keys(users).length === 0;
+      users[username] = isFirstUser
+        ? { password: hashPass(password), role: 'owner' }
+        : hashPass(password);
       saveUsers(users);
       setCurrentUser(username);
       return true;
