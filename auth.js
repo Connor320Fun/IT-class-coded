@@ -87,6 +87,9 @@
       if (overlay) {
         overlay.classList.add('hidden');
         overlay.style.display = 'none';
+        overlay.style.pointerEvents = 'none';
+        overlay.style.opacity = '0';
+        overlay.style.zIndex = '-1';
       }
       if (status) status.textContent = `Logged in as ${user}`;
       if (loginForm) loginForm.classList.add('hidden');
@@ -104,6 +107,9 @@
       if (overlay) {
         overlay.classList.remove('hidden');
         overlay.style.display = 'flex';
+        overlay.style.pointerEvents = 'auto';
+        overlay.style.opacity = '1';
+        overlay.style.zIndex = '9999';
       }
       if (status) status.textContent = 'Please log in or sign up to play';
       if (loginForm) loginForm.classList.remove('hidden');
