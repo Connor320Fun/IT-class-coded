@@ -97,6 +97,11 @@
       if (welcome) welcome.textContent = 'Please log in to enable game controls';
       if (leaderboard) leaderboard.innerHTML = '<p>Leaderboard locked until login</p>';
       document.body.classList.add('no-user');
+
+      const usernameInput = document.getElementById('authUsername');
+      if (usernameInput) {
+        usernameInput.focus();
+      }
     }
   }
 
@@ -144,6 +149,7 @@
     usernameInput.id = 'authUsername';
     usernameInput.type = 'text';
     usernameInput.placeholder = 'Username';
+    usernameInput.autofocus = true;
 
     const passwordInput = document.createElement('input');
     passwordInput.id = 'authPassword';
@@ -231,14 +237,20 @@
       }
     });
 
-    // keyboard lock when not logged
+    // keyboard lock when not logged in, but allow text input in auth fields
     document.addEventListener('keydown', (e) => {
       if (!isLoggedIn()) {
         const target = e.target;
         const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+        if (isInput) {
+          // allow typing in auth fields and block game handlers
+          e.stopPropagation();
+          return;
+        }
         const allowed = ['Tab', 'Enter', 'Escape'];
-        if (!isInput && !allowed.includes(e.key)) {
+        if (!allowed.includes(e.key)) {
           e.preventDefault();
+          e.stopPropagation();
         }
       }
     }, true);
