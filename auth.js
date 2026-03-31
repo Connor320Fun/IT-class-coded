@@ -82,16 +82,29 @@
     const loginForm = document.getElementById('authLoginContainer');
     const welcome = document.getElementById('authWelcome');
     const leaderboard = document.getElementById('authLeaderboard');
-    
+
     if (user) {
-      if (overlay) overlay.classList.add('hidden');
+      if (overlay) {
+        overlay.classList.add('hidden');
+        overlay.style.display = 'none';
+      }
       if (status) status.textContent = `Logged in as ${user}`;
       if (loginForm) loginForm.classList.add('hidden');
-      if (welcome) welcome.textContent = `Welcome, ${user}!`; 
+      if (welcome) welcome.textContent = `Welcome, ${user}!`;
       if (leaderboard) renderLeaderboard(getCurrentGameId());
       document.body.classList.remove('no-user');
+
+      // Ensure game UI is interactable as soon as login completes.
+      const appNode = document.querySelector('.app');
+      if (appNode) {
+        appNode.style.pointerEvents = 'auto';
+        appNode.style.filter = 'none';
+      }
     } else {
-      if (overlay) overlay.classList.remove('hidden');
+      if (overlay) {
+        overlay.classList.remove('hidden');
+        overlay.style.display = 'flex';
+      }
       if (status) status.textContent = 'Please log in or sign up to play';
       if (loginForm) loginForm.classList.remove('hidden');
       if (welcome) welcome.textContent = 'Please log in to enable game controls';
