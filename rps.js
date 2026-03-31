@@ -92,6 +92,7 @@ const rpsOwnerClearScoresBtn = document.getElementById('rpsOwnerClearScores');
 const rpsOwnerClearLogsBtn = document.getElementById('rpsOwnerClearLogs');
 const rpsOwnerClearLSBtn = document.getElementById('rpsOwnerClearLS');
 const rpsOwnerLogsEl = document.getElementById('rpsOwnerLogs');
+const rpOwnerDebugBtn = document.getElementById("rpOwnerDebug");
 const rpsOwnerNewGameBtn = document.getElementById('rpsOwnerNewGame');
 const rpsOwnerReloadBtn = document.getElementById('rpsOwnerReloadApp');
 const rpsOwnerKillSwitchBtn = document.getElementById('rpsOwnerKillSwitch');
@@ -108,6 +109,7 @@ function rpsOwnerUnlockAndAdmin(){ if(rpsOwnerPassword.value==='Bowling320Fun'){
 rpsOwnerBtn && rpsOwnerBtn.addEventListener('click', ()=>{ rpsOwnerPanel.classList.toggle('hidden'); if(!rpsOwnerPanel.classList.contains('hidden')){ rpsOwnerAuth.classList.remove('hidden'); rpsOwnerContents.classList.add('hidden'); rpsOwnerPassword.value=''; } });
 rpsOwnerUnlock && rpsOwnerUnlock.addEventListener('click', rpsOwnerUnlockAndAdmin);
 rpsOwnerCloseBtn && rpsOwnerCloseBtn.addEventListener('click', ()=>{ rpsOwnerPanel.classList.add('hidden'); rpsOwnerAuth.classList.remove('hidden'); rpsOwnerContents.classList.add('hidden'); rpsLog('Owner locked'); });
+rpOwnerDebugBtn && rpOwnerDebugBtn.addEventListener('click', ()=>{ window.rpOwnerDebugMode = !window.rpOwnerDebugMode; alert('Owner debug mode ' + (window.rpOwnerDebugMode ? 'ENABLED' : 'DISABLED')); console.log('Owner debug toggled', window.rpOwnerDebugMode); });
 rpsOwnerNewGameBtn && rpsOwnerNewGameBtn.addEventListener('click', ()=>{ rpsPlayerScore=0; rpsAiScore=0; rpsDrawScore=0; rpsPlayerScoreEl.textContent=0; rpsAiScoreEl.textContent=0; rpsDrawScoreEl.textContent=0; rpsHistory=[]; rpsStatus.textContent='Game reset'; rpsLog('Owner started new game'); });
 rpsOwnerReloadBtn && rpsOwnerReloadBtn.addEventListener('click', ()=>{ rpsLog('Owner reloaded app'); location.reload(); });
 rpsOwnerKillSwitchBtn && rpsOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); rpsLog('Owner used kill switch'); location.reload(); });

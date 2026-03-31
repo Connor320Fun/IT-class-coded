@@ -164,6 +164,7 @@ const chOwnerClearLogsBtn = document.getElementById('chOwnerClearLogs');
 const chOwnerExportStateBtn = document.getElementById('chOwnerExportState');
 const chOwnerClearLSBtn = document.getElementById('chOwnerClearLS');
 const chOwnerLogsEl = document.getElementById('chOwnerLogs');
+const chOwnerDebugBtn = document.getElementById("chOwnerDebug");
 
 function chOwnerUnlockFn(){ if(chOwnerPassword.value==='Bowling320Fun'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
 // also unlock admin for owner
@@ -179,6 +180,7 @@ chOwnerViewLSBtn && chOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={
 chOwnerKillSwitchBtn && chOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); chLog('Owner used kill switch'); location.reload(); });
 
 chOwnerCloseBtn && chOwnerCloseBtn.addEventListener('click', ()=>{ chOwnerPanel.classList.add('hidden'); chOwnerAuth.classList.remove('hidden'); chOwnerContents.classList.add('hidden'); chLog('Owner locked'); });
+chOwnerDebugBtn && chOwnerDebugBtn.addEventListener('click', ()=>{ window.chOwnerDebugMode = !window.chOwnerDebugMode; alert('Owner Debug Mode: ' + (window.chOwnerDebugMode ? 'ENABLED' : 'DISABLED')); chLog && chLog('Owner toggled debug mode to ' + window.chOwnerDebugMode); });
 chOwnerNewGameBtn && chOwnerNewGameBtn.addEventListener('click', ()=>{ chNewGame(); chLog('Owner started new game'); });
 chOwnerReloadBtn && chOwnerReloadBtn.addEventListener('click', ()=>{ chLog('Owner reloaded app'); location.reload(); });
 chOwnerForceAiWinBtn2 && chOwnerForceAiWinBtn2.addEventListener('click', ()=>{ chBoard = Array(8).fill(null).map(()=>Array(8).fill(0)); chCurrent = 'A'; renderChBoard(); chGameOver = true; chScores.ai++; chAiScoreEl.textContent = chScores.ai; chLog('Owner forced AI win'); });

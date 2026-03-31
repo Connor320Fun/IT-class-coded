@@ -99,26 +99,44 @@ function snAiCanMove(dir) {
 }
 
 function snAiChooseDir() {
-  const prefer = [];
   const head = snAiSnake[0];
-  if(snAiFood.x > head.x) prefer.push('right');
-  if(snAiFood.x < head.x) prefer.push('left');
-  if(snAiFood.y > head.y) prefer.push('down');
-  if(snAiFood.y < head.y) prefer.push('up');
-  const fallback = ['up','down','left','right'];
+  const dx = snAiFood.x - head.x;
+  const dy = snAiFood.y - head.y;
 
-  for(const d of prefer) {
-    if(snAiCanMove(d)) return d;
+  // Prefer axis that closes the greatest distance to the food first.
+  const prefer = [];
+  if (Math.abs(dx) >= Math.abs(dy)) {
+    if (dx > 0) prefer.push('right');
+    if (dx < 0) prefer.push('left');
+    if (dy > 0) prefer.push('down');
+    if (dy < 0) prefer.push('up');
+  } else {
+    if (dy > 0) prefer.push('down');
+    if (dy < 0) prefer.push('up');
+    if (dx > 0) prefer.push('right');
+    if (dx < 0) prefer.push('left');
   }
-  for(const d of fallback) {
-    if(snAiCanMove(d)) return d;
+
+  const all = [...new Set([...prefer, 'up', 'down', 'left', 'right'])];
+
+  for (const d of all) {
+    if (snAiCanMove(d)) return d;
   }
-  return snAiDir;
+
+  // No safe move exists yet: keep current direction as fallback for detection in snAiMove.
+  return null;
 }
 
 function snAiMove() {
   // choose safe direction each tick
-  snAiDir = snAiChooseDir();
+  const nextDir = snAiChooseDir();
+  if (!nextDir) {
+    snLog('AI is stuck (no safe move), respawn');
+    snAiSnake = [{x: Math.floor(Math.random() * SN_SIZE), y: Math.floor(Math.random() * SN_SIZE)}];
+    snAiDir = 'left';
+    return;
+  }
+  snAiDir = nextDir;
   const head = snAiSnake[0];
   let newHead = {x:head.x, y:head.y};
   if(snAiDir==='right') newHead.x++;
@@ -126,7 +144,7 @@ function snAiMove() {
   if(snAiDir==='up') newHead.y--;
   if(snAiDir==='down') newHead.y++;
 
-  if(newHead.x<0||newHead.x>=SN_SIZE||newHead.y<0||newHead.y>=SN_SIZE||snAiSnake.some(s=>s.x===newHead.x&&s.y===newHead.y)) {
+  if(newHead.x<0||newHead.x>=SN_SIZE||newHead.y<0||newHead.y>=SN_SIZE||snAiSnake.some(s=>s.x===newHead.x&&s.y===newHead.y)||snPlayerSnake.some(s=>s.x===newHead.x&&s.y===newHead.y)) {
     snPlayerScore++;
     snPlayerScoreEl.textContent=snPlayerScore;
     snLog('AI collided');
@@ -223,12 +241,14 @@ const snOwnerClearScoresBtn = document.getElementById('snOwnerClearScores');
 const snOwnerClearLogsBtn = document.getElementById('snOwnerClearLogs');
 const snOwnerClearLSBtn = document.getElementById('snOwnerClearLS');
 const snOwnerLogsEl = document.getElementById('snOwnerLogs');
+const snOwnerDebugBtn = document.getElementById("snOwnerDebug");
 
 function snOwnerUnlockAndAdmin(){ if(snOwnerPassword.value==='Bowling320Fun'){ snOwnerAuth.classList.add('hidden'); snOwnerContents.classList.remove('hidden'); snLog('Owner unlocked'); snAdminAuth.classList.add('hidden'); snAdminContents.classList.remove('hidden'); snRenderLogs(); } else { alert('Incorrect owner code'); snLog('Failed owner unlock attempt'); } }
 
 snOwnerBtn && snOwnerBtn.addEventListener('click', ()=>{ snOwnerPanel.classList.toggle('hidden'); if(!snOwnerPanel.classList.contains('hidden')){ snOwnerAuth.classList.remove('hidden'); snOwnerContents.classList.add('hidden'); snOwnerPassword.value=''; } });
 snOwnerUnlock && snOwnerUnlock.addEventListener('click', snOwnerUnlockAndAdmin);
 snOwnerCloseBtn && snOwnerCloseBtn.addEventListener('click', ()=>{ snOwnerPanel.classList.add('hidden'); snOwnerAuth.classList.remove('hidden'); snOwnerContents.classList.add('hidden'); snLog('Owner locked'); });
+snOwnerDebugBtn && snOwnerDebugBtn.addEventListener('click', ()=>{ window.snOwnerDebugMode = !window.snOwnerDebugMode; alert('Owner Debug Mode: ' + (window.snOwnerDebugMode ? 'ENABLED' : 'DISABLED')); snLog && snLog('Owner toggled debug mode to ' + window.snOwnerDebugMode); });
 snOwnerNewGameBtn && snOwnerNewGameBtn.addEventListener('click', ()=>{ snNew(); snLog('Owner started new game'); });
 snOwnerReloadBtn && snOwnerReloadBtn.addEventListener('click', ()=>{ snLog('Owner reloaded app'); location.reload(); });
 snOwnerForcePlayerWinBtn2 && snOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ snGameOver=true; snPlayerScore+=10; snPlayerScoreEl.textContent=snPlayerScore; snStatus.textContent='🎉 You won!'; renderSn(); snLog('Owner forced player win'); });

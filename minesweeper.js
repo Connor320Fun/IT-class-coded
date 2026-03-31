@@ -168,12 +168,14 @@ const msOwnerClearLogsBtn = document.getElementById('msOwnerClearLogs');
 const msOwnerExportStateBtn = document.getElementById('msOwnerExportState');
 const msOwnerClearLSBtn = document.getElementById('msOwnerClearLS');
 const msOwnerLogsEl = document.getElementById('msOwnerLogs');
+const miOwnerDebugBtn = document.getElementById("miOwnerDebug");
 
 function msOwnerUnlockAndAdmin(){ if(msOwnerPassword.value==='Bowling320Fun'){ msOwnerAuth.classList.add('hidden'); msOwnerContents.classList.remove('hidden'); msLog('Owner unlocked'); msAdminAuth.classList.add('hidden'); msAdminContents.classList.remove('hidden'); msRenderLogs(); } else { alert('Incorrect owner code'); msLog('Failed owner unlock attempt'); } }
 
 msOwnerBtn && msOwnerBtn.addEventListener('click', ()=>{ msOwnerPanel.classList.toggle('hidden'); if(!msOwnerPanel.classList.contains('hidden')){ msOwnerAuth.classList.remove('hidden'); msOwnerContents.classList.add('hidden'); msOwnerPassword.value=''; } });
 msOwnerUnlock && msOwnerUnlock.addEventListener('click', msOwnerUnlockAndAdmin);
 msOwnerCloseBtn && msOwnerCloseBtn.addEventListener('click', ()=>{ msOwnerPanel.classList.add('hidden'); msOwnerAuth.classList.remove('hidden'); msOwnerContents.classList.add('hidden'); msLog('Owner locked'); });
+miOwnerDebugBtn && miOwnerDebugBtn.addEventListener('click', ()=>{ window.miOwnerDebugMode = !window.miOwnerDebugMode; alert('Owner debug mode ' + (window.miOwnerDebugMode ? 'ENABLED' : 'DISABLED')); console.log('Owner debug toggled', window.miOwnerDebugMode); });
 msOwnerNewGameBtn && msOwnerNewGameBtn.addEventListener('click', ()=>{ msNew(); msLog('Owner started new game'); });
 msOwnerReloadBtn && msOwnerReloadBtn.addEventListener('click', ()=>{ msLog('Owner reloaded app'); location.reload(); });
 msOwnerForcePlayerWinBtn2 && msOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]!=='M') msRevealed[r][c]=true; checkMsEnd(); renderMs(); msLog('Owner forced player win'); });

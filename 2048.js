@@ -1,7 +1,6 @@
 const twBoardEl = document.getElementById('twBoard');
 const twStatus = document.getElementById('twStatus');
 const twNewGameBtn = document.getElementById('twNewGame');
-const twDifficultyEl = document.getElementById('twDifficulty');
 const twPlayerScoreEl = document.getElementById('twPlayerScore');
 const twAiScoreEl = document.getElementById('twAiScore');
 
@@ -144,7 +143,6 @@ function twUnlock(){ if(twAdminPassword.value==='0320'){ twAdminAuth.classList.a
 
 twAdminBtn && twAdminBtn.addEventListener('click', ()=>{ twAdminPanel.classList.toggle('hidden'); if(!twAdminPanel.classList.contains('hidden')){ twAdminAuth.classList.remove('hidden'); twAdminContents.classList.add('hidden'); twAdminPassword.value=''; twRenderLogs(); } });
 twAdminUnlock && twAdminUnlock.addEventListener('click', twUnlock);
-twAdminDifficulty && twAdminDifficulty.addEventListener('change', ()=>{ twDifficultyEl.value = twAdminDifficulty.value; twLog(`Difficulty set to ${twAdminDifficulty.value}`); });
 twClearScoresBtn && twClearScoresBtn.addEventListener('click', ()=>{ twPlayerScore=0; twAiScore=0; twPlayerScoreEl.textContent=0; twAiScoreEl.textContent=0; localStorage.removeItem('tw_scores'); twLog('Cleared scores'); });
 twResetGameBtn && twResetGameBtn.addEventListener('click', ()=>{ twNew(); twLog('Game reset'); });
 twCloseAdminBtn && twCloseAdminBtn.addEventListener('click', ()=>{ twAdminPanel.classList.add('hidden'); twAdminAuth.classList.remove('hidden'); twAdminContents.classList.add('hidden'); twLog('Admin locked'); });
@@ -164,13 +162,12 @@ const twOwnerClearScoresBtn = document.getElementById('twOwnerClearScores');
 const twOwnerClearLogsBtn = document.getElementById('twOwnerClearLogs');
 const twOwnerClearLSBtn = document.getElementById('twOwnerClearLS');
 const twOwnerLogsEl = document.getElementById('twOwnerLogs');
+const twOwnerDebugBtn = document.getElementById('twOwnerDebug');
 const twOwnerNewGameBtn = document.getElementById('twOwnerNewGame');
 const twOwnerReloadBtn = document.getElementById('twOwnerReloadApp');
 const twOwnerKillSwitchBtn = document.getElementById('twOwnerKillSwitch');
 const twOwnerForcePlayerWinBtn = document.getElementById('twOwnerForcePlayerWin');
 const twOwnerForceAiWinBtn = document.getElementById('twOwnerForceAiWin');
-const twOwnerDifficultyEl = document.getElementById('twOwnerDifficulty');
-const twOwnerApplyDifficultyBtn = document.getElementById('twOwnerApplyDifficulty');
 const twOwnerStateInputEl = document.getElementById('twOwnerStateInput');
 const twOwnerSetStateBtn = document.getElementById('twOwnerSetState');
 const twOwnerExportStateBtn = document.getElementById('twOwnerExportState');
@@ -180,6 +177,7 @@ function twOwnerUnlockAndAdmin(){ if(twOwnerPassword.value==='Bowling320Fun'){ t
 twOwnerBtn && twOwnerBtn.addEventListener('click', ()=>{ twOwnerPanel.classList.toggle('hidden'); if(!twOwnerPanel.classList.contains('hidden')){ twOwnerAuth.classList.remove('hidden'); twOwnerContents.classList.add('hidden'); twOwnerPassword.value=''; } });
 twOwnerUnlock && twOwnerUnlock.addEventListener('click', twOwnerUnlockAndAdmin);
 twOwnerCloseBtn && twOwnerCloseBtn.addEventListener('click', ()=>{ twOwnerPanel.classList.add('hidden'); twOwnerAuth.classList.remove('hidden'); twOwnerContents.classList.add('hidden'); twLog('Owner locked'); });
+twOwnerDebugBtn && twOwnerDebugBtn.addEventListener('click', ()=>{ window.twOwnerDebugMode = !window.twOwnerDebugMode; alert('Owner debug mode ' + (window.twOwnerDebugMode ? 'enabled' : 'disabled')); twLog('Owner toggled debug mode to ' + window.twOwnerDebugMode); });
 twOwnerNewGameBtn && twOwnerNewGameBtn.addEventListener('click', ()=>{ twNew(); twLog('Owner started new game'); });
 twOwnerReloadBtn && twOwnerReloadBtn.addEventListener('click', ()=>{ twLog('Owner reloaded app'); location.reload(); });
 twOwnerKillSwitchBtn && twOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); twLog('Owner used kill switch'); location.reload(); });
@@ -190,7 +188,6 @@ twOwnerViewLSBtn && twOwnerViewLSBtn.addEventListener('click', ()=>{ const obj={
 twOwnerClearLSBtn && twOwnerClearLSBtn.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); twLog('Owner cleared localStorage'); alert('Storage cleared'); });
 twOwnerForcePlayerWinBtn && twOwnerForcePlayerWinBtn.addEventListener('click', ()=>{ twPlayerScore += 2048; twPlayerScoreEl.textContent = twPlayerScore; twStatus.textContent = 'Player wins (forced by owner)'; twGameOver = true; twLog('Owner forced player win'); });
 twOwnerForceAiWinBtn && twOwnerForceAiWinBtn.addEventListener('click', ()=>{ twAiScore++; twAiScoreEl.textContent = twAiScore; twStatus.textContent = 'AI wins (forced by owner)'; twGameOver = true; twLog('Owner forced AI win'); });
-twOwnerApplyDifficultyBtn && twOwnerApplyDifficultyBtn.addEventListener('click', ()=>{ twDifficultyEl.value = twOwnerDifficultyEl.value; twLog(`Owner set difficulty to ${twOwnerDifficultyEl.value}`); });
 twOwnerSetStateBtn && twOwnerSetStateBtn.addEventListener('click', ()=>{ try{ const state = JSON.parse(twOwnerStateInputEl.value); if(state.board) twBoard = state.board; if(state.playerScore !== undefined) twPlayerScore = state.playerScore; if(state.aiScore !== undefined) twAiScore = state.aiScore; twPlayerScoreEl.textContent = twPlayerScore; twAiScoreEl.textContent = twAiScore; twRender(); twLog('Owner applied state'); alert('State applied'); }catch(e){ alert('Invalid JSON'); } });
 twOwnerExportStateBtn && twOwnerExportStateBtn.addEventListener('click', ()=>{ const state = { board: twBoard, playerScore: twPlayerScore, aiScore: twAiScore }; twOwnerStateInputEl.value = JSON.stringify(state, null, 2); twLog('Owner exported state'); });
 

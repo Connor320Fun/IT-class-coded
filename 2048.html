@@ -24,14 +24,6 @@
     <h1>2048 vs AI</h1>
 
     <div class="controls">
-      <label for="twDifficulty">Difficulty:</label>
-      <select id="twDifficulty">
-        <option value="1">Level 1 - Easy</option>
-        <option value="2">Level 2 - Medium</option>
-        <option value="3">Level 3 - Hard</option>
-        <option value="4">Level 4 - Expert</option>
-        <option value="5">Level 5 - Insane</option>
-      </select>
       <button id="twNewGame">New Game</button>
     </div>
 
@@ -92,19 +84,6 @@
           <button id="twOwnerForceAiWin">Force AI Win</button>
         </div>
 
-        <h3>Difficulty Override</h3>
-        <div>
-          <label for="twOwnerDifficulty">Set Difficulty:</label>
-          <select id="twOwnerDifficulty">
-            <option value="1">Level 1 - Easy</option>
-            <option value="2">Level 2 - Medium</option>
-            <option value="3">Level 3 - Hard</option>
-            <option value="4">Level 4 - Expert</option>
-            <option value="5">Level 5 - Insane</option>
-          </select>
-          <button id="twOwnerApplyDifficulty">Apply</button>
-        </div>
-
         <h3>Scores & Data</h3>
         <div>
           <button id="twOwnerViewStats">View Stats</button>
@@ -127,7 +106,12 @@
         </div>
         <div id="twOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
 
-        <h3>Admin Logs</h3>
+        <h3>Owner Utilities</h3>
+        <div>
+          <button id="20OwnerDebug">Owner Debug Mode</button>
+        </div>
+
+                <h3>Admin Logs</h3>
         <div id="twOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
 
         <button id="twOwnerClose">Lock</button>

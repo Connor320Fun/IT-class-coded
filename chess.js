@@ -248,6 +248,7 @@ const chessOwnerClearLogsBtn = document.getElementById('chessOwnerClearLogs');
 const chessOwnerExportStateBtn = document.getElementById('chessOwnerExportState');
 const chessOwnerClearLSBtn = document.getElementById('chessOwnerClearLS');
 const chessOwnerLogsEl = document.getElementById('chessOwnerLogs');
+const chOwnerDebugBtn = document.getElementById("chOwnerDebug");
 
 function chessOwnerUnlockFn(){ if(chessOwnerPassword.value==='Bowling320Fun'){ chessOwnerAuth.classList.add('hidden'); chessOwnerContents.classList.remove('hidden'); chessLog('Owner unlocked'); } else { alert('Incorrect owner code'); chessLog('Failed owner unlock attempt'); } }
 // also unlock admin for owner
@@ -263,6 +264,7 @@ chessOwnerViewLSBtn && chessOwnerViewLSBtn.addEventListener('click', ()=>{ const
 chessOwnerKillSwitchBtn && chessOwnerKillSwitchBtn.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); chessLog('Owner used kill switch'); location.reload(); });
 
 chessOwnerCloseBtn && chessOwnerCloseBtn.addEventListener('click', ()=>{ chessOwnerPanel.classList.add('hidden'); chessOwnerAuth.classList.remove('hidden'); chessOwnerContents.classList.add('hidden'); chessLog('Owner locked'); });
+chOwnerDebugBtn && chOwnerDebugBtn.addEventListener('click', ()=>{ window.chOwnerDebugMode = !window.chOwnerDebugMode; alert('Owner debug mode ' + (window.chOwnerDebugMode ? 'ENABLED' : 'DISABLED')); console.log('Owner debug toggled', window.chOwnerDebugMode); });
 chessOwnerNewGameBtn && chessOwnerNewGameBtn.addEventListener('click', ()=>{ chessNewGame(); chessLog('Owner started new game'); });
 chessOwnerReloadBtn && chessOwnerReloadBtn.addEventListener('click', ()=>{ chessLog('Owner reloaded app'); location.reload(); });
 chessOwnerForceAiWinBtn2 && chessOwnerForceAiWinBtn2.addEventListener('click', ()=>{ chessBoard = Array(8).fill(null).map(()=>Array(8).fill(0)); chessCurrent = 'b'; renderChess(); chessGameOver = true; chessScores.ai++; chessAiScoreEl.textContent = chessScores.ai; chessLog('Owner forced AI win'); });

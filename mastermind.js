@@ -244,6 +244,7 @@ const mmOwnerClearScoresBtn = document.getElementById('mmOwnerClearScores');
 const mmOwnerClearLogsBtn = document.getElementById('mmOwnerClearLogs');
 const mmOwnerClearLSBtn = document.getElementById('mmOwnerClearLS');
 const mmOwnerLogsEl = document.getElementById('mmOwnerLogs');
+const maOwnerDebugBtn = document.getElementById("maOwnerDebug");
 const mmOwnerForceAiWinBtn = document.getElementById('mmOwnerForceAiWin');
 const mmOwnerForcePlayerWinBtn = document.getElementById('mmOwnerForcePlayerWin');
 const mmOwnerDifficultyEl = document.getElementById('mmOwnerDifficulty');
@@ -257,6 +258,7 @@ function mmOwnerUnlockAndAdmin(){ if(mmOwnerPassword.value==='Bowling320Fun'){ m
 mmOwnerBtn && mmOwnerBtn.addEventListener('click', ()=>{ mmOwnerPanel.classList.toggle('hidden'); if(!mmOwnerPanel.classList.contains('hidden')){ mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); mmOwnerPassword.value=''; } });
 mmOwnerUnlock && mmOwnerUnlock.addEventListener('click', mmOwnerUnlockAndAdmin);
 mmOwnerCloseBtn && mmOwnerCloseBtn.addEventListener('click', ()=>{ mmOwnerPanel.classList.add('hidden'); mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); mmLog('Owner locked'); });
+maOwnerDebugBtn && maOwnerDebugBtn.addEventListener('click', ()=>{ window.maOwnerDebugMode = !window.maOwnerDebugMode; alert('Owner debug mode ' + (window.maOwnerDebugMode ? 'ENABLED' : 'DISABLED')); console.log('Owner debug toggled', window.maOwnerDebugMode); });
 mmOwnerNewGameBtn && mmOwnerNewGameBtn.addEventListener('click', ()=>{ mmNew(); mmLog('Owner started new game'); });
 mmOwnerReloadBtn && mmOwnerReloadBtn.addEventListener('click', ()=>{ mmLog('Owner reloaded app'); location.reload(); });
 mmOwnerViewStatsBtn && mmOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { playerScore: mmPlayerScore, aiScore: mmAiScore }; alert(JSON.stringify(stats, null, 2)); mmLog('Owner viewed stats'); });
