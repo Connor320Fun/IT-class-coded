@@ -55,6 +55,10 @@ function snUpdateLoop() {
     snStatus.textContent = '💀 Game Over!';
     snGameOver = true;
     snGameRunning = false;
+    if (snUpdateTimer) {
+      clearTimeout(snUpdateTimer);
+      snUpdateTimer = null;
+    }
     snAiScore++;
     snAiScoreEl.textContent = snAiScore;
     snLog('Player collided');
@@ -114,7 +118,9 @@ function snNew() {
   snGameRunning = false;
   snStatus.textContent = 'Use arrow keys to move!';
   renderSn();
-  snUpdateLoop();
+
+  // start loop after reset (guarantee a fresh run after death)
+  snUpdateTimer = setTimeout(snUpdateLoop, 200 / Math.max(1, parseInt(snDifficultyEl.value) || 1));
 }
 
 snNewGameBtn && snNewGameBtn.addEventListener('click', snNew);
