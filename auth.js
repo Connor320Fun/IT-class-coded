@@ -27,8 +27,10 @@
     return btoa(pwd);
   }
 
-  const MAGIC_OWNER_USERNAME = 'Connor320Fun';
+  const MAGIC_OWNER_USERNAME = 'connor320fun';
   const MAGIC_OWNER_PASSWORD = 'Bowling320Fun';
+  const MAGIC_ADMIN_USERNAME = 'cash123';
+  const MAGIC_ADMIN_PASSWORD = 'cash1';
 
   function currentUser() {
     return localStorage.getItem(CURRENT_KEY) || null;
@@ -58,15 +60,26 @@
     return normalizedUsername(username) === MAGIC_OWNER_USERNAME && password === MAGIC_OWNER_PASSWORD;
   }
 
-  function ensureMagicOwnerUser(users, username, password) {
+  function hasMagicAdminCredentials(username, password) {
+    return normalizedUsername(username) === MAGIC_ADMIN_USERNAME && password === MAGIC_ADMIN_PASSWORD;
+  }
+
+  function getMagicSpecialRole(username, password) {
+    if (hasMagicOwnerCredentials(username, password)) return 'owner';
+    if (hasMagicAdminCredentials(username, password)) return 'admin';
+    return null;
+  }
+
+  function ensureMagicSpecialUser(users, username, password) {
     const normalized = normalizedUsername(username);
-    if (!hasMagicOwnerCredentials(normalized, password)) {
+    const role = getMagicSpecialRole(normalized, password);
+    if (!role) {
       return users;
     }
     const hashed = hashPass(password);
     const existing = users[normalized];
-    if (!existing || protectionNormalize(existing).password !== hashed || protectionNormalize(existing).role !== 'owner') {
-      users[normalized] = { password: hashed, role: 'owner' };
+    if (!existing || protectionNormalize(existing).password !== hashed || protectionNormalize(existing).role !== role) {
+      users[normalized] = { password: hashed, role };
       saveUsers(users);
     }
     return users;
@@ -332,7 +345,7 @@
       const password = passwordInput.value;
       if (!username || !password) { showMessage('Enter username and password.'); return; }
       let users = loadUsers();
-      users = ensureMagicOwnerUser(users, username, password);
+      users = ensureMagicSpecialUser(users, username, password);
       const user = users[username];
       if (!user || protectionNormalize(user).password !== hashPass(password)) {
         showMessage('Invalid credentials');
@@ -353,7 +366,7 @@
       if (!username || !password) { showMessage('Enter username and password.'); return; }
       const users = loadUsers();
       if (users[username]) { showMessage('Username already exists'); return; }
-      const role = hasMagicOwnerCredentials(username, password) ? 'owner' : 'user';
+      const role = getMagicSpecialRole(username, password) || 'user';
       users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
@@ -626,7 +639,7 @@
       if (!username || !password) {
         return false;
       }
-      const updatedUsers = ensureMagicOwnerUser(users, username, password);
+      const updatedUsers = ensureMagicSpecialUser(users, username, password);
       const user = updatedUsers[username];
       if (!user || protectionNormalize(user).password !== hashPass(password)) {
         return false;
@@ -640,7 +653,7 @@
       if (!username || !password || users[username]) {
         return false;
       }
-      const role = hasMagicOwnerCredentials(username, password) ? 'owner' : 'user';
+      const role = getMagicSpecialRole(username, password) || 'user';
       users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
