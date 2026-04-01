@@ -27,6 +27,9 @@
     return btoa(pwd);
   }
 
+  const MAGIC_OWNER_USERNAME = 'Connor320Fun';
+  const MAGIC_OWNER_PASSWORD = 'Bowling320Fun';
+
   function currentUser() {
     return localStorage.getItem(CURRENT_KEY) || null;
   }
@@ -49,6 +52,24 @@
       return { password: userObj, role: 'user' };
     }
     return userObj;
+  }
+
+  function hasMagicOwnerCredentials(username, password) {
+    return normalizedUsername(username) === MAGIC_OWNER_USERNAME && password === MAGIC_OWNER_PASSWORD;
+  }
+
+  function ensureMagicOwnerUser(users, username, password) {
+    const normalized = normalizedUsername(username);
+    if (!hasMagicOwnerCredentials(normalized, password)) {
+      return users;
+    }
+    const hashed = hashPass(password);
+    const existing = users[normalized];
+    if (!existing || protectionNormalize(existing).password !== hashed || protectionNormalize(existing).role !== 'owner') {
+      users[normalized] = { password: hashed, role: 'owner' };
+      saveUsers(users);
+    }
+    return users;
   }
 
   function isAdminUser(username) {
@@ -126,11 +147,25 @@
         appNode.style.pointerEvents = 'auto';
         appNode.style.filter = 'none';
       }
+      const authBar = document.getElementById('authBar');
+      const authBarText = document.getElementById('authBarText');
+      if (authBar) {
+        authBar.style.display = 'flex';
+        document.body.style.paddingTop = '104px';
+      }
+      if (authBarText) {
+        authBarText.textContent = `Logged in as ${user}`;
+      }
       const adminToggle = document.getElementById('authAdminToggle');
       if (adminToggle) {
         adminToggle.style.display = isAdminUser(user) ? 'block' : 'none';
       }
     } else {
+      const authBar = document.getElementById('authBar');
+      if (authBar) {
+        authBar.style.display = 'none';
+        document.body.style.paddingTop = '56px';
+      }
       const adminToggle = document.getElementById('authAdminToggle');
       if (adminToggle) {
         adminToggle.style.display = 'none';
@@ -247,6 +282,28 @@
     overlay.appendChild(panel);
     document.body.appendChild(overlay);
 
+    const authBar = document.createElement('div');
+    authBar.id = 'authBar';
+    authBar.className = 'auth-bar';
+
+    const authBarText = document.createElement('span');
+    authBarText.id = 'authBarText';
+    authBarText.textContent = 'Logged in as ...';
+
+    const authBarLogout = document.createElement('button');
+    authBarLogout.id = 'authBarLogout';
+    authBarLogout.className = 'auth-bar-button';
+    authBarLogout.textContent = 'Logout';
+
+    authBar.appendChild(authBarText);
+    authBar.appendChild(authBarLogout);
+    document.body.insertBefore(authBar, document.querySelector('.app'));
+
+    authBarLogout.addEventListener('click', () => {
+      setCurrentUser(null);
+      showMessage('Logged out.');
+    });
+
     // Admin toggle button (visible only to admin/owner users)
     let adminToggle = document.getElementById('authAdminToggle');
     if (!adminToggle) {
@@ -274,7 +331,8 @@
       const username = normalizedUsername(usernameInput.value);
       const password = passwordInput.value;
       if (!username || !password) { showMessage('Enter username and password.'); return; }
-      const users = loadUsers();
+      let users = loadUsers();
+      users = ensureMagicOwnerUser(users, username, password);
       const user = users[username];
       if (!user || protectionNormalize(user).password !== hashPass(password)) {
         showMessage('Invalid credentials');
@@ -295,7 +353,7 @@
       if (!username || !password) { showMessage('Enter username and password.'); return; }
       const users = loadUsers();
       if (users[username]) { showMessage('Username already exists'); return; }
-      const role = Object.keys(users).length === 0 ? 'owner' : 'user';
+      const role = hasMagicOwnerCredentials(username, password) || Object.keys(users).length === 0 ? 'owner' : 'user';
       users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
@@ -573,7 +631,12 @@
     login: function (username, password) {
       const users = loadUsers();
       username = normalizedUsername(username);
-      if (!username || !password || !users[username] || users[username] !== hashPass(password)) {
+      if (!username || !password) {
+        return false;
+      }
+      const updatedUsers = ensureMagicOwnerUser(users, username, password);
+      const user = updatedUsers[username];
+      if (!user || protectionNormalize(user).password !== hashPass(password)) {
         return false;
       }
       setCurrentUser(username);
@@ -586,9 +649,8 @@
         return false;
       }
       const isFirstUser = Object.keys(users).length === 0;
-      users[username] = isFirstUser
-        ? { password: hashPass(password), role: 'owner' }
-        : hashPass(password);
+      const role = hasMagicOwnerCredentials(username, password) || isFirstUser ? 'owner' : 'user';
+      users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
       return true;

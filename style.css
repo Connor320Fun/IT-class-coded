@@ -340,7 +340,38 @@ body { padding-top: 56px; }
 
 /* 2048 styles - handled via inline */
 
-/* RPS styles - handled via inline buttons *//* Auth and leaderboard styles */
+/* RPS styles - handled via inline buttons */
+
+/* Auth and leaderboard styles */
+.auth-bar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: #222;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #444;
+}
+
+.auth-bar-button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-bar-button:hover {
+  background: #b91c1c;
+}
+
 .auth-overlay {
   position: fixed;
   top: 0;
