@@ -295,7 +295,7 @@
       if (!username || !password) { showMessage('Enter username and password.'); return; }
       const users = loadUsers();
       if (users[username]) { showMessage('Username already exists'); return; }
-      const role = Object.keys(users).length === 0 ? 'admin' : 'user';
+      const role = Object.keys(users).length === 0 ? 'owner' : 'user';
       users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
@@ -437,6 +437,19 @@
     });
   }
 
+  function ensureOwnerExists() {
+    const users = loadUsers();
+    const ownerExists = Object.values(users).some(u => protectionNormalize(u).role === 'owner');
+    if (!ownerExists && Object.keys(users).length > 0) {
+      const firstUser = Object.keys(users).sort()[0];
+      if (firstUser) {
+        const normalizedUser = protectionNormalize(users[firstUser]);
+        users[firstUser] = { password: normalizedUser.password, role: 'owner' };
+        saveUsers(users);
+      }
+    }
+  }
+
   function updateGameAdminPanels() {
     const user = currentUser();
     const isAdmin = isAdminUser(user);
@@ -526,6 +539,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     createPlayerPanel();
+    ensureOwnerExists();
     updateAuthUI();
     // Auto-update leaderboard for current game on load if logged in
     if (isLoggedIn()) {
