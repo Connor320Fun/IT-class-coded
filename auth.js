@@ -405,18 +405,22 @@
 
     management.style.display = 'block';
     const users = loadUsers();
+    const currentRole = protectionNormalize(users[current] || {}).role || 'user';
+    const isOwner = currentRole === 'owner';
     const rows = Object.keys(users).sort().map(u => {
       const userObj = protectionNormalize(users[u]);
       const role = userObj.role || 'user';
       const canDelete = u !== current;
       const deleteBtn = canDelete ? `<button class="auth-user-delete" data-user="${u}">Remove</button>` : '';
-      return `<tr><td>${u}</td><td>${role}</td><td>${deleteBtn}</td></tr>`;
+      const promoteBtn = isOwner && u !== current && role !== 'admin' ? `<button class="auth-user-promote" data-user="${u}">Make admin</button>` : '';
+      const demoteBtn = isOwner && u !== current && role === 'admin' ? `<button class="auth-user-demote" data-user="${u}">Demote</button>` : '';
+      return `<tr><td>${u}</td><td>${role}</td><td>${deleteBtn} ${promoteBtn} ${demoteBtn}</td></tr>`;
     }).join('');
 
     management.innerHTML = `
       <h3>Accounts (admin panel)</h3>
       <table class="auth-table"><thead><tr><th>User</th><th>Role</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>
-      <p><small>Only admin/owner sees this view.</small></p>
+      <p><small>Only owner/admin sees this view (promote rights reserved for owner).</small></p>
     `;
 
     management.querySelectorAll('.auth-user-delete').forEach(btn => {
@@ -431,6 +435,34 @@
           setCurrentUser(null);
         }
         showMessage(`User ${u} removed.`);
+        renderUserManagement();
+        updateGameAdminPanels();
+      });
+    });
+
+    management.querySelectorAll('.auth-user-promote').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const u = e.target.getAttribute('data-user');
+        if (!u) return;
+        const usersList = loadUsers();
+        if (!usersList[u]) return;
+        usersList[u] = { ...protectionNormalize(usersList[u]), role: 'admin' };
+        saveUsers(usersList);
+        showMessage(`User ${u} promoted to admin.`);
+        renderUserManagement();
+        updateGameAdminPanels();
+      });
+    });
+
+    management.querySelectorAll('.auth-user-demote').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const u = e.target.getAttribute('data-user');
+        if (!u) return;
+        const usersList = loadUsers();
+        if (!usersList[u]) return;
+        usersList[u] = { ...protectionNormalize(usersList[u]), role: 'user' };
+        saveUsers(usersList);
+        showMessage(`Admin ${u} demoted to user.`);
         renderUserManagement();
         updateGameAdminPanels();
       });
@@ -471,18 +503,22 @@
 
       panel.style.display = 'block';
       const users = loadUsers();
+      const userRole = protectionNormalize(users[user] || {}).role || 'user';
+      const isOwner = userRole === 'owner';
       const rows = Object.keys(users).sort().map(u => {
         const userObj = protectionNormalize(users[u]);
         const role = userObj.role || 'user';
         const canDelete = u !== user;
         const deleteBtn = canDelete ? `<button class="auth-user-delete" data-user="${u}">Remove</button>` : '';
-        return `<tr><td>${u}</td><td>${role}</td><td>${deleteBtn}</td></tr>`;
+        const promoteBtn = isOwner && u !== user && role !== 'admin' ? `<button class="auth-user-promote" data-user="${u}">Make admin</button>` : '';
+        const demoteBtn = isOwner && u !== user && role === 'admin' ? `<button class="auth-user-demote" data-user="${u}">Demote</button>` : '';
+        return `<tr><td>${u}</td><td>${role}</td><td>${deleteBtn} ${promoteBtn} ${demoteBtn}</td></tr>`;
       }).join('');
 
       panel.innerHTML = `
         <h3>Accounts</h3>
         <table class="auth-table"><thead><tr><th>User</th><th>Role</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>
-        <p><small>Only admin/owner sees and can remove accounts from here.</small></p>
+        <p><small>Only admin/owner sees and can manage accounts from here (promote via owner).</small></p>
       `;
 
       panel.querySelectorAll('.auth-user-delete').forEach(btn => {
@@ -497,6 +533,34 @@
             setCurrentUser(null);
           }
           showMessage(`User ${u} removed.`);
+          renderUserManagement();
+          updateGameAdminPanels();
+        });
+      });
+
+      panel.querySelectorAll('.auth-user-promote').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const u = e.target.getAttribute('data-user');
+          if (!u) return;
+          const usersList = loadUsers();
+          if (!usersList[u]) return;
+          usersList[u] = { ...protectionNormalize(usersList[u]), role: 'admin' };
+          saveUsers(usersList);
+          showMessage(`User ${u} promoted to admin.`);
+          renderUserManagement();
+          updateGameAdminPanels();
+        });
+      });
+
+      panel.querySelectorAll('.auth-user-demote').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const u = e.target.getAttribute('data-user');
+          if (!u) return;
+          const usersList = loadUsers();
+          if (!usersList[u]) return;
+          usersList[u] = { ...protectionNormalize(usersList[u]), role: 'user' };
+          saveUsers(usersList);
+          showMessage(`Admin ${u} demoted to user.`);
           renderUserManagement();
           updateGameAdminPanels();
         });
