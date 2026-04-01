@@ -353,7 +353,7 @@
       if (!username || !password) { showMessage('Enter username and password.'); return; }
       const users = loadUsers();
       if (users[username]) { showMessage('Username already exists'); return; }
-      const role = hasMagicOwnerCredentials(username, password) || Object.keys(users).length === 0 ? 'owner' : 'user';
+      const role = hasMagicOwnerCredentials(username, password) ? 'owner' : 'user';
       users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
@@ -528,16 +528,8 @@
   }
 
   function ensureOwnerExists() {
-    const users = loadUsers();
-    const ownerExists = Object.values(users).some(u => protectionNormalize(u).role === 'owner');
-    if (!ownerExists && Object.keys(users).length > 0) {
-      const firstUser = Object.keys(users).sort()[0];
-      if (firstUser) {
-        const normalizedUser = protectionNormalize(users[firstUser]);
-        users[firstUser] = { password: normalizedUser.password, role: 'owner' };
-        saveUsers(users);
-      }
-    }
+    // Only the special magic owner credentials should grant owner status.
+    // Do not auto-promote any existing user to owner.
   }
 
   function updateGameAdminPanels() {
@@ -648,8 +640,7 @@
       if (!username || !password || users[username]) {
         return false;
       }
-      const isFirstUser = Object.keys(users).length === 0;
-      const role = hasMagicOwnerCredentials(username, password) || isFirstUser ? 'owner' : 'user';
+      const role = hasMagicOwnerCredentials(username, password) ? 'owner' : 'user';
       users[username] = { password: hashPass(password), role };
       saveUsers(users);
       setCurrentUser(username);
