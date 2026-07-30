@@ -62,7 +62,10 @@ function playerFlip(i){
 function aiTurn(){ // simple memory based AI
   // if AI knows a pair, take it
   for(let a in seen){ for(let b in seen){ if(a!==b && seen[a]===seen[b] && !matched.has(parseInt(a)) && !matched.has(parseInt(b))){ // take this pair
-      matched.add(parseInt(a)); matched.add(parseInt(b)); aiPairs++; mmStatus.textContent='AI found a pair'; render(); turn='player'; checkEnd(); return; } }}
+      matched.add(parseInt(a)); matched.add(parseInt(b));
+      // remove from AI memory
+      delete seen[a]; delete seen[b];
+      aiPairs++; mmStatus.textContent='AI found a pair'; render(); turn='player'; checkEnd(); return; } }}
   // otherwise reveal two cards randomly (prefer unseen)
   const candidates = cards.map((_,i)=>i).filter(i=>!matched.has(i) && !revealed[i]);
   if(candidates.length===0){ turn='player'; return; }
@@ -70,16 +73,22 @@ function aiTurn(){ // simple memory based AI
     // try to find match in seen
     let matchIdx = Object.keys(seen).find(k=>seen[k]===cards[pick] && parseInt(k)!==pick && !matched.has(parseInt(k)));
     if(matchIdx!==undefined){ // take known match
-      matched.add(pick); matched.add(parseInt(matchIdx)); aiPairs++; mmStatus.textContent='AI found a match using memory'; render(); turn='player'; checkEnd(); return;
+      matched.add(pick); matched.add(parseInt(matchIdx));
+      // remove from memory
+      delete seen[pick]; delete seen[matchIdx];
+      aiPairs++; mmStatus.textContent='AI found a match using memory'; render(); turn='player'; checkEnd(); return;
     }
     // pick second random
     const rem = candidates.filter(x=>x!==pick);
     if(rem.length===0){ revealed[pick]=false; render(); turn='player'; return; }
     const pick2 = rem[Math.floor(Math.random()*rem.length)]; revealed[pick2]=true; seen[pick2]=cards[pick2]; render(); setTimeout(()=>{
-      if(cards[pick]===cards[pick2]){ matched.add(pick); matched.add(pick2); aiPairs++; mmStatus.textContent='AI lucked a pair'; }
-      else { revealed[pick]=false; revealed[pick2]=false; mmStatus.textContent='AI did not match'; }
-      render(); turn='player'; checkEnd();
-    },700);
+      if(cards[pick]===cards[pick2]){ matched.add(pick); matched.add(pick2);
+          // remove matched from memory
+          delete seen[pick]; delete seen[pick2];
+          aiPairs++; mmStatus.textContent='AI lucked a pair';
+        } else { revealed[pick]=false; revealed[pick2]=false; mmStatus.textContent='AI did not match'; }
+        render(); turn='player'; checkEnd();
+      },700);
   },700);
 }
 
