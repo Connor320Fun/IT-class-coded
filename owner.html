@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Owner Control Panel</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .owner-area{max-width:900px;margin:12px auto}
+    .owner-actions{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+    .owner-output{background:#111;color:#eee;padding:8px;border:1px solid #333;max-height:300px;overflow:auto}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+    <a href="minesweeper.html">Minesweeper</a>
+    <a href="snake.html">Snake</a>
+    <a href="mastermind.html">Mastermind</a>
+    <a href="rps.html">Rock Paper Scissors</a>
+    <a href="2048.html">2048</a>
+    <a href="pong.html">Pong</a>
+    <a href="blackjack.html">Blackjack</a>
+    <a href="memory.html">Memory Match</a>
+    <a href="owner.html">Owner</a>
+  </nav>
+
+  <div class="app owner-area">
+    <h1>Owner Control Panel</h1>
+
+    <div id="ownerAuth">
+      <label>Enter owner code:</label>
+      <input id="ownerPassword" type="password" placeholder="owner code" />
+      <button id="ownerUnlock">Unlock</button>
+    </div>
+
+    <div id="ownerContents" class="locked hidden">
+      <h3>Owner Actions</h3>
+      <div class="owner-actions">
+        <button id="ownerReload">Reload App</button>
+        <button id="ownerKill">Kill Switch (clear localStorage + reload)</button>
+        <button id="ownerViewLS">View LocalStorage</button>
+        <button id="ownerClearLS">Clear LocalStorage</button>
+        <button id="ownerExportLS">Export LocalStorage</button>
+        <button id="ownerSetBroadcast">Set Broadcast Message</button>
+      </div>
+
+      <h3>Owner Output</h3>
+      <div id="ownerOutput" class="owner-output">No output yet.</div>
+
+      <h3>Utilities</h3>
+      <div>
+        <label>Broadcast message (stored key owner_broadcast):</label>
+        <input id="ownerBroadcastText" style="width:60%" />
+        <button id="ownerSaveBroadcast">Save</button>
+        <button id="ownerClearBroadcast">Clear</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <button id="ownerLock">Lock</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="owner.js"></script>
+</body>
+</html>
