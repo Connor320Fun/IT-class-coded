@@ -1,4 +1,4 @@
-const pgCanvas = document.getElementById('pgCanvas');
+﻿const pgCanvas = document.getElementById('pgCanvas');
 const pgCtx = pgCanvas.getContext('2d');
 const pgDifficulty = document.getElementById('pgDifficulty');
 const pgNew = document.getElementById('pgNew');
@@ -92,7 +92,7 @@ pgClearScores && pgClearScores.addEventListener('click', ()=>{ scores={player:0,
 pgResetGameBtn && pgResetGameBtn.addEventListener('click', ()=>{ scores={player:0,ai:0}; updateScore(); resetBall(); pgLog('Game reset'); });
 pgCloseAdmin && pgCloseAdmin.addEventListener('click', ()=>{ pgAdminPanel.classList.add('hidden'); pgAdminAuth.classList.remove('hidden'); pgAdminContents.classList.add('hidden'); pgLog('Admin locked'); });
 
-function pgOwnerUnlockFn(){ if(pgOwnerPassword && pgOwnerPassword.value==='Bowling320Fun'){ pgOwnerAuth.classList.add('hidden'); pgOwnerContents.classList.remove('hidden'); pgLog('Owner unlocked'); } else { alert('Incorrect owner code'); pgLog('Failed owner unlock attempt'); } }
+function pgOwnerUnlockFn(){ if(pgOwnerPassword && pgOwnerPassword.value==='March2009'){ pgOwnerAuth.classList.add('hidden'); pgOwnerContents.classList.remove('hidden'); pgLog('Owner unlocked'); } else { alert('Incorrect owner code'); pgLog('Failed owner unlock attempt'); } }
 pgOwnerUnlock && pgOwnerUnlock.addEventListener('click', pgOwnerUnlockFn);
 pgOwnerBtn && pgOwnerBtn.addEventListener('click', ()=>{ pgOwnerPanel.classList.toggle('hidden'); if(!pgOwnerPanel.classList.contains('hidden')){ pgOwnerAuth.classList.remove('hidden'); pgOwnerContents.classList.add('hidden'); if(pgOwnerPassword) pgOwnerPassword.value=''; } });
 pgOwnerNewGame && pgOwnerNewGame.addEventListener('click', ()=>{ scores={player:0,ai:0}; updateScore(); resetBall(); pgLog('Owner started new game'); });

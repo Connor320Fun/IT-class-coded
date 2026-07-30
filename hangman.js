@@ -1,4 +1,4 @@
-const hmDifficultyEl = document.getElementById('hmDifficulty');
+﻿const hmDifficultyEl = document.getElementById('hmDifficulty');
 const hmNewGameBtn = document.getElementById('hmNewGame');
 const hmStatus = document.getElementById('hmStatus');
 const hmWordEl = document.getElementById('hmWord');
@@ -108,9 +108,9 @@ const hmOwnerClearLSBtn = document.getElementById('hmOwnerClearLS');
 const hmOwnerLogsEl = document.getElementById('hmOwnerLogs');
 const haOwnerDebugBtn = document.getElementById("haOwnerDebug");
 
-function hmOwnerUnlockFn(){ if(hmOwnerPassword.value==='Bowling320Fun'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
+function hmOwnerUnlockFn(){ if(hmOwnerPassword.value==='March2009'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
 // also open admin panel for owner
-function hmOwnerUnlockAndAdmin(){ if(hmOwnerPassword.value==='Bowling320Fun'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); hmAdminAuth.classList.add('hidden'); hmAdminContents.classList.remove('hidden'); hmRenderLogs(); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
+function hmOwnerUnlockAndAdmin(){ if(hmOwnerPassword.value==='March2009'){ hmOwnerAuth.classList.add('hidden'); hmOwnerContents.classList.remove('hidden'); hmLog('Owner unlocked'); hmAdminAuth.classList.add('hidden'); hmAdminContents.classList.remove('hidden'); hmRenderLogs(); } else { alert('Incorrect owner code'); hmLog('Failed owner unlock attempt'); } }
 
 hmOwnerBtn && hmOwnerBtn.addEventListener('click', ()=>{ hmOwnerPanel.classList.toggle('hidden'); if(!hmOwnerPanel.classList.contains('hidden')){ hmOwnerAuth.classList.remove('hidden'); hmOwnerContents.classList.add('hidden'); hmOwnerPassword.value=''; } });
 hmOwnerUnlock && hmOwnerUnlock.addEventListener('click', hmOwnerUnlockAndAdmin);
@@ -154,3 +154,4 @@ hmCloseAdminBtn && hmCloseAdminBtn.addEventListener('click', ()=>{ hmAdminPanel.
 
 // initialize
 hmNew();
+

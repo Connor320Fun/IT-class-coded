@@ -1,4 +1,4 @@
-// Simple Connect Four with 5 AI difficulty levels
+﻿// Simple Connect Four with 5 AI difficulty levels
 const ROWS = 6;
 const COLS = 7;
 
@@ -29,7 +29,7 @@ function renderCfBoard() {
       cell.dataset.r = r;
       cell.dataset.c = c;
       const v = cfBoard[r][c];
-      cell.textContent = v === 'P' ? '●' : v === 'A' ? '○' : '';
+      cell.textContent = v === 'P' ? 'â—' : v === 'A' ? 'â—‹' : '';
       // Only attach column-click to top row visuals for convenience
       if (r === 0) {
         cell.addEventListener('click', () => {
@@ -238,7 +238,7 @@ const cfClearBoardBtn = document.getElementById('cfClearBoard');
 const cfResetGameBtn = document.getElementById('cfResetGame');
 const cfClearScoresBtn = document.getElementById('cfClearScores');
 
-// Owner panel wiring (owner code: Bowling320Fun)
+// Owner panel wiring (owner code: March2009)
 const cfOwnerBtn = document.getElementById('cfOwnerBtn');
 const cfOwnerPanel = document.getElementById('cfOwnerPanel');
 const cfOwnerAuth = document.getElementById('cfOwnerAuth');
@@ -266,10 +266,10 @@ const cfOwnerClearLSBtn = document.getElementById('cfOwnerClearLS');
 const cfOwnerLogsEl = document.getElementById('cfOwnerLogs');
 const coOwnerDebugBtn = document.getElementById("coOwnerDebug");
 
-function cfOwnerUnlockFn(){ if (cfOwnerPassword.value==='Bowling320Fun'){ cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked'); } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); } }
+function cfOwnerUnlockFn(){ if (cfOwnerPassword.value==='March2009'){ cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked'); } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); } }
 // also grant admin access when owner unlocks
 function cfOwnerUnlockAndAdmin(){
-  if (cfOwnerPassword.value==='Bowling320Fun'){
+  if (cfOwnerPassword.value==='March2009'){
     cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked');
     cfAdminUnlocked = true; cfAdminAuth.classList.add('hidden'); cfAdminContents.classList.remove('hidden'); cfRenderAdminLogs(); cfRenderLiveStats();
   } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); }
@@ -316,7 +316,7 @@ function cfSaveAdminLogs() { localStorage.setItem('cf_admin_logs', JSON.stringif
 function cfLog(action) { const entry = `${new Date().toISOString()} - ${action}`; cfAdminLogs.unshift(entry); if (cfAdminLogs.length>200) cfAdminLogs.pop(); cfSaveAdminLogs(); cfRenderAdminLogs(); if(cfOwnerLogsEl) cfOwnerLogsEl.innerHTML = cfAdminLogs.map(l=>`<div>${l}</div>`).join(''); }
 function cfRenderAdminLogs() { if(!cfAdminLogsEl) return; cfAdminLogsEl.innerHTML = cfAdminLogs.map(l=>`<div>${l}</div>`).join(''); }
 function cfRenderLiveStats() {
-  if (cfLiveBoardEl) { cfLiveBoardEl.innerHTML=''; for(let i=0;i<ROWS*COLS;i++){ const el=document.createElement('div'); el.className='cell'; const r=Math.floor(i/COLS), c=i%COLS; el.textContent = cfBoard[r][c]? (cfBoard[r][c]==='P'?'●':'○') : ''; cfLiveBoardEl.appendChild(el);} }
+  if (cfLiveBoardEl) { cfLiveBoardEl.innerHTML=''; for(let i=0;i<ROWS*COLS;i++){ const el=document.createElement('div'); el.className='cell'; const r=Math.floor(i/COLS), c=i%COLS; el.textContent = cfBoard[r][c]? (cfBoard[r][c]==='P'?'â—':'â—‹') : ''; cfLiveBoardEl.appendChild(el);} }
   if (cfLiveScoresEl) cfLiveScoresEl.textContent = `Player: ${cfScores.player}  AI: ${cfScores.ai}  Draws: ${cfScores.draw}`;
 }
 
@@ -374,4 +374,5 @@ cfCloseAdminBtn && cfCloseAdminBtn.addEventListener('click', ()=>{ cfAdminPanel.
 // wire live stats updates
 const origRenderCfBoard = renderCfBoard;
 renderCfBoard = function(){ origRenderCfBoard(); cfRenderLiveStats(); };
+
 

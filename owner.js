@@ -1,6 +1,6 @@
-// Owner panel client-side gate (NOT secure) - owner code: Bowling320Fun
+﻿// Owner panel client-side gate (NOT secure) - owner code: March2009
 (function(){
-  const OWNER_CODE = 'Bowling320Fun';
+  const OWNER_CODE = 'March2009';
   const authEl = document.getElementById('ownerAuth');
   const contents = document.getElementById('ownerContents');
   const output = document.getElementById('ownerOutput');
@@ -47,7 +47,7 @@
   document.getElementById('ownerKill').addEventListener('click', ()=>{
     if(!confirm('Kill switch will clear localStorage and reload. Continue?')) return;
     localStorage.clear();
-    show('localStorage cleared — reloading');
+    show('localStorage cleared â€” reloading');
     setTimeout(()=>location.reload(),200);
   });
 

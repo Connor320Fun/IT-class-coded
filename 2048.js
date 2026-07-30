@@ -1,4 +1,4 @@
-const twBoardEl = document.getElementById('twBoard');
+﻿const twBoardEl = document.getElementById('twBoard');
 const twStatus = document.getElementById('twStatus');
 const twNewGameBtn = document.getElementById('twNewGame');
 const twPlayerScoreEl = document.getElementById('twPlayerScore');
@@ -100,7 +100,7 @@ function twMove(dir) {
     twPlayerScoreEl.textContent = twPlayerScore;
     if(!twCanMove()) {
       twGameOver = true;
-      twStatus.textContent = '💀 Game Over!';
+      twStatus.textContent = 'ðŸ’€ Game Over!';
       twAiScore++;
       twAiScoreEl.textContent = twAiScore;
       twLog('Player game over');
@@ -172,7 +172,7 @@ const twOwnerStateInputEl = document.getElementById('twOwnerStateInput');
 const twOwnerSetStateBtn = document.getElementById('twOwnerSetState');
 const twOwnerExportStateBtn = document.getElementById('twOwnerExportState');
 
-function twOwnerUnlockAndAdmin(){ if(twOwnerPassword.value==='Bowling320Fun'){ twOwnerAuth.classList.add('hidden'); twOwnerContents.classList.remove('hidden'); twLog('Owner unlocked'); twAdminAuth.classList.add('hidden'); twAdminContents.classList.remove('hidden'); twRenderLogs(); } else { alert('Incorrect owner code'); twLog('Failed owner unlock attempt'); } }
+function twOwnerUnlockAndAdmin(){ if(twOwnerPassword.value==='March2009'){ twOwnerAuth.classList.add('hidden'); twOwnerContents.classList.remove('hidden'); twLog('Owner unlocked'); twAdminAuth.classList.add('hidden'); twAdminContents.classList.remove('hidden'); twRenderLogs(); } else { alert('Incorrect owner code'); twLog('Failed owner unlock attempt'); } }
 
 twOwnerBtn && twOwnerBtn.addEventListener('click', ()=>{ twOwnerPanel.classList.toggle('hidden'); if(!twOwnerPanel.classList.contains('hidden')){ twOwnerAuth.classList.remove('hidden'); twOwnerContents.classList.add('hidden'); twOwnerPassword.value=''; } });
 twOwnerUnlock && twOwnerUnlock.addEventListener('click', twOwnerUnlockAndAdmin);
@@ -198,3 +198,4 @@ function twRenderLogs(){ if(twAdminLogsEl) twAdminLogsEl.innerHTML = twLogs.map(
 twNew();
 
 twNew();
+

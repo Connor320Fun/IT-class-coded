@@ -1,4 +1,4 @@
-const SN_SIZE = 16;
+﻿const SN_SIZE = 16;
 const snBoardEl = document.getElementById('snBoard');
 const snStatus = document.getElementById('snStatus');
 const snNewGameBtn = document.getElementById('snNewGame');
@@ -60,7 +60,7 @@ function snUpdateLoop() {
   if (snPlayerDir === 'down') newHead.y++;
 
   if (newHead.x < 0 || newHead.x >= SN_SIZE || newHead.y < 0 || newHead.y >= SN_SIZE || snPlayerSnake.some(s => s.x === newHead.x && s.y === newHead.y)) {
-    snStatus.textContent = '💀 Game Over! Click New Game';
+    snStatus.textContent = 'ðŸ’€ Game Over! Click New Game';
     snGameOver = true;
     snGameRunning = false;
     snAiScore++;
@@ -212,8 +212,8 @@ function snUnlock(){ if(snAdminPassword.value==='0320'){ snAdminAuth.classList.a
 snAdminBtn && snAdminBtn.addEventListener('click', ()=>{ snAdminPanel.classList.toggle('hidden'); if(!snAdminPanel.classList.contains('hidden')){ snAdminAuth.classList.remove('hidden'); snAdminContents.classList.add('hidden'); snAdminPassword.value=''; snRenderLogs(); } });
 snAdminUnlock && snAdminUnlock.addEventListener('click', snUnlock);
 snAdminDifficulty && snAdminDifficulty.addEventListener('change', ()=>{ snDifficultyEl.value = snAdminDifficulty.value; snLog(`Difficulty set to ${snAdminDifficulty.value}`); });
-snForcePlayerWinBtn && snForcePlayerWinBtn.addEventListener('click', ()=>{ snGameOver=true; snPlayerScore+=10; snPlayerScoreEl.textContent=snPlayerScore; snStatus.textContent='🎉 You won!'; renderSn(); snLog('Forced player win'); });
-snForceAiWinBtn && snForceAiWinBtn.addEventListener('click', ()=>{ snGameOver=true; snAiScore+=10; snAiScoreEl.textContent=snAiScore; snStatus.textContent='💀 AI won!'; renderSn(); snLog('Forced AI win'); });
+snForcePlayerWinBtn && snForcePlayerWinBtn.addEventListener('click', ()=>{ snGameOver=true; snPlayerScore+=10; snPlayerScoreEl.textContent=snPlayerScore; snStatus.textContent='ðŸŽ‰ You won!'; renderSn(); snLog('Forced player win'); });
+snForceAiWinBtn && snForceAiWinBtn.addEventListener('click', ()=>{ snGameOver=true; snAiScore+=10; snAiScoreEl.textContent=snAiScore; snStatus.textContent='ðŸ’€ AI won!'; renderSn(); snLog('Forced AI win'); });
 snClearScoresBtn && snClearScoresBtn.addEventListener('click', ()=>{ snPlayerScore=0; snAiScore=0; snPlayerScoreEl.textContent=0; snAiScoreEl.textContent=0; localStorage.removeItem('sn_scores'); snLog('Cleared scores'); });
 snResetGameBtn && snResetGameBtn.addEventListener('click', ()=>{ snNew(); snLog('Game reset'); });
 snResetLocalStorageBtn && snResetLocalStorageBtn.addEventListener('click', ()=>{ localStorage.clear(); snLogs=[]; snSaveLogs(); snRenderLogs(); snLog('Reset localStorage'); });
@@ -243,7 +243,7 @@ const snOwnerClearLSBtn = document.getElementById('snOwnerClearLS');
 const snOwnerLogsEl = document.getElementById('snOwnerLogs');
 const snOwnerDebugBtn = document.getElementById("snOwnerDebug");
 
-function snOwnerUnlockAndAdmin(){ if(snOwnerPassword.value==='Bowling320Fun'){ snOwnerAuth.classList.add('hidden'); snOwnerContents.classList.remove('hidden'); snLog('Owner unlocked'); snAdminAuth.classList.add('hidden'); snAdminContents.classList.remove('hidden'); snRenderLogs(); } else { alert('Incorrect owner code'); snLog('Failed owner unlock attempt'); } }
+function snOwnerUnlockAndAdmin(){ if(snOwnerPassword.value==='March2009'){ snOwnerAuth.classList.add('hidden'); snOwnerContents.classList.remove('hidden'); snLog('Owner unlocked'); snAdminAuth.classList.add('hidden'); snAdminContents.classList.remove('hidden'); snRenderLogs(); } else { alert('Incorrect owner code'); snLog('Failed owner unlock attempt'); } }
 
 snOwnerBtn && snOwnerBtn.addEventListener('click', ()=>{ snOwnerPanel.classList.toggle('hidden'); if(!snOwnerPanel.classList.contains('hidden')){ snOwnerAuth.classList.remove('hidden'); snOwnerContents.classList.add('hidden'); snOwnerPassword.value=''; } });
 snOwnerUnlock && snOwnerUnlock.addEventListener('click', snOwnerUnlockAndAdmin);
@@ -251,8 +251,8 @@ snOwnerCloseBtn && snOwnerCloseBtn.addEventListener('click', ()=>{ snOwnerPanel.
 snOwnerDebugBtn && snOwnerDebugBtn.addEventListener('click', ()=>{ window.snOwnerDebugMode = !window.snOwnerDebugMode; alert('Owner Debug Mode: ' + (window.snOwnerDebugMode ? 'ENABLED' : 'DISABLED')); snLog && snLog('Owner toggled debug mode to ' + window.snOwnerDebugMode); });
 snOwnerNewGameBtn && snOwnerNewGameBtn.addEventListener('click', ()=>{ snNew(); snLog('Owner started new game'); });
 snOwnerReloadBtn && snOwnerReloadBtn.addEventListener('click', ()=>{ snLog('Owner reloaded app'); location.reload(); });
-snOwnerForcePlayerWinBtn2 && snOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ snGameOver=true; snPlayerScore+=10; snPlayerScoreEl.textContent=snPlayerScore; snStatus.textContent='🎉 You won!'; renderSn(); snLog('Owner forced player win'); });
-snOwnerForceAiWinBtn2 && snOwnerForceAiWinBtn2.addEventListener('click', ()=>{ snGameOver=true; snAiScore+=10; snAiScoreEl.textContent=snAiScore; snStatus.textContent='💀 AI won!'; renderSn(); snLog('Owner forced AI win'); });
+snOwnerForcePlayerWinBtn2 && snOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ snGameOver=true; snPlayerScore+=10; snPlayerScoreEl.textContent=snPlayerScore; snStatus.textContent='ðŸŽ‰ You won!'; renderSn(); snLog('Owner forced player win'); });
+snOwnerForceAiWinBtn2 && snOwnerForceAiWinBtn2.addEventListener('click', ()=>{ snGameOver=true; snAiScore+=10; snAiScoreEl.textContent=snAiScore; snStatus.textContent='ðŸ’€ AI won!'; renderSn(); snLog('Owner forced AI win'); });
 snOwnerApplyDiffBtn && snOwnerApplyDiffBtn.addEventListener('click', ()=>{ snDifficultyEl.value = snOwnerDifficultyEl.value; snLog(`Owner set difficulty to ${snOwnerDifficultyEl.value}`); alert('Difficulty updated'); });
 snOwnerViewStatsBtn && snOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { playerScore: snPlayerScore, aiScore: snAiScore }; alert(JSON.stringify(stats, null, 2)); snLog('Owner viewed stats'); });
 snOwnerClearScoresBtn && snOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; snPlayerScore=0; snAiScore=0; snPlayerScoreEl.textContent=0; snAiScoreEl.textContent=0; localStorage.removeItem('sn_scores'); snLog('Owner cleared scores'); });
@@ -267,3 +267,4 @@ function snRenderLogs(){ if(snAdminLogsEl) snAdminLogsEl.innerHTML = snLogs.map(
 
 // init
 snNew();
+

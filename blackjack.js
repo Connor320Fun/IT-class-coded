@@ -1,4 +1,4 @@
-function deck(){ const suits=['♠','♥','♦','♣']; const vals=['A','2','3','4','5','6','7','8','9','10','J','Q','K']; let d=[]; suits.forEach(s=>vals.forEach(v=>d.push(v+s))); return d; }
+﻿function deck(){ const suits=['â™ ','â™¥','â™¦','â™£']; const vals=['A','2','3','4','5','6','7','8','9','10','J','Q','K']; let d=[]; suits.forEach(s=>vals.forEach(v=>d.push(v+s))); return d; }
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
 function valueOf(cards){ let total=0, aces=0; for(const c of cards){ let v=c.slice(0,-1); if(v==='A'){aces++; total+=11;} else if(['J','Q','K'].includes(v)){ total+=10;} else total+=parseInt(v,10); } while(total>21 && aces>0){ total-=10; aces--; } return total; }
 
@@ -66,20 +66,20 @@ function bjUnlock(){ if(bjAdminPassword && bjAdminPassword.value==='0320'){ bjAd
 bjAdminUnlock && bjAdminUnlock.addEventListener('click', bjUnlock);
 bjAdminBtn && bjAdminBtn.addEventListener('click', ()=>{ bjAdminPanel.classList.toggle('hidden'); if(!bjAdminPanel.classList.contains('hidden')){ bjAdminAuth.classList.remove('hidden'); bjAdminContents.classList.add('hidden'); if(bjAdminPassword) bjAdminPassword.value=''; } });
 
-bjForcePlayerWin && bjForcePlayerWin.addEventListener('click', ()=>{ playerCards = [ 'A♠' ]; dealerCards = []; render(); bjLog('Forced player win'); });
-bjForceAiWin && bjForceAiWin.addEventListener('click', ()=>{ dealerCards = ['A♠','K♠','Q♠']; render(); bjLog('Forced AI win'); });
+bjForcePlayerWin && bjForcePlayerWin.addEventListener('click', ()=>{ playerCards = [ 'Aâ™ ' ]; dealerCards = []; render(); bjLog('Forced player win'); });
+bjForceAiWin && bjForceAiWin.addEventListener('click', ()=>{ dealerCards = ['Aâ™ ','Kâ™ ','Qâ™ ']; render(); bjLog('Forced AI win'); });
 bjClearScores && bjClearScores.addEventListener('click', ()=>{ bjLog('Cleared scores'); });
 bjResetGameBtn && bjResetGameBtn.addEventListener('click', ()=>{ start(); bjLog('Game reset'); });
 bjCloseAdmin && bjCloseAdmin.addEventListener('click', ()=>{ bjAdminPanel.classList.add('hidden'); bjAdminAuth.classList.remove('hidden'); bjAdminContents.classList.add('hidden'); bjLog('Admin locked'); });
 
-function bjOwnerUnlockFn(){ if(bjOwnerPassword && bjOwnerPassword.value==='Bowling320Fun'){ bjOwnerAuth.classList.add('hidden'); bjOwnerContents.classList.remove('hidden'); bjLog('Owner unlocked'); } else { alert('Incorrect owner code'); bjLog('Failed owner unlock attempt'); } }
+function bjOwnerUnlockFn(){ if(bjOwnerPassword && bjOwnerPassword.value==='March2009'){ bjOwnerAuth.classList.add('hidden'); bjOwnerContents.classList.remove('hidden'); bjLog('Owner unlocked'); } else { alert('Incorrect owner code'); bjLog('Failed owner unlock attempt'); } }
 bjOwnerUnlock && bjOwnerUnlock.addEventListener('click', bjOwnerUnlockFn);
 bjOwnerBtn && bjOwnerBtn.addEventListener('click', ()=>{ bjOwnerPanel.classList.toggle('hidden'); if(!bjOwnerPanel.classList.contains('hidden')){ bjOwnerAuth.classList.remove('hidden'); bjOwnerContents.classList.add('hidden'); if(bjOwnerPassword) bjOwnerPassword.value=''; } });
 bjOwnerNewGame && bjOwnerNewGame.addEventListener('click', ()=>{ start(); bjLog('Owner started new game'); });
 bjOwnerReloadApp && bjOwnerReloadApp.addEventListener('click', ()=>{ bjLog('Owner reloaded app'); location.reload(); });
 bjOwnerKillSwitch && bjOwnerKillSwitch.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); bjLog('Owner used kill switch'); location.reload(); });
-bjOwnerForcePlayerWin && bjOwnerForcePlayerWin.addEventListener('click', ()=>{ playerCards = ['A♠','K♠']; render(); bjLog('Owner forced player win'); });
-bjOwnerForceAiWin && bjOwnerForceAiWin.addEventListener('click', ()=>{ dealerCards = ['A♠','K♠','Q♠']; render(); bjLog('Owner forced AI win'); });
+bjOwnerForcePlayerWin && bjOwnerForcePlayerWin.addEventListener('click', ()=>{ playerCards = ['Aâ™ ','Kâ™ ']; render(); bjLog('Owner forced player win'); });
+bjOwnerForceAiWin && bjOwnerForceAiWin.addEventListener('click', ()=>{ dealerCards = ['Aâ™ ','Kâ™ ','Qâ™ ']; render(); bjLog('Owner forced AI win'); });
 bjOwnerViewLS && bjOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } bjOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); bjLog('Owner viewed localStorage'); });
 bjOwnerClearLS && bjOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); bjOwnerLocalStorageEl.textContent=''; bjLog('Owner cleared localStorage'); });
 bjOwnerClose && bjOwnerClose.addEventListener('click', ()=>{ bjOwnerPanel.classList.add('hidden'); bjOwnerAuth.classList.remove('hidden'); bjOwnerContents.classList.add('hidden'); bjLog('Owner locked'); });

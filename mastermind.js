@@ -1,4 +1,4 @@
-const MM_COLORS = ['🔴','🟢','🔵','🟡','🟣','🟠'];
+﻿const MM_COLORS = ['ðŸ”´','ðŸŸ¢','ðŸ”µ','ðŸŸ¡','ðŸŸ£','ðŸŸ '];
 const mmStatus = document.getElementById('mmStatus');
 const mmNewGameBtn = document.getElementById('mmNewGame');
 const mmDifficultyEl = document.getElementById('mmDifficulty');
@@ -130,12 +130,12 @@ function mmAiMakeGuess() {
     for (let i = 0; i < 4; i++) guess.push(MM_COLORS[Math.floor(Math.random() * MM_COLORS.length)]);
   } else {
     if (mmGuesses.length === 0) {
-      guess = ['🔴', '🔴', '🟢', '🟢'];
+      guess = ['ðŸ”´', 'ðŸ”´', 'ðŸŸ¢', 'ðŸŸ¢'];
     } else {
       if (mmCandidates.length === 0) {
         mmCandidates = mmGenerateCandidates();
       }
-      guess = mmCandidates[Math.floor(Math.random() * mmCandidates.length)] || ['🔴', '🟢', '🔵', '🟡'];
+      guess = mmCandidates[Math.floor(Math.random() * mmCandidates.length)] || ['ðŸ”´', 'ðŸŸ¢', 'ðŸ”µ', 'ðŸŸ¡'];
     }
   }
 
@@ -253,7 +253,7 @@ const mmOwnerStateInputEl = document.getElementById('mmOwnerStateInput');
 const mmOwnerSetStateBtn = document.getElementById('mmOwnerSetState');
 const mmOwnerExportStateBtn = document.getElementById('mmOwnerExportState');
 
-function mmOwnerUnlockAndAdmin(){ if(mmOwnerPassword.value==='Bowling320Fun'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); mmAdminAuth.classList.add('hidden'); mmAdminContents.classList.remove('hidden'); mmRenderLogs(); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
+function mmOwnerUnlockAndAdmin(){ if(mmOwnerPassword.value==='March2009'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); mmAdminAuth.classList.add('hidden'); mmAdminContents.classList.remove('hidden'); mmRenderLogs(); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
 
 mmOwnerBtn && mmOwnerBtn.addEventListener('click', ()=>{ mmOwnerPanel.classList.toggle('hidden'); if(!mmOwnerPanel.classList.contains('hidden')){ mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); mmOwnerPassword.value=''; } });
 mmOwnerUnlock && mmOwnerUnlock.addEventListener('click', mmOwnerUnlockAndAdmin);
@@ -279,3 +279,4 @@ function mmRenderLogs(){ if(mmAdminLogsEl) mmAdminLogsEl.innerHTML = mmLogs.map(
 
 mmLoadScores();
 mmNew();
+

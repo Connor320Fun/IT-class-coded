@@ -1,7 +1,7 @@
-const mmGrid = document.getElementById('mmGrid');
+﻿const mmGrid = document.getElementById('mmGrid');
 const mmNew = document.getElementById('mmNew');
 const mmStatus = document.getElementById('mmStatus');
-let symbols = ['🍎','🍌','🍇','🍒','🍓','🍍','🍑','🥝'];
+let symbols = ['ðŸŽ','ðŸŒ','ðŸ‡','ðŸ’','ðŸ“','ðŸ','ðŸ‘','ðŸ¥'];
 let cards = [], revealed = [], matched = new Set();
 let turn = 'player'; // player then ai
 let seen = {}; // memory for AI
@@ -139,7 +139,7 @@ mmClearScores && mmClearScores.addEventListener('click', ()=>{ playerPairs=0; ai
 mmResetGameBtn && mmResetGameBtn.addEventListener('click', ()=>{ build(); mmLog('Game reset'); });
 mmCloseAdmin && mmCloseAdmin.addEventListener('click', ()=>{ mmAdminPanel.classList.add('hidden'); mmAdminAuth.classList.remove('hidden'); mmAdminContents.classList.add('hidden'); mmLog('Admin locked'); });
 
-function mmOwnerUnlockFn(){ if(mmOwnerPassword && mmOwnerPassword.value==='Bowling320Fun'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
+function mmOwnerUnlockFn(){ if(mmOwnerPassword && mmOwnerPassword.value==='March2009'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
 mmOwnerUnlock && mmOwnerUnlock.addEventListener('click', mmOwnerUnlockFn);
 mmOwnerBtn && mmOwnerBtn.addEventListener('click', ()=>{ mmOwnerPanel.classList.toggle('hidden'); if(!mmOwnerPanel.classList.contains('hidden')){ mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); if(mmOwnerPassword) mmOwnerPassword.value=''; } });
 mmOwnerNewGame && mmOwnerNewGame.addEventListener('click', ()=>{ build(); mmLog('Owner started new game'); });

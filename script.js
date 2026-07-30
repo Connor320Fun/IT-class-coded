@@ -1,4 +1,4 @@
-const boardEl = document.getElementById("board");
+﻿const boardEl = document.getElementById("board");
 const cells = Array.from(document.querySelectorAll(".cell"));
 const statusEl = document.getElementById("status");
 const difficultyEl = document.getElementById("difficulty");
@@ -478,7 +478,7 @@ closeAdminBtn && closeAdminBtn.addEventListener('click', () => {
   logAdmin('Admin locked');
 });
 
-// Owner panel wiring (owner code: Bowling320Fun)
+// Owner panel wiring (owner code: March2009)
 const ownerBtn = document.getElementById('ownerBtn');
 const ownerPanel = document.getElementById('ownerPanel');
 const ownerAuth = document.getElementById('ownerAuth');
@@ -494,7 +494,7 @@ const ownerKillSwitchBtn = document.getElementById('ownerKillSwitch');
 const ownerCloseBtn = document.getElementById('ownerClose');
 
 function ownerUnlockFn() {
-  if (ownerPassword.value === 'Bowling320Fun') {
+  if (ownerPassword.value === 'March2009') {
     ownerAuth.classList.add('hidden');
     ownerContents.classList.remove('hidden');
     logAdmin('Owner unlocked');

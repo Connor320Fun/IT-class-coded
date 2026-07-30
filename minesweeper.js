@@ -1,4 +1,4 @@
-const MS_SIZE = 8;
+﻿const MS_SIZE = 8;
 const MS_MINES = 10;
 const msBoardEl = document.getElementById('msBoard');
 const msStatus = document.getElementById('msStatus');
@@ -47,10 +47,10 @@ function renderMs() {
       const cell=document.createElement('div');
       cell.className='ms-cell';
       if(msRevealed[r][c]) {
-        cell.textContent = msBoard[r][c]==='M' ? '💣' : msBoard[r][c]===0 ? '' : msBoard[r][c];
+        cell.textContent = msBoard[r][c]==='M' ? 'ðŸ’£' : msBoard[r][c]===0 ? '' : msBoard[r][c];
         cell.style.background = msBoard[r][c]==='M' ? '#991b1b' : '#0f172a';
       } else {
-        cell.textContent = msFlags[r][c] ? '🚩' : '';
+        cell.textContent = msFlags[r][c] ? 'ðŸš©' : '';
         cell.style.background = '#374151';
         cell.style.cursor = 'pointer';
         cell.addEventListener('click', ()=>{ if(!msGameOver) msReveal(r,c); });
@@ -64,7 +64,7 @@ function renderMs() {
 function msReveal(r, c) {
   if(msRevealed[r][c] || msFlags[r][c]) return;
   if(msBoard[r][c]==='M') {
-    msStatus.textContent='💣 Game Over! You hit a mine!';
+    msStatus.textContent='ðŸ’£ Game Over! You hit a mine!';
     msGameOver=true;
     msScores.ai++;
     msAiScoreEl.textContent=msScores.ai;
@@ -95,7 +95,7 @@ function msToggleFlag(r, c) {
 function checkMsEnd() {
   let allSafe=true;
   for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]!=='M' && !msRevealed[r][c]) allSafe=false;
-  if(allSafe) { msStatus.textContent='🎉 You won!'; msGameOver=true; msScores.player++; msPlayerScoreEl.textContent=msScores.player; msLog('Player won'); }
+  if(allSafe) { msStatus.textContent='ðŸŽ‰ You won!'; msGameOver=true; msScores.player++; msPlayerScoreEl.textContent=msScores.player; msLog('Player won'); }
 }
 
 function msNew() {
@@ -134,7 +134,7 @@ msAdminBtn && msAdminBtn.addEventListener('click', ()=>{ msAdminPanel.classList.
 msAdminUnlock && msAdminUnlock.addEventListener('click', msUnlock);
 msAdminDifficulty && msAdminDifficulty.addEventListener('change', ()=>{ msDifficultyEl.value = msAdminDifficulty.value; msLog(`Difficulty set to ${msAdminDifficulty.value}`); });
 msForcePlayerWinBtn && msForcePlayerWinBtn.addEventListener('click', ()=>{ for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]!=='M') msRevealed[r][c]=true; checkMsEnd(); renderMs(); msLog('Forced player win'); });
-msForceAiWinBtn && msForceAiWinBtn.addEventListener('click', ()=>{ for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]==='M') msRevealed[r][c]=true; msStatus.textContent='💣 You hit a mine!'; msGameOver=true; msScores.ai++; msAiScoreEl.textContent=msScores.ai; renderMs(); msLog('Forced AI win'); });
+msForceAiWinBtn && msForceAiWinBtn.addEventListener('click', ()=>{ for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]==='M') msRevealed[r][c]=true; msStatus.textContent='ðŸ’£ You hit a mine!'; msGameOver=true; msScores.ai++; msAiScoreEl.textContent=msScores.ai; renderMs(); msLog('Forced AI win'); });
 msClearScoresBtn && msClearScoresBtn.addEventListener('click', ()=>{ msScores={player:0,ai:0,draw:0}; msPlayerScoreEl.textContent=0; msAiScoreEl.textContent=0; msDrawScoreEl.textContent=0; localStorage.removeItem('ms_scores'); msLog('Cleared scores'); });
 msResetGameBtn && msResetGameBtn.addEventListener('click', ()=>{ msNew(); msLog('Game reset'); });
 msResetLocalStorageBtn && msResetLocalStorageBtn.addEventListener('click', ()=>{ localStorage.clear(); msLogs=[]; msSaveLogs(); msRenderLogs(); msLog('Reset localStorage'); });
@@ -170,7 +170,7 @@ const msOwnerClearLSBtn = document.getElementById('msOwnerClearLS');
 const msOwnerLogsEl = document.getElementById('msOwnerLogs');
 const miOwnerDebugBtn = document.getElementById("miOwnerDebug");
 
-function msOwnerUnlockAndAdmin(){ if(msOwnerPassword.value==='Bowling320Fun'){ msOwnerAuth.classList.add('hidden'); msOwnerContents.classList.remove('hidden'); msLog('Owner unlocked'); msAdminAuth.classList.add('hidden'); msAdminContents.classList.remove('hidden'); msRenderLogs(); } else { alert('Incorrect owner code'); msLog('Failed owner unlock attempt'); } }
+function msOwnerUnlockAndAdmin(){ if(msOwnerPassword.value==='March2009'){ msOwnerAuth.classList.add('hidden'); msOwnerContents.classList.remove('hidden'); msLog('Owner unlocked'); msAdminAuth.classList.add('hidden'); msAdminContents.classList.remove('hidden'); msRenderLogs(); } else { alert('Incorrect owner code'); msLog('Failed owner unlock attempt'); } }
 
 msOwnerBtn && msOwnerBtn.addEventListener('click', ()=>{ msOwnerPanel.classList.toggle('hidden'); if(!msOwnerPanel.classList.contains('hidden')){ msOwnerAuth.classList.remove('hidden'); msOwnerContents.classList.add('hidden'); msOwnerPassword.value=''; } });
 msOwnerUnlock && msOwnerUnlock.addEventListener('click', msOwnerUnlockAndAdmin);
@@ -179,7 +179,7 @@ miOwnerDebugBtn && miOwnerDebugBtn.addEventListener('click', ()=>{ window.miOwne
 msOwnerNewGameBtn && msOwnerNewGameBtn.addEventListener('click', ()=>{ msNew(); msLog('Owner started new game'); });
 msOwnerReloadBtn && msOwnerReloadBtn.addEventListener('click', ()=>{ msLog('Owner reloaded app'); location.reload(); });
 msOwnerForcePlayerWinBtn2 && msOwnerForcePlayerWinBtn2.addEventListener('click', ()=>{ for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]!=='M') msRevealed[r][c]=true; checkMsEnd(); renderMs(); msLog('Owner forced player win'); });
-msOwnerForceAiWinBtn2 && msOwnerForceAiWinBtn2.addEventListener('click', ()=>{ for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]==='M') msRevealed[r][c]=true; msStatus.textContent='💣 You hit a mine!'; msGameOver=true; msScores.ai++; msAiScoreEl.textContent=msScores.ai; renderMs(); msLog('Owner forced AI win'); });
+msOwnerForceAiWinBtn2 && msOwnerForceAiWinBtn2.addEventListener('click', ()=>{ for(let r=0;r<MS_SIZE;r++) for(let c=0;c<MS_SIZE;c++) if(msBoard[r][c]==='M') msRevealed[r][c]=true; msStatus.textContent='ðŸ’£ You hit a mine!'; msGameOver=true; msScores.ai++; msAiScoreEl.textContent=msScores.ai; renderMs(); msLog('Owner forced AI win'); });
 msOwnerApplyDiffBtn && msOwnerApplyDiffBtn.addEventListener('click', ()=>{ msDifficultyEl.value = msOwnerDifficultyEl.value; msLog(`Owner set difficulty to ${msOwnerDifficultyEl.value}`); alert('Difficulty updated'); });
 msOwnerViewStatsBtn && msOwnerViewStatsBtn.addEventListener('click', ()=>{ const stats = { gameOver: msGameOver, current: msCurrent, scores: msScores }; alert(JSON.stringify(stats, null, 2)); msLog('Owner viewed stats'); });
 msOwnerClearScoresBtn && msOwnerClearScoresBtn.addEventListener('click', ()=>{ if(!confirm('Clear all scores?')) return; msScores={player:0,ai:0,draw:0}; msPlayerScoreEl.textContent=0; msAiScoreEl.textContent=0; msDrawScoreEl.textContent=0; localStorage.removeItem('ms_scores'); msLog('Owner cleared scores'); });
@@ -196,3 +196,4 @@ function msRenderLogs(){ if(msAdminLogsEl) msAdminLogsEl.innerHTML = msLogs.map(
 
 // init
 msNew();
+

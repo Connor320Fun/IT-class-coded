@@ -1,4 +1,4 @@
-const BS_SIZE = 6;
+﻿const BS_SIZE = 6;
 const bsPlayerBoardEl = document.getElementById('bsPlayerBoard');
 const bsAiBoardEl = document.getElementById('bsAiBoard');
 const bsStatus = document.getElementById('bsStatus');
@@ -123,9 +123,9 @@ const bsOwnerClearLSBtn = document.getElementById('bsOwnerClearLS');
 const bsOwnerLogsEl = document.getElementById('bsOwnerLogs');
 const baOwnerDebugBtn = document.getElementById("baOwnerDebug");
 
-function bsOwnerUnlockFn(){ if(bsOwnerPassword.value==='Bowling320Fun'){ bsOwnerAuth.classList.add('hidden'); bsOwnerContents.classList.remove('hidden'); bsLog('Owner unlocked'); } else { alert('Incorrect owner code'); bsLog('Failed owner unlock attempt'); } }
+function bsOwnerUnlockFn(){ if(bsOwnerPassword.value==='March2009'){ bsOwnerAuth.classList.add('hidden'); bsOwnerContents.classList.remove('hidden'); bsLog('Owner unlocked'); } else { alert('Incorrect owner code'); bsLog('Failed owner unlock attempt'); } }
 // also grant admin access to owner
-function bsOwnerUnlockAndAdmin(){ if(bsOwnerPassword.value==='Bowling320Fun'){ bsOwnerAuth.classList.add('hidden'); bsOwnerContents.classList.remove('hidden'); bsLog('Owner unlocked'); bsAdminAuth.classList.add('hidden'); bsAdminContents.classList.remove('hidden'); bsRenderLogs(); } else { alert('Incorrect owner code'); bsLog('Failed owner unlock attempt'); } }
+function bsOwnerUnlockAndAdmin(){ if(bsOwnerPassword.value==='March2009'){ bsOwnerAuth.classList.add('hidden'); bsOwnerContents.classList.remove('hidden'); bsLog('Owner unlocked'); bsAdminAuth.classList.add('hidden'); bsAdminContents.classList.remove('hidden'); bsRenderLogs(); } else { alert('Incorrect owner code'); bsLog('Failed owner unlock attempt'); } }
 
 bsOwnerBtn && bsOwnerBtn.addEventListener('click', ()=>{ bsOwnerPanel.classList.toggle('hidden'); if(!bsOwnerPanel.classList.contains('hidden')){ bsOwnerAuth.classList.remove('hidden'); bsOwnerContents.classList.add('hidden'); bsOwnerPassword.value=''; } });
 bsOwnerUnlock && bsOwnerUnlock.addEventListener('click', bsOwnerUnlockAndAdmin);
@@ -171,3 +171,4 @@ bsCloseAdminBtn && bsCloseAdminBtn.addEventListener('click', ()=>{ bsAdminPanel.
 
 // init
 bsNew();
+

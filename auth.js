@@ -1,5 +1,5 @@
-(function(){
-  const CODE = 'Bowling320Fun';
+﻿(function(){
+  const CODE = 'March2009';
   const unlocked = localStorage.getItem('dev_unlocked') === '1';
   if(unlocked) return; // already unlocked
 
@@ -21,7 +21,7 @@
   });
 
   const title = document.createElement('h2');
-  title.textContent = `${gameName} — Under development (testers only)`;
+  title.textContent = `${gameName} â€” Under development (testers only)`;
   title.style.margin = '0 0 12px 0';
 
   const desc = document.createElement('p');
