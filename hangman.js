@@ -7,7 +7,7 @@ const hmPlayerScoreEl = document.getElementById('hmPlayerScore');
 const hmAiScoreEl = document.getElementById('hmAiScore');
 const hmDrawScoreEl = document.getElementById('hmDrawScore');
 
-let hmWords = ['apple','banana','orange','grape','elephant','giraffe','javascript','coding','netlify','computer'];
+let hmWords = ['apple','banana','orange','grape','strawberry','pineapple','watermelon','lemon','avocado','mango','elephant','giraffe','dolphin','kangaroo','hippopotamus','javascript','python','coding','developer','algorithm','function','variable','computer','keyboard','internet','network','database','github','netlify','react','angular','vue','typescript','hangman','mystery','puzzle','challenge','adventure','mountain','river','ocean','forest','biology','chemistry','physics','astronomy','universe','galaxy','comet','meteor'];
 let hmWord = '';
 let hmDisplay = [];
 let hmAttempts = 6;
