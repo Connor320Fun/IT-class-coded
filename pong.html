@@ -28,18 +28,35 @@
     <a href="memory.html">Memory Match</a>
   </nav>
 
-  <div class="pong-area">
+  <div class="app">
     <h1>Pong vs AI</h1>
-    <div class="controls">
-      <label>Difficulty: <select id="pgDifficulty"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
-      <button id="pgNew">New Game</button>
-      <span id="pgScore">0 : 0</span>
-    </div>
-    <canvas id="pgCanvas" width="640" height="360"></canvas>
 
-    <!-- Admin -->
+    <div class="controls">
+      <label for="pgDifficulty">Difficulty:</label>
+      <select id="pgDifficulty">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      <button id="pgNew" class="new-game">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player: <span id="pgPlayerScore">0</span></div>
+      <div>AI: <span id="pgAiScore">0</span></div>
+      <div><span id="pgScore">0 : 0</span></div>
+    </div>
+
+    <div id="pgStatus" class="status">Press New Game</div>
+
+    <div style="display:flex; justify-content:center; margin-top:12px;">
+      <canvas id="pgCanvas" width="640" height="360"></canvas>
+    </div>
+
+    <!-- Admin and Owner panels (same markup/styling as other games) -->
     <button id="pgAdminBtn" class="admin-btn">Admin Panel</button>
     <button id="pgOwnerBtn" class="owner-btn">Owner Panel</button>
+
     <div id="pgAdminPanel" class="admin-panel hidden">
       <h2>Admin Panel</h2>
       <div id="pgAdminAuth">
@@ -67,6 +84,7 @@
         <button id="pgCloseAdmin">Lock</button>
       </div>
     </div>
+
     <div id="pgOwnerPanel" class="admin-panel hidden">
       <h2>Owner Panel</h2>
       <div id="pgOwnerAuth">
@@ -97,6 +115,7 @@
         <button id="pgOwnerClose">Lock</button>
       </div>
     </div>
+
   </div>
 
   <script src="auth.js"></script>

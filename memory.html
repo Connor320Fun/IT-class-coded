@@ -23,11 +23,21 @@
     <a href="blackjack.html">Blackjack</a>
     <a href="memory.html">Memory Match</a>
   </nav>
-  <div style="text-align:center">
+  <div class="app">
     <h1>Memory Match vs AI</h1>
-    <button id="mmNew">New Game</button>
-    <div class="grid" id="mmGrid"></div>
-    <div id="mmStatus"></div>
+
+    <div class="controls">
+      <button id="mmNew" class="new-game">New Game</button>
+    </div>
+
+    <div class="scoreboard">
+      <div>Player pairs: <span id="mmPlayerPairs">0</span></div>
+      <div>AI pairs: <span id="mmAiPairs">0</span></div>
+    </div>
+
+    <div id="mmStatus" class="status">Press New Game</div>
+
+    <div class="grid" id="mmGrid" style="margin-top:12px"></div>
 
     <!-- Admin -->
     <button id="mmAdminBtn" class="admin-btn">Admin Panel</button>
