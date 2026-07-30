@@ -36,6 +36,67 @@
       <span id="pgScore">0 : 0</span>
     </div>
     <canvas id="pgCanvas" width="640" height="360"></canvas>
+
+    <!-- Admin -->
+    <button id="pgAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="pgOwnerBtn" class="owner-btn">Owner Panel</button>
+    <div id="pgAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="pgAdminAuth">
+        <label>Enter code:</label>
+        <input id="pgAdminPassword" type="password" />
+        <button id="pgAdminUnlock">Unlock</button>
+      </div>
+      <div id="pgAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="pgAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <div>
+          <button id="pgForcePlayerWin">Force Player Win</button>
+          <button id="pgForceAiWin">Force AI Win</button>
+        </div>
+        <div>
+          <button id="pgClearScores">Clear Scores</button>
+          <button id="pgResetGame">Reset Game</button>
+        </div>
+        <h3>Logs</h3>
+        <div id="pgAdminLogs" class="admin-logs"></div>
+        <button id="pgCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="pgOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="pgOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="pgOwnerPassword" type="password" />
+        <button id="pgOwnerUnlock">Unlock</button>
+      </div>
+      <div id="pgOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="pgOwnerNewGame">New Game</button>
+          <button id="pgOwnerReloadApp">Reload App</button>
+          <button id="pgOwnerKillSwitch">Kill Switch</button>
+        </div>
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="pgOwnerForcePlayerWin">Force Player Win</button>
+          <button id="pgOwnerForceAiWin">Force AI Win</button>
+        </div>
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="pgOwnerViewLS">View LocalStorage</button>
+          <button id="pgOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="pgOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+        <h3>Admin Logs</h3>
+        <div id="pgOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+        <button id="pgOwnerClose">Lock</button>
+      </div>
+    </div>
   </div>
 
   <script src="auth.js"></script>

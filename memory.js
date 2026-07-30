@@ -51,3 +51,57 @@ function checkEnd(){ if(matched.size===cards.length){ if(playerPairs>aiPairs) mm
 
 mmNew.addEventListener('click', ()=>{ build(); });
 build();
+
+// Admin & Owner wiring for Memory Match
+const mmAdminBtn = document.getElementById('mmAdminBtn');
+const mmAdminPanel = document.getElementById('mmAdminPanel');
+const mmAdminAuth = document.getElementById('mmAdminAuth');
+const mmAdminPassword = document.getElementById('mmAdminPassword');
+const mmAdminUnlock = document.getElementById('mmAdminUnlock');
+const mmAdminContents = document.getElementById('mmAdminContents');
+const mmAdminDifficulty = document.getElementById('mmAdminDifficulty');
+const mmForcePlayerWin = document.getElementById('mmForcePlayerWin');
+const mmForceAiWin = document.getElementById('mmForceAiWin');
+const mmClearScores = document.getElementById('mmClearScores');
+const mmResetGameBtn = document.getElementById('mmResetGame');
+const mmCloseAdmin = document.getElementById('mmCloseAdmin');
+
+const mmOwnerBtn = document.getElementById('mmOwnerBtn');
+const mmOwnerPanel = document.getElementById('mmOwnerPanel');
+const mmOwnerAuth = document.getElementById('mmOwnerAuth');
+const mmOwnerPassword = document.getElementById('mmOwnerPassword');
+const mmOwnerUnlock = document.getElementById('mmOwnerUnlock');
+const mmOwnerContents = document.getElementById('mmOwnerContents');
+const mmOwnerNewGame = document.getElementById('mmOwnerNewGame');
+const mmOwnerReloadApp = document.getElementById('mmOwnerReloadApp');
+const mmOwnerKillSwitch = document.getElementById('mmOwnerKillSwitch');
+const mmOwnerForcePlayerWin = document.getElementById('mmOwnerForcePlayerWin');
+const mmOwnerForceAiWin = document.getElementById('mmOwnerForceAiWin');
+const mmOwnerViewLS = document.getElementById('mmOwnerViewLS');
+const mmOwnerClearLS = document.getElementById('mmOwnerClearLS');
+const mmOwnerLocalStorageEl = document.getElementById('mmOwnerLocalStorage');
+const mmOwnerClose = document.getElementById('mmOwnerClose');
+
+function mmLog(msg){ const el = document.getElementById('mmAdminLogs'); if(!el) return; el.innerHTML = `<div>${new Date().toISOString()} - ${msg}</div>` + el.innerHTML; }
+
+function mmUnlock(){ if(mmAdminPassword && mmAdminPassword.value==='0320'){ mmAdminAuth.classList.add('hidden'); mmAdminContents.classList.remove('hidden'); mmLog('Admin unlocked'); } else { alert('Incorrect code'); mmLog('Failed admin unlock attempt'); } }
+mmAdminUnlock && mmAdminUnlock.addEventListener('click', mmUnlock);
+mmAdminBtn && mmAdminBtn.addEventListener('click', ()=>{ mmAdminPanel.classList.toggle('hidden'); if(!mmAdminPanel.classList.contains('hidden')){ mmAdminAuth.classList.remove('hidden'); mmAdminContents.classList.add('hidden'); if(mmAdminPassword) mmAdminPassword.value=''; } });
+
+mmForcePlayerWin && mmForcePlayerWin.addEventListener('click', ()=>{ playerPairs = Math.ceil(cards.length/4); mmLog('Forced player major win'); render(); });
+mmForceAiWin && mmForceAiWin.addEventListener('click', ()=>{ aiPairs = Math.ceil(cards.length/4); mmLog('Forced AI major win'); render(); });
+mmClearScores && mmClearScores.addEventListener('click', ()=>{ playerPairs=0; aiPairs=0; mmLog('Cleared scores'); render(); });
+mmResetGameBtn && mmResetGameBtn.addEventListener('click', ()=>{ build(); mmLog('Game reset'); });
+mmCloseAdmin && mmCloseAdmin.addEventListener('click', ()=>{ mmAdminPanel.classList.add('hidden'); mmAdminAuth.classList.remove('hidden'); mmAdminContents.classList.add('hidden'); mmLog('Admin locked'); });
+
+function mmOwnerUnlockFn(){ if(mmOwnerPassword && mmOwnerPassword.value==='Bowling320Fun'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
+mmOwnerUnlock && mmOwnerUnlock.addEventListener('click', mmOwnerUnlockFn);
+mmOwnerBtn && mmOwnerBtn.addEventListener('click', ()=>{ mmOwnerPanel.classList.toggle('hidden'); if(!mmOwnerPanel.classList.contains('hidden')){ mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); if(mmOwnerPassword) mmOwnerPassword.value=''; } });
+mmOwnerNewGame && mmOwnerNewGame.addEventListener('click', ()=>{ build(); mmLog('Owner started new game'); });
+mmOwnerReloadApp && mmOwnerReloadApp.addEventListener('click', ()=>{ mmLog('Owner reloaded app'); location.reload(); });
+mmOwnerKillSwitch && mmOwnerKillSwitch.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); mmLog('Owner used kill switch'); location.reload(); });
+mmOwnerForcePlayerWin && mmOwnerForcePlayerWin.addEventListener('click', ()=>{ playerPairs = Math.ceil(cards.length/4); render(); mmLog('Owner forced player win'); });
+mmOwnerForceAiWin && mmOwnerForceAiWin.addEventListener('click', ()=>{ aiPairs = Math.ceil(cards.length/4); render(); mmLog('Owner forced AI win'); });
+mmOwnerViewLS && mmOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } mmOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); mmLog('Owner viewed localStorage'); });
+mmOwnerClearLS && mmOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); mmOwnerLocalStorageEl.textContent=''; mmLog('Owner cleared localStorage'); });
+mmOwnerClose && mmOwnerClose.addEventListener('click', ()=>{ mmOwnerPanel.classList.add('hidden'); mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); mmLog('Owner locked'); });

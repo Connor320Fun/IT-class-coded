@@ -28,6 +28,67 @@
     <button id="mmNew">New Game</button>
     <div class="grid" id="mmGrid"></div>
     <div id="mmStatus"></div>
+
+    <!-- Admin -->
+    <button id="mmAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="mmOwnerBtn" class="owner-btn">Owner Panel</button>
+    <div id="mmAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="mmAdminAuth">
+        <label>Enter code:</label>
+        <input id="mmAdminPassword" type="password" />
+        <button id="mmAdminUnlock">Unlock</button>
+      </div>
+      <div id="mmAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="mmAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <div>
+          <button id="mmForcePlayerWin">Force Player Win</button>
+          <button id="mmForceAiWin">Force AI Win</button>
+        </div>
+        <div>
+          <button id="mmClearScores">Clear Scores</button>
+          <button id="mmResetGame">Reset Game</button>
+        </div>
+        <h3>Logs</h3>
+        <div id="mmAdminLogs" class="admin-logs"></div>
+        <button id="mmCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="mmOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="mmOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="mmOwnerPassword" type="password" />
+        <button id="mmOwnerUnlock">Unlock</button>
+      </div>
+      <div id="mmOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="mmOwnerNewGame">New Game</button>
+          <button id="mmOwnerReloadApp">Reload App</button>
+          <button id="mmOwnerKillSwitch">Kill Switch</button>
+        </div>
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="mmOwnerForcePlayerWin">Force Player Win</button>
+          <button id="mmOwnerForceAiWin">Force AI Win</button>
+        </div>
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="mmOwnerViewLS">View LocalStorage</button>
+          <button id="mmOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="mmOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+        <h3>Admin Logs</h3>
+        <div id="mmOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+        <button id="mmOwnerClose">Lock</button>
+      </div>
+    </div>
   </div>
 
   <script src="auth.js"></script>
