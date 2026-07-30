@@ -35,6 +35,67 @@
       <div class="hand">Dealer: <span id="bjDealer"></span></div>
       <div id="bjStatus"></div>
     </div>
+
+    <!-- Admin -->
+    <button id="bjAdminBtn" class="admin-btn">Admin Panel</button>
+    <button id="bjOwnerBtn" class="owner-btn">Owner Panel</button>
+    <div id="bjAdminPanel" class="admin-panel hidden">
+      <h2>Admin Panel</h2>
+      <div id="bjAdminAuth">
+        <label>Enter code:</label>
+        <input id="bjAdminPassword" type="password" />
+        <button id="bjAdminUnlock">Unlock</button>
+      </div>
+      <div id="bjAdminContents" class="locked hidden">
+        <label>Set difficulty:</label>
+        <select id="bjAdminDifficulty">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <div>
+          <button id="bjForcePlayerWin">Force Player Win</button>
+          <button id="bjForceAiWin">Force AI Win</button>
+        </div>
+        <div>
+          <button id="bjClearScores">Clear Scores</button>
+          <button id="bjResetGame">Reset Game</button>
+        </div>
+        <h3>Logs</h3>
+        <div id="bjAdminLogs" class="admin-logs"></div>
+        <button id="bjCloseAdmin">Lock</button>
+      </div>
+    </div>
+    <div id="bjOwnerPanel" class="admin-panel hidden">
+      <h2>Owner Panel</h2>
+      <div id="bjOwnerAuth">
+        <label>Enter owner code:</label>
+        <input id="bjOwnerPassword" type="password" />
+        <button id="bjOwnerUnlock">Unlock</button>
+      </div>
+      <div id="bjOwnerContents" class="locked hidden">
+        <h3>Game Control</h3>
+        <div>
+          <button id="bjOwnerNewGame">New Game</button>
+          <button id="bjOwnerReloadApp">Reload App</button>
+          <button id="bjOwnerKillSwitch">Kill Switch</button>
+        </div>
+        <h3>Game Outcomes</h3>
+        <div>
+          <button id="bjOwnerForcePlayerWin">Force Player Win</button>
+          <button id="bjOwnerForceAiWin">Force AI Win</button>
+        </div>
+        <h3>LocalStorage</h3>
+        <div>
+          <button id="bjOwnerViewLS">View LocalStorage</button>
+          <button id="bjOwnerClearLS">Clear LocalStorage</button>
+        </div>
+        <div id="bjOwnerLocalStorage" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;margin:8px 0;"></div>
+        <h3>Admin Logs</h3>
+        <div id="bjOwnerLogs" style="max-height:250px;overflow:auto;background:#111;color:#eee;padding:8px;border:1px solid #333;"></div>
+        <button id="bjOwnerClose">Lock</button>
+      </div>
+    </div>
   </div>
 
   <script src="auth.js"></script>

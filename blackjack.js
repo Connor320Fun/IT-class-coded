@@ -29,3 +29,57 @@ function enableButtons(){ bjHit.disabled=false; bjStand.disabled=false; }
 
 bjNew.addEventListener('click', ()=>{ enableButtons(); bjStatus.textContent=''; start(); });
 start();
+
+// Admin & Owner wiring for Blackjack
+const bjAdminBtn = document.getElementById('bjAdminBtn');
+const bjAdminPanel = document.getElementById('bjAdminPanel');
+const bjAdminAuth = document.getElementById('bjAdminAuth');
+const bjAdminPassword = document.getElementById('bjAdminPassword');
+const bjAdminUnlock = document.getElementById('bjAdminUnlock');
+const bjAdminContents = document.getElementById('bjAdminContents');
+const bjAdminDifficulty = document.getElementById('bjAdminDifficulty');
+const bjForcePlayerWin = document.getElementById('bjForcePlayerWin');
+const bjForceAiWin = document.getElementById('bjForceAiWin');
+const bjClearScores = document.getElementById('bjClearScores');
+const bjResetGameBtn = document.getElementById('bjResetGame');
+const bjCloseAdmin = document.getElementById('bjCloseAdmin');
+
+const bjOwnerBtn = document.getElementById('bjOwnerBtn');
+const bjOwnerPanel = document.getElementById('bjOwnerPanel');
+const bjOwnerAuth = document.getElementById('bjOwnerAuth');
+const bjOwnerPassword = document.getElementById('bjOwnerPassword');
+const bjOwnerUnlock = document.getElementById('bjOwnerUnlock');
+const bjOwnerContents = document.getElementById('bjOwnerContents');
+const bjOwnerNewGame = document.getElementById('bjOwnerNewGame');
+const bjOwnerReloadApp = document.getElementById('bjOwnerReloadApp');
+const bjOwnerKillSwitch = document.getElementById('bjOwnerKillSwitch');
+const bjOwnerForcePlayerWin = document.getElementById('bjOwnerForcePlayerWin');
+const bjOwnerForceAiWin = document.getElementById('bjOwnerForceAiWin');
+const bjOwnerViewLS = document.getElementById('bjOwnerViewLS');
+const bjOwnerClearLS = document.getElementById('bjOwnerClearLS');
+const bjOwnerLocalStorageEl = document.getElementById('bjOwnerLocalStorage');
+const bjOwnerClose = document.getElementById('bjOwnerClose');
+
+function bjLog(msg){ const el = document.getElementById('bjAdminLogs'); if(!el) return; el.innerHTML = `<div>${new Date().toISOString()} - ${msg}</div>` + el.innerHTML; }
+
+function bjUnlock(){ if(bjAdminPassword && bjAdminPassword.value==='0320'){ bjAdminAuth.classList.add('hidden'); bjAdminContents.classList.remove('hidden'); bjLog('Admin unlocked'); } else { alert('Incorrect code'); bjLog('Failed admin unlock attempt'); } }
+bjAdminUnlock && bjAdminUnlock.addEventListener('click', bjUnlock);
+bjAdminBtn && bjAdminBtn.addEventListener('click', ()=>{ bjAdminPanel.classList.toggle('hidden'); if(!bjAdminPanel.classList.contains('hidden')){ bjAdminAuth.classList.remove('hidden'); bjAdminContents.classList.add('hidden'); if(bjAdminPassword) bjAdminPassword.value=''; } });
+
+bjForcePlayerWin && bjForcePlayerWin.addEventListener('click', ()=>{ playerCards = [ 'A♠' ]; dealerCards = []; render(); bjLog('Forced player win'); });
+bjForceAiWin && bjForceAiWin.addEventListener('click', ()=>{ dealerCards = ['A♠','K♠','Q♠']; render(); bjLog('Forced AI win'); });
+bjClearScores && bjClearScores.addEventListener('click', ()=>{ bjLog('Cleared scores'); });
+bjResetGameBtn && bjResetGameBtn.addEventListener('click', ()=>{ start(); bjLog('Game reset'); });
+bjCloseAdmin && bjCloseAdmin.addEventListener('click', ()=>{ bjAdminPanel.classList.add('hidden'); bjAdminAuth.classList.remove('hidden'); bjAdminContents.classList.add('hidden'); bjLog('Admin locked'); });
+
+function bjOwnerUnlockFn(){ if(bjOwnerPassword && bjOwnerPassword.value==='Bowling320Fun'){ bjOwnerAuth.classList.add('hidden'); bjOwnerContents.classList.remove('hidden'); bjLog('Owner unlocked'); } else { alert('Incorrect owner code'); bjLog('Failed owner unlock attempt'); } }
+bjOwnerUnlock && bjOwnerUnlock.addEventListener('click', bjOwnerUnlockFn);
+bjOwnerBtn && bjOwnerBtn.addEventListener('click', ()=>{ bjOwnerPanel.classList.toggle('hidden'); if(!bjOwnerPanel.classList.contains('hidden')){ bjOwnerAuth.classList.remove('hidden'); bjOwnerContents.classList.add('hidden'); if(bjOwnerPassword) bjOwnerPassword.value=''; } });
+bjOwnerNewGame && bjOwnerNewGame.addEventListener('click', ()=>{ start(); bjLog('Owner started new game'); });
+bjOwnerReloadApp && bjOwnerReloadApp.addEventListener('click', ()=>{ bjLog('Owner reloaded app'); location.reload(); });
+bjOwnerKillSwitch && bjOwnerKillSwitch.addEventListener('click', ()=>{ if(!confirm('Owner kill switch: clear all localStorage and reload?')) return; localStorage.clear(); bjLog('Owner used kill switch'); location.reload(); });
+bjOwnerForcePlayerWin && bjOwnerForcePlayerWin.addEventListener('click', ()=>{ playerCards = ['A♠','K♠']; render(); bjLog('Owner forced player win'); });
+bjOwnerForceAiWin && bjOwnerForceAiWin.addEventListener('click', ()=>{ dealerCards = ['A♠','K♠','Q♠']; render(); bjLog('Owner forced AI win'); });
+bjOwnerViewLS && bjOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } bjOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); bjLog('Owner viewed localStorage'); });
+bjOwnerClearLS && bjOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); bjOwnerLocalStorageEl.textContent=''; bjLog('Owner cleared localStorage'); });
+bjOwnerClose && bjOwnerClose.addEventListener('click', ()=>{ bjOwnerPanel.classList.add('hidden'); bjOwnerAuth.classList.remove('hidden'); bjOwnerContents.classList.add('hidden'); bjLog('Owner locked'); });
