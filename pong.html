@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Pong vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .pong-area{display:flex;flex-direction:column;align-items:center;margin-top:12px}
+    canvas{background:#081227;border:1px solid #fff}
+    .controls{margin:8px}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+    <a href="minesweeper.html">Minesweeper</a>
+    <a href="snake.html">Snake</a>
+    <a href="mastermind.html">Mastermind</a>
+    <a href="rps.html">Rock Paper Scissors</a>
+    <a href="2048.html">2048</a>
+    <a href="pong.html">Pong</a>
+    <a href="blackjack.html">Blackjack</a>
+    <a href="memory.html">Memory Match</a>
+  </nav>
+
+  <div class="pong-area">
+    <h1>Pong vs AI</h1>
+    <div class="controls">
+      <label>Difficulty: <select id="pgDifficulty"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+      <button id="pgNew">New Game</button>
+      <span id="pgScore">0 : 0</span>
+    </div>
+    <canvas id="pgCanvas" width="640" height="360"></canvas>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="pong.js"></script>
+</body>
+</html>

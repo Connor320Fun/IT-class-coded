@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Blackjack vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>.bj-area{max-width:760px;margin:12px auto;text-align:center}.hand{background:#042;display:inline-block;padding:8px;margin:8px;border-radius:6px;color:#fff}</style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Tic-Tac-Toe</a>
+    <a href="connect.html">Connect Four</a>
+    <a href="battleship.html">Battleship</a>
+    <a href="hangman.html">Hangman</a>
+    <a href="checkers.html">Checkers</a>
+    <a href="chess.html">Chess</a>
+    <a href="minesweeper.html">Minesweeper</a>
+    <a href="snake.html">Snake</a>
+    <a href="mastermind.html">Mastermind</a>
+    <a href="rps.html">Rock Paper Scissors</a>
+    <a href="2048.html">2048</a>
+    <a href="pong.html">Pong</a>
+    <a href="blackjack.html">Blackjack</a>
+    <a href="memory.html">Memory Match</a>
+  </nav>
+  <div class="bj-area">
+    <h1>Blackjack vs Dealer AI</h1>
+    <div>
+      <button id="bjNew">New Game</button>
+      <button id="bjHit">Hit</button>
+      <button id="bjStand">Stand</button>
+    </div>
+    <div style="margin-top:12px">
+      <div class="hand">Player: <span id="bjPlayer"></span></div>
+      <div class="hand">Dealer: <span id="bjDealer"></span></div>
+      <div id="bjStatus"></div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="blackjack.js"></script>
+</body>
+</html>
