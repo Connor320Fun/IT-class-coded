@@ -21,7 +21,43 @@ function render(){ mmGrid.innerHTML = '';
 }
 
 let first=null;
-function playerFlip(i){ revealed[i]=true; render(); if(first===null){ first=i; } else { if(cards[first]===cards[i]){ matched.add(first); matched.add(i); playerPairs++; mmStatus.textContent='You found a pair!'; } else { setTimeout(()=>{ revealed[first]=false; revealed[i]=false; render(); turn='ai'; mmStatus.textContent='AI thinking...'; setTimeout(aiTurn,600); },800); } first=null; checkEnd(); }}
+function playerFlip(i){
+  revealed[i]=true;
+  // let AI remember what player revealed
+  seen[i]=cards[i];
+  render();
+  if(first===null){
+    first=i;
+  } else {
+    // remember the first flip too
+    seen[first]=cards[first];
+    if(cards[first]===cards[i]){
+      matched.add(first);
+      matched.add(i);
+      // matched cards should be removed from AI memory
+      delete seen[first];
+      delete seen[i];
+      playerPairs++;
+      mmStatus.textContent='You found a pair!';
+      render();
+      checkEnd();
+      first=null;
+      return;
+    } else {
+      // keep seen entries so AI can learn from player's reveals
+      setTimeout(()=>{
+        revealed[first]=false;
+        revealed[i]=false;
+        render();
+        turn='ai';
+        mmStatus.textContent='AI thinking...';
+        setTimeout(aiTurn,600);
+      },800);
+    }
+    first=null;
+    checkEnd();
+  }
+}
 
 function aiTurn(){ // simple memory based AI
   // if AI knows a pair, take it
