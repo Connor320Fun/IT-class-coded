@@ -170,7 +170,7 @@ const msOwnerClearLSBtn = document.getElementById('msOwnerClearLS');
 const msOwnerLogsEl = document.getElementById('msOwnerLogs');
 const miOwnerDebugBtn = document.getElementById("miOwnerDebug");
 
-function msOwnerUnlockAndAdmin(){ if(msOwnerPassword.value==='March2009'){ msOwnerAuth.classList.add('hidden'); msOwnerContents.classList.remove('hidden'); msLog('Owner unlocked'); msAdminAuth.classList.add('hidden'); msAdminContents.classList.remove('hidden'); msRenderLogs(); } else { alert('Incorrect owner code'); msLog('Failed owner unlock attempt'); } }
+function msOwnerUnlockAndAdmin(){ if(msOwnerPassword.value==='Bowling320Fun'){ msOwnerAuth.classList.add('hidden'); msOwnerContents.classList.remove('hidden'); msLog('Owner unlocked'); msAdminAuth.classList.add('hidden'); msAdminContents.classList.remove('hidden'); msRenderLogs(); } else { alert('Incorrect owner code'); msLog('Failed owner unlock attempt'); } }
 
 msOwnerBtn && msOwnerBtn.addEventListener('click', ()=>{ msOwnerPanel.classList.toggle('hidden'); if(!msOwnerPanel.classList.contains('hidden')){ msOwnerAuth.classList.remove('hidden'); msOwnerContents.classList.add('hidden'); msOwnerPassword.value=''; } });
 msOwnerUnlock && msOwnerUnlock.addEventListener('click', msOwnerUnlockAndAdmin);
@@ -196,4 +196,5 @@ function msRenderLogs(){ if(msAdminLogsEl) msAdminLogsEl.innerHTML = msLogs.map(
 
 // init
 msNew();
+
 

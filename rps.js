@@ -104,7 +104,7 @@ const rpsOwnerStateInputEl = document.getElementById('rpsOwnerStateInput');
 const rpsOwnerSetStateBtn = document.getElementById('rpsOwnerSetState');
 const rpsOwnerExportStateBtn = document.getElementById('rpsOwnerExportState');
 
-function rpsOwnerUnlockAndAdmin(){ if(rpsOwnerPassword.value==='March2009'){ rpsOwnerAuth.classList.add('hidden'); rpsOwnerContents.classList.remove('hidden'); rpsLog('Owner unlocked'); rpsAdminAuth.classList.add('hidden'); rpsAdminContents.classList.remove('hidden'); rpsRenderLogs(); } else { alert('Incorrect owner code'); rpsLog('Failed owner unlock attempt'); } }
+function rpsOwnerUnlockAndAdmin(){ if(rpsOwnerPassword.value==='Bowling320Fun'){ rpsOwnerAuth.classList.add('hidden'); rpsOwnerContents.classList.remove('hidden'); rpsLog('Owner unlocked'); rpsAdminAuth.classList.add('hidden'); rpsAdminContents.classList.remove('hidden'); rpsRenderLogs(); } else { alert('Incorrect owner code'); rpsLog('Failed owner unlock attempt'); } }
 
 rpsOwnerBtn && rpsOwnerBtn.addEventListener('click', ()=>{ rpsOwnerPanel.classList.toggle('hidden'); if(!rpsOwnerPanel.classList.contains('hidden')){ rpsOwnerAuth.classList.remove('hidden'); rpsOwnerContents.classList.add('hidden'); rpsOwnerPassword.value=''; } });
 rpsOwnerUnlock && rpsOwnerUnlock.addEventListener('click', rpsOwnerUnlockAndAdmin);
@@ -129,4 +129,5 @@ function rpsLog(a){ rpsLogs.unshift(`${new Date().toISOString()} - ${a}`); if(rp
 function rpsRenderLogs(){ if(rpsAdminLogsEl) rpsAdminLogsEl.innerHTML = rpsLogs.map(l=>`<div>${l}</div>`).join(''); }
 
 rpsStatus.textContent = 'Click a button to play!';
+
 

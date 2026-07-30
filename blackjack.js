@@ -72,7 +72,7 @@ bjClearScores && bjClearScores.addEventListener('click', ()=>{ bjLog('Cleared sc
 bjResetGameBtn && bjResetGameBtn.addEventListener('click', ()=>{ start(); bjLog('Game reset'); });
 bjCloseAdmin && bjCloseAdmin.addEventListener('click', ()=>{ bjAdminPanel.classList.add('hidden'); bjAdminAuth.classList.remove('hidden'); bjAdminContents.classList.add('hidden'); bjLog('Admin locked'); });
 
-function bjOwnerUnlockFn(){ if(bjOwnerPassword && bjOwnerPassword.value==='March2009'){ bjOwnerAuth.classList.add('hidden'); bjOwnerContents.classList.remove('hidden'); bjLog('Owner unlocked'); } else { alert('Incorrect owner code'); bjLog('Failed owner unlock attempt'); } }
+function bjOwnerUnlockFn(){ if(bjOwnerPassword && bjOwnerPassword.value==='Bowling320Fun'){ bjOwnerAuth.classList.add('hidden'); bjOwnerContents.classList.remove('hidden'); bjLog('Owner unlocked'); } else { alert('Incorrect owner code'); bjLog('Failed owner unlock attempt'); } }
 bjOwnerUnlock && bjOwnerUnlock.addEventListener('click', bjOwnerUnlockFn);
 bjOwnerBtn && bjOwnerBtn.addEventListener('click', ()=>{ bjOwnerPanel.classList.toggle('hidden'); if(!bjOwnerPanel.classList.contains('hidden')){ bjOwnerAuth.classList.remove('hidden'); bjOwnerContents.classList.add('hidden'); if(bjOwnerPassword) bjOwnerPassword.value=''; } });
 bjOwnerNewGame && bjOwnerNewGame.addEventListener('click', ()=>{ start(); bjLog('Owner started new game'); });
@@ -83,3 +83,4 @@ bjOwnerForceAiWin && bjOwnerForceAiWin.addEventListener('click', ()=>{ dealerCar
 bjOwnerViewLS && bjOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } bjOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); bjLog('Owner viewed localStorage'); });
 bjOwnerClearLS && bjOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); bjOwnerLocalStorageEl.textContent=''; bjLog('Owner cleared localStorage'); });
 bjOwnerClose && bjOwnerClose.addEventListener('click', ()=>{ bjOwnerPanel.classList.add('hidden'); bjOwnerAuth.classList.remove('hidden'); bjOwnerContents.classList.add('hidden'); bjLog('Owner locked'); });
+

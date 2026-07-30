@@ -243,7 +243,7 @@ const snOwnerClearLSBtn = document.getElementById('snOwnerClearLS');
 const snOwnerLogsEl = document.getElementById('snOwnerLogs');
 const snOwnerDebugBtn = document.getElementById("snOwnerDebug");
 
-function snOwnerUnlockAndAdmin(){ if(snOwnerPassword.value==='March2009'){ snOwnerAuth.classList.add('hidden'); snOwnerContents.classList.remove('hidden'); snLog('Owner unlocked'); snAdminAuth.classList.add('hidden'); snAdminContents.classList.remove('hidden'); snRenderLogs(); } else { alert('Incorrect owner code'); snLog('Failed owner unlock attempt'); } }
+function snOwnerUnlockAndAdmin(){ if(snOwnerPassword.value==='Bowling320Fun'){ snOwnerAuth.classList.add('hidden'); snOwnerContents.classList.remove('hidden'); snLog('Owner unlocked'); snAdminAuth.classList.add('hidden'); snAdminContents.classList.remove('hidden'); snRenderLogs(); } else { alert('Incorrect owner code'); snLog('Failed owner unlock attempt'); } }
 
 snOwnerBtn && snOwnerBtn.addEventListener('click', ()=>{ snOwnerPanel.classList.toggle('hidden'); if(!snOwnerPanel.classList.contains('hidden')){ snOwnerAuth.classList.remove('hidden'); snOwnerContents.classList.add('hidden'); snOwnerPassword.value=''; } });
 snOwnerUnlock && snOwnerUnlock.addEventListener('click', snOwnerUnlockAndAdmin);
@@ -267,4 +267,5 @@ function snRenderLogs(){ if(snAdminLogsEl) snAdminLogsEl.innerHTML = snLogs.map(
 
 // init
 snNew();
+
 

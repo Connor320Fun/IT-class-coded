@@ -238,7 +238,7 @@ const cfClearBoardBtn = document.getElementById('cfClearBoard');
 const cfResetGameBtn = document.getElementById('cfResetGame');
 const cfClearScoresBtn = document.getElementById('cfClearScores');
 
-// Owner panel wiring (owner code: March2009)
+// Owner panel wiring (owner code: Bowling320Fun)
 const cfOwnerBtn = document.getElementById('cfOwnerBtn');
 const cfOwnerPanel = document.getElementById('cfOwnerPanel');
 const cfOwnerAuth = document.getElementById('cfOwnerAuth');
@@ -266,10 +266,10 @@ const cfOwnerClearLSBtn = document.getElementById('cfOwnerClearLS');
 const cfOwnerLogsEl = document.getElementById('cfOwnerLogs');
 const coOwnerDebugBtn = document.getElementById("coOwnerDebug");
 
-function cfOwnerUnlockFn(){ if (cfOwnerPassword.value==='March2009'){ cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked'); } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); } }
+function cfOwnerUnlockFn(){ if (cfOwnerPassword.value==='Bowling320Fun'){ cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked'); } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); } }
 // also grant admin access when owner unlocks
 function cfOwnerUnlockAndAdmin(){
-  if (cfOwnerPassword.value==='March2009'){
+  if (cfOwnerPassword.value==='Bowling320Fun'){
     cfOwnerAuth.classList.add('hidden'); cfOwnerContents.classList.remove('hidden'); cfLog('Owner unlocked');
     cfAdminUnlocked = true; cfAdminAuth.classList.add('hidden'); cfAdminContents.classList.remove('hidden'); cfRenderAdminLogs(); cfRenderLiveStats();
   } else { alert('Incorrect owner code'); cfLog('Failed owner unlock attempt'); }
@@ -374,5 +374,6 @@ cfCloseAdminBtn && cfCloseAdminBtn.addEventListener('click', ()=>{ cfAdminPanel.
 // wire live stats updates
 const origRenderCfBoard = renderCfBoard;
 renderCfBoard = function(){ origRenderCfBoard(); cfRenderLiveStats(); };
+
 
 

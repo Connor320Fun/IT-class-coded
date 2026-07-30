@@ -478,7 +478,7 @@ closeAdminBtn && closeAdminBtn.addEventListener('click', () => {
   logAdmin('Admin locked');
 });
 
-// Owner panel wiring (owner code: March2009)
+// Owner panel wiring (owner code: Bowling320Fun)
 const ownerBtn = document.getElementById('ownerBtn');
 const ownerPanel = document.getElementById('ownerPanel');
 const ownerAuth = document.getElementById('ownerAuth');
@@ -494,7 +494,7 @@ const ownerKillSwitchBtn = document.getElementById('ownerKillSwitch');
 const ownerCloseBtn = document.getElementById('ownerClose');
 
 function ownerUnlockFn() {
-  if (ownerPassword.value === 'March2009') {
+  if (ownerPassword.value === 'Bowling320Fun') {
     ownerAuth.classList.add('hidden');
     ownerContents.classList.remove('hidden');
     logAdmin('Owner unlocked');
@@ -588,3 +588,4 @@ updateScoreboard = function() {
   originalUpdateScoreboard();
   renderLiveStats();
 };
+

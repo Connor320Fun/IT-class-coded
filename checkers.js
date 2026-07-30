@@ -166,9 +166,9 @@ const chOwnerClearLSBtn = document.getElementById('chOwnerClearLS');
 const chOwnerLogsEl = document.getElementById('chOwnerLogs');
 const chOwnerDebugBtn = document.getElementById("chOwnerDebug");
 
-function chOwnerUnlockFn(){ if(chOwnerPassword.value==='March2009'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
+function chOwnerUnlockFn(){ if(chOwnerPassword.value==='Bowling320Fun'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
 // also unlock admin for owner
-function chOwnerUnlockAndAdmin(){ if(chOwnerPassword.value==='March2009'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); chAdminAuth.classList.add('hidden'); chAdminContents.classList.remove('hidden'); chRenderLogs(); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
+function chOwnerUnlockAndAdmin(){ if(chOwnerPassword.value==='Bowling320Fun'){ chOwnerAuth.classList.add('hidden'); chOwnerContents.classList.remove('hidden'); chLog('Owner unlocked'); chAdminAuth.classList.add('hidden'); chAdminContents.classList.remove('hidden'); chRenderLogs(); } else { alert('Incorrect owner code'); chLog('Failed owner unlock attempt'); } }
 
 chOwnerBtn && chOwnerBtn.addEventListener('click', ()=>{ chOwnerPanel.classList.toggle('hidden'); if(!chOwnerPanel.classList.contains('hidden')){ chOwnerAuth.classList.remove('hidden'); chOwnerContents.classList.add('hidden'); chOwnerPassword.value=''; } });
 chOwnerUnlock && chOwnerUnlock.addEventListener('click', chOwnerUnlockAndAdmin);
@@ -213,4 +213,5 @@ chCloseAdminBtn && chCloseAdminBtn.addEventListener('click', ()=>{ chAdminPanel.
 
 // init
 chNew();
+
 

@@ -92,7 +92,7 @@ pgClearScores && pgClearScores.addEventListener('click', ()=>{ scores={player:0,
 pgResetGameBtn && pgResetGameBtn.addEventListener('click', ()=>{ scores={player:0,ai:0}; updateScore(); resetBall(); pgLog('Game reset'); });
 pgCloseAdmin && pgCloseAdmin.addEventListener('click', ()=>{ pgAdminPanel.classList.add('hidden'); pgAdminAuth.classList.remove('hidden'); pgAdminContents.classList.add('hidden'); pgLog('Admin locked'); });
 
-function pgOwnerUnlockFn(){ if(pgOwnerPassword && pgOwnerPassword.value==='March2009'){ pgOwnerAuth.classList.add('hidden'); pgOwnerContents.classList.remove('hidden'); pgLog('Owner unlocked'); } else { alert('Incorrect owner code'); pgLog('Failed owner unlock attempt'); } }
+function pgOwnerUnlockFn(){ if(pgOwnerPassword && pgOwnerPassword.value==='Bowling320Fun'){ pgOwnerAuth.classList.add('hidden'); pgOwnerContents.classList.remove('hidden'); pgLog('Owner unlocked'); } else { alert('Incorrect owner code'); pgLog('Failed owner unlock attempt'); } }
 pgOwnerUnlock && pgOwnerUnlock.addEventListener('click', pgOwnerUnlockFn);
 pgOwnerBtn && pgOwnerBtn.addEventListener('click', ()=>{ pgOwnerPanel.classList.toggle('hidden'); if(!pgOwnerPanel.classList.contains('hidden')){ pgOwnerAuth.classList.remove('hidden'); pgOwnerContents.classList.add('hidden'); if(pgOwnerPassword) pgOwnerPassword.value=''; } });
 pgOwnerNewGame && pgOwnerNewGame.addEventListener('click', ()=>{ scores={player:0,ai:0}; updateScore(); resetBall(); pgLog('Owner started new game'); });
@@ -103,3 +103,4 @@ pgOwnerForceAiWin && pgOwnerForceAiWin.addEventListener('click', ()=>{ scores.ai
 pgOwnerViewLS && pgOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } pgOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); pgLog('Owner viewed localStorage'); });
 pgOwnerClearLS && pgOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); pgOwnerLocalStorageEl.textContent=''; pgLog('Owner cleared localStorage'); });
 pgOwnerClose && pgOwnerClose.addEventListener('click', ()=>{ pgOwnerPanel.classList.add('hidden'); pgOwnerAuth.classList.remove('hidden'); pgOwnerContents.classList.add('hidden'); pgLog('Owner locked'); });
+

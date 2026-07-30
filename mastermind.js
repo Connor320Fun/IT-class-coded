@@ -253,7 +253,7 @@ const mmOwnerStateInputEl = document.getElementById('mmOwnerStateInput');
 const mmOwnerSetStateBtn = document.getElementById('mmOwnerSetState');
 const mmOwnerExportStateBtn = document.getElementById('mmOwnerExportState');
 
-function mmOwnerUnlockAndAdmin(){ if(mmOwnerPassword.value==='March2009'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); mmAdminAuth.classList.add('hidden'); mmAdminContents.classList.remove('hidden'); mmRenderLogs(); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
+function mmOwnerUnlockAndAdmin(){ if(mmOwnerPassword.value==='Bowling320Fun'){ mmOwnerAuth.classList.add('hidden'); mmOwnerContents.classList.remove('hidden'); mmLog('Owner unlocked'); mmAdminAuth.classList.add('hidden'); mmAdminContents.classList.remove('hidden'); mmRenderLogs(); } else { alert('Incorrect owner code'); mmLog('Failed owner unlock attempt'); } }
 
 mmOwnerBtn && mmOwnerBtn.addEventListener('click', ()=>{ mmOwnerPanel.classList.toggle('hidden'); if(!mmOwnerPanel.classList.contains('hidden')){ mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); mmOwnerPassword.value=''; } });
 mmOwnerUnlock && mmOwnerUnlock.addEventListener('click', mmOwnerUnlockAndAdmin);
@@ -279,4 +279,5 @@ function mmRenderLogs(){ if(mmAdminLogsEl) mmAdminLogsEl.innerHTML = mmLogs.map(
 
 mmLoadScores();
 mmNew();
+
 

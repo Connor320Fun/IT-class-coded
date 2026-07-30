@@ -250,9 +250,9 @@ const chessOwnerClearLSBtn = document.getElementById('chessOwnerClearLS');
 const chessOwnerLogsEl = document.getElementById('chessOwnerLogs');
 const chOwnerDebugBtn = document.getElementById("chOwnerDebug");
 
-function chessOwnerUnlockFn(){ if(chessOwnerPassword.value==='March2009'){ chessOwnerAuth.classList.add('hidden'); chessOwnerContents.classList.remove('hidden'); chessLog('Owner unlocked'); } else { alert('Incorrect owner code'); chessLog('Failed owner unlock attempt'); } }
+function chessOwnerUnlockFn(){ if(chessOwnerPassword.value==='Bowling320Fun'){ chessOwnerAuth.classList.add('hidden'); chessOwnerContents.classList.remove('hidden'); chessLog('Owner unlocked'); } else { alert('Incorrect owner code'); chessLog('Failed owner unlock attempt'); } }
 // also unlock admin for owner
-function chessOwnerUnlockAndAdmin(){ if(chessOwnerPassword.value==='March2009'){ chessOwnerAuth.classList.add('hidden'); chessOwnerContents.classList.remove('hidden'); chessLog('Owner unlocked'); chessAdminAuth.classList.add('hidden'); chessAdminContents.classList.remove('hidden'); chessRenderLogs(); } else { alert('Incorrect owner code'); chessLog('Failed owner unlock attempt'); } }
+function chessOwnerUnlockAndAdmin(){ if(chessOwnerPassword.value==='Bowling320Fun'){ chessOwnerAuth.classList.add('hidden'); chessOwnerContents.classList.remove('hidden'); chessLog('Owner unlocked'); chessAdminAuth.classList.add('hidden'); chessAdminContents.classList.remove('hidden'); chessRenderLogs(); } else { alert('Incorrect owner code'); chessLog('Failed owner unlock attempt'); } }
 
 chessOwnerBtn && chessOwnerBtn.addEventListener('click', ()=>{ chessOwnerPanel.classList.toggle('hidden'); if(!chessOwnerPanel.classList.contains('hidden')){ chessOwnerAuth.classList.remove('hidden'); chessOwnerContents.classList.add('hidden'); chessOwnerPassword.value=''; } });
 chessOwnerUnlock && chessOwnerUnlock.addEventListener('click', chessOwnerUnlockAndAdmin);
@@ -312,4 +312,5 @@ document.querySelectorAll('.nav a').forEach(a=> a.addEventListener('click', ()=>
 
 // start
 initChess();
+
 

@@ -1,5 +1,5 @@
 ﻿(function(){
-  const CODE = 'March2009';
+  const CODE = 'Bowling320Fun';
   const unlocked = localStorage.getItem('dev_unlocked') === '1';
   if(unlocked) return; // already unlocked
 
@@ -72,3 +72,4 @@
   // also show a small sticky note letting devs know how to unlock (invisible to normal users unless inspect)
   console.log(`Tester gate active for ${gameName}. Use code: ${CODE}`);
 })();
+

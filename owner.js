@@ -1,6 +1,6 @@
-﻿// Owner panel client-side gate (NOT secure) - owner code: March2009
+﻿// Owner panel client-side gate (NOT secure) - owner code: Bowling320Fun
 (function(){
-  const OWNER_CODE = 'March2009';
+  const OWNER_CODE = 'Bowling320Fun';
   const authEl = document.getElementById('ownerAuth');
   const contents = document.getElementById('ownerContents');
   const output = document.getElementById('ownerOutput');
@@ -81,3 +81,4 @@
 
   document.getElementById('ownerLock').addEventListener('click', ()=>{ lockUI(); });
 })();
+
