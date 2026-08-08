@@ -29,17 +29,23 @@
     <h1>Memory Match vs AI</h1>
 
     <!-- Maintenance overlay -->
-    <div id="mmMaintenance" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:none;align-items:center;justify-content:center">
+    <div id="mmMaintenance" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center">
       <div style="background:#333;padding:50px;border-radius:12px;text-align:center;max-width:450px;border:2px solid #f00">
         <h2 style="color:#ff4444;margin:0 0 20px 0;font-size:32px">⚠️ Closed for Maintenance</h2>
         <p style="color:#ccc;font-size:16px;margin:0 0 30px 0">This game is temporarily unavailable.</p>
         <div style="background:#222;padding:25px;border-radius:8px">
           <label style="display:block;color:#aaa;margin-bottom:10px;font-size:14px">Enter owner code to unlock:</label>
-          <input id="mmMaintenanceCode" type="text" placeholder="Enter code" style="padding:12px;width:100%;box-sizing:border-box;font-size:16px;margin-bottom:15px;border:1px solid #555;border-radius:4px" />
-          <button onclick="mmUnlockMaintenance()" style="padding:12px 30px;font-size:16px;background:#4a4;color:#000;border:none;border-radius:4px;cursor:pointer;font-weight:bold;width:100%">Unlock</button>
+          <input id="mmCode" type="text" placeholder="Enter code" style="padding:12px;width:100%;box-sizing:border-box;font-size:16px;margin-bottom:15px;border:1px solid #555;border-radius:4px" />
+          <button onclick="if(document.getElementById('mmCode').value==='0320'){localStorage.setItem('mm_unlock','1');document.getElementById('mmMaintenance').style.display='none'}else{alert('Wrong code')}" style="padding:12px 30px;font-size:16px;background:#4a4;color:#000;border:none;border-radius:4px;cursor:pointer;font-weight:bold;width:100%">Unlock</button>
         </div>
       </div>
     </div>
+
+    <script>
+      if(localStorage.getItem('mm_unlock')==='1'){
+        document.getElementById('mmMaintenance').style.display='none';
+      }
+    </script>
 
     <div class="controls">
       <button id="mmNew" class="new-game">New Game</button>

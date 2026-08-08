@@ -1,38 +1,6 @@
 const mmGrid = document.getElementById('mmGrid');
 const mmNew = document.getElementById('mmNew');
 const mmStatus = document.getElementById('mmStatus');
-
-// Maintenance gate - global unlock function
-function mmUnlockMaintenance(){
-  const code = document.getElementById('mmMaintenanceCode').value;
-  if(code === '0320'){
-    localStorage.setItem('mm_maintenance_unlock', '1');
-    document.getElementById('mmMaintenance').style.display = 'none';
-    console.log('Maintenance unlocked!');
-  } else {
-    alert('Wrong code');
-    document.getElementById('mmMaintenanceCode').value = '';
-  }
-}
-
-// Show maintenance on page load if not unlocked
-window.addEventListener('DOMContentLoaded', ()=>{
-  const isUnlocked = localStorage.getItem('mm_maintenance_unlock') === '1';
-  if(!isUnlocked){
-    document.getElementById('mmMaintenance').style.display = 'flex';
-  }
-});
-
-// Allow Enter key to unlock
-document.addEventListener('DOMContentLoaded', ()=>{
-  document.getElementById('mmMaintenanceCode').addEventListener('keypress', (e)=>{
-    if(e.key === 'Enter') mmUnlockMaintenance();
-  });
-});
-
-const mmGrid = document.getElementById('mmGrid');
-const mmNew = document.getElementById('mmNew');
-const mmStatus = document.getElementById('mmStatus');
 let symbols = ['ðŸŽ','ðŸŒ','ðŸ‡','ðŸ’','ðŸ“','ðŸ','ðŸ‘','ðŸ¥'];
 let cards = [], revealed = [], matched = new Set();
 let turn = 'player'; // player then ai
