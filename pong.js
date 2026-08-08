@@ -1,4 +1,4 @@
-const pgCanvas = document.getElementById('pgCanvas');
+﻿const pgCanvas = document.getElementById('pgCanvas');
 const pgCtx = pgCanvas.getContext('2d');
 const pgDifficulty = document.getElementById('pgDifficulty');
 const pgNew = document.getElementById('pgNew');
@@ -103,3 +103,4 @@ pgOwnerForceAiWin && pgOwnerForceAiWin.addEventListener('click', ()=>{ scores.ai
 pgOwnerViewLS && pgOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } pgOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); pgLog('Owner viewed localStorage'); });
 pgOwnerClearLS && pgOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); pgOwnerLocalStorageEl.textContent=''; pgLog('Owner cleared localStorage'); });
 pgOwnerClose && pgOwnerClose.addEventListener('click', ()=>{ pgOwnerPanel.classList.add('hidden'); pgOwnerAuth.classList.remove('hidden'); pgOwnerContents.classList.add('hidden'); pgLog('Owner locked'); });
+

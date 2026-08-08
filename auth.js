@@ -1,4 +1,4 @@
-(function(){
+﻿(function(){
   const CODE = 'Bowling320Fun';
   const unlocked = localStorage.getItem('dev_unlocked') === '1';
   if(unlocked) return; // already unlocked
@@ -21,7 +21,7 @@
   });
 
   const title = document.createElement('h2');
-  title.textContent = `${gameName} — Under development (testers only)`;
+  title.textContent = `${gameName} â€” Under development (testers only)`;
   title.style.margin = '0 0 12px 0';
 
   const desc = document.createElement('p');
@@ -72,3 +72,4 @@
   // also show a small sticky note letting devs know how to unlock (invisible to normal users unless inspect)
   console.log(`Tester gate active for ${gameName}. Use code: ${CODE}`);
 })();
+

@@ -1,4 +1,4 @@
-const twBoardEl = document.getElementById('twBoard');
+﻿const twBoardEl = document.getElementById('twBoard');
 const twStatus = document.getElementById('twStatus');
 const twNewGameBtn = document.getElementById('twNewGame');
 const twPlayerScoreEl = document.getElementById('twPlayerScore');
@@ -100,7 +100,7 @@ function twMove(dir) {
     twPlayerScoreEl.textContent = twPlayerScore;
     if(!twCanMove()) {
       twGameOver = true;
-      twStatus.textContent = '💀 Game Over!';
+      twStatus.textContent = 'ðŸ’€ Game Over!';
       twAiScore++;
       twAiScoreEl.textContent = twAiScore;
       twLog('Player game over');
@@ -198,3 +198,5 @@ function twRenderLogs(){ if(twAdminLogsEl) twAdminLogsEl.innerHTML = twLogs.map(
 twNew();
 
 twNew();
+
+

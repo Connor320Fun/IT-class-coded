@@ -1,4 +1,4 @@
-// Minimal chess: player is White (uppercase), AI is black (lowercase).
+﻿// Minimal chess: player is White (uppercase), AI is black (lowercase).
 const chessBoardEl = document.getElementById('chessBoard');
 const chessStatus = document.getElementById('chessStatus');
 const chessNewGameBtn = document.getElementById('chessNewGame');
@@ -312,3 +312,5 @@ document.querySelectorAll('.nav a').forEach(a=> a.addEventListener('click', ()=>
 
 // start
 initChess();
+
+

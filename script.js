@@ -1,4 +1,4 @@
-const boardEl = document.getElementById("board");
+﻿const boardEl = document.getElementById("board");
 const cells = Array.from(document.querySelectorAll(".cell"));
 const statusEl = document.getElementById("status");
 const difficultyEl = document.getElementById("difficulty");
@@ -588,3 +588,4 @@ updateScoreboard = function() {
   originalUpdateScoreboard();
   renderLiveStats();
 };
+

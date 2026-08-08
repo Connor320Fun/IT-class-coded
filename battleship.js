@@ -1,4 +1,4 @@
-const BS_SIZE = 6;
+﻿const BS_SIZE = 6;
 const bsPlayerBoardEl = document.getElementById('bsPlayerBoard');
 const bsAiBoardEl = document.getElementById('bsAiBoard');
 const bsStatus = document.getElementById('bsStatus');
@@ -171,3 +171,5 @@ bsCloseAdminBtn && bsCloseAdminBtn.addEventListener('click', ()=>{ bsAdminPanel.
 
 // init
 bsNew();
+
+

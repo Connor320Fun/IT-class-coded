@@ -1,4 +1,4 @@
-const CH_SIZE = 8;
+﻿const CH_SIZE = 8;
 const chBoardEl = document.getElementById('chBoard');
 const chStatus = document.getElementById('chStatus');
 const chNewGameBtn = document.getElementById('chNewGame');
@@ -34,7 +34,7 @@ function renderChBoard(){
       cell.className='checker-cell';
       cell.dataset.r=r; cell.dataset.c=c;
       const v=chBoard[r][c];
-      cell.textContent = v? (v==='r'?'●':'○') : '';
+      cell.textContent = v? (v==='r'?'â—':'â—‹') : '';
       if (chSelected && chSelected.r==r && chSelected.c==c) cell.style.outline='2px solid #f59e0b';
       cell.addEventListener('click', ()=> onCellClick(r,c));
       chBoardEl.appendChild(cell);
@@ -213,3 +213,5 @@ chCloseAdminBtn && chCloseAdminBtn.addEventListener('click', ()=>{ chAdminPanel.
 
 // init
 chNew();
+
+

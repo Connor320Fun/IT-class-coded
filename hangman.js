@@ -1,4 +1,4 @@
-const hmDifficultyEl = document.getElementById('hmDifficulty');
+﻿const hmDifficultyEl = document.getElementById('hmDifficulty');
 const hmNewGameBtn = document.getElementById('hmNewGame');
 const hmStatus = document.getElementById('hmStatus');
 const hmWordEl = document.getElementById('hmWord');
@@ -154,3 +154,5 @@ hmCloseAdminBtn && hmCloseAdminBtn.addEventListener('click', ()=>{ hmAdminPanel.
 
 // initialize
 hmNew();
+
+

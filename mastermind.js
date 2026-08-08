@@ -1,4 +1,4 @@
-const MM_COLORS = ['🔴','🟢','🔵','🟡','🟣','🟠'];
+﻿const MM_COLORS = ['ðŸ”´','ðŸŸ¢','ðŸ”µ','ðŸŸ¡','ðŸŸ£','ðŸŸ '];
 const mmStatus = document.getElementById('mmStatus');
 const mmNewGameBtn = document.getElementById('mmNewGame');
 const mmDifficultyEl = document.getElementById('mmDifficulty');
@@ -130,12 +130,12 @@ function mmAiMakeGuess() {
     for (let i = 0; i < 4; i++) guess.push(MM_COLORS[Math.floor(Math.random() * MM_COLORS.length)]);
   } else {
     if (mmGuesses.length === 0) {
-      guess = ['🔴', '🔴', '🟢', '🟢'];
+      guess = ['ðŸ”´', 'ðŸ”´', 'ðŸŸ¢', 'ðŸŸ¢'];
     } else {
       if (mmCandidates.length === 0) {
         mmCandidates = mmGenerateCandidates();
       }
-      guess = mmCandidates[Math.floor(Math.random() * mmCandidates.length)] || ['🔴', '🟢', '🔵', '🟡'];
+      guess = mmCandidates[Math.floor(Math.random() * mmCandidates.length)] || ['ðŸ”´', 'ðŸŸ¢', 'ðŸ”µ', 'ðŸŸ¡'];
     }
   }
 
@@ -279,3 +279,5 @@ function mmRenderLogs(){ if(mmAdminLogsEl) mmAdminLogsEl.innerHTML = mmLogs.map(
 
 mmLoadScores();
 mmNew();
+
+

@@ -1,4 +1,4 @@
-const rpsStatus = document.getElementById('rpsStatus');
+﻿const rpsStatus = document.getElementById('rpsStatus');
 const rpsDifficultyEl = document.getElementById('rpsDifficulty');
 const rpsPlayerScoreEl = document.getElementById('rpsPlayerScore');
 const rpsAiScoreEl = document.getElementById('rpsAiScore');
@@ -47,7 +47,7 @@ function rpsPlay(playerMove) {
     rpsDrawScoreEl.textContent = rpsDrawScore;
   }
   rpsHistory.push({player:playerMove,ai:aiMove,result});
-  rpsStatus.textContent = `You: ${playerMove} | AI: ${aiMove} | ${result==='player'?'🎉 You won!':result==='ai'?'💀 AI won!':'🤝 Draw!'}`;
+  rpsStatus.textContent = `You: ${playerMove} | AI: ${aiMove} | ${result==='player'?'ðŸŽ‰ You won!':result==='ai'?'ðŸ’€ AI won!':'ðŸ¤ Draw!'}`;
   rpsLog(`Player played ${playerMove}, AI played ${aiMove} - ${result}`);
 }
 
@@ -129,3 +129,5 @@ function rpsLog(a){ rpsLogs.unshift(`${new Date().toISOString()} - ${a}`); if(rp
 function rpsRenderLogs(){ if(rpsAdminLogsEl) rpsAdminLogsEl.innerHTML = rpsLogs.map(l=>`<div>${l}</div>`).join(''); }
 
 rpsStatus.textContent = 'Click a button to play!';
+
+
