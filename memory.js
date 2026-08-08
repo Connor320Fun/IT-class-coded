@@ -1,6 +1,10 @@
-const mmGrid = document.getElementById('mmGrid');
-const mmNew = document.getElementById('mmNew');
-const mmStatus = document.getElementById('mmStatus');
+// Bind DOM elements defensively so reloading the script doesn't throw duplicate-declaration errors
+window.mmGrid = window.mmGrid || document.getElementById('mmGrid');
+window.mmNew = window.mmNew || document.getElementById('mmNew');
+window.mmStatus = window.mmStatus || document.getElementById('mmStatus');
+const mmGrid = window.mmGrid;
+const mmNew = window.mmNew;
+const mmStatus = window.mmStatus;
 let symbols = ['ðŸŽ','ðŸŒ','ðŸ‡','ðŸ’','ðŸ“','ðŸ','ðŸ‘','ðŸ¥'];
 let cards = [], revealed = [], matched = new Set();
 let turn = 'player'; // player then ai
