@@ -11,28 +11,32 @@ const MAINTENANCE_CODE = '0320';
 
 function mmCheckMaintenance(){
   const isUnlocked = localStorage.getItem('mm_maintenance_unlock') === '1';
-  if(!isUnlocked){
+  if(!isUnlocked && mmMaintenance){
     mmMaintenance.style.display = 'flex';
     document.body.style.pointerEvents = 'none';
     mmMaintenance.style.pointerEvents = 'auto';
-  } else {
+  } else if(mmMaintenance){
     mmMaintenance.style.display = 'none';
     document.body.style.pointerEvents = 'auto';
   }
 }
 
-mmMaintenanceUnlock.addEventListener('click', ()=>{
-  if(mmMaintenanceCode.value === MAINTENANCE_CODE){
-    localStorage.setItem('mm_maintenance_unlock', '1');
-    mmMaintenance.style.display = 'none';
-    document.body.style.pointerEvents = 'auto';
-  } else {
-    mmMaintenanceCode.value = '';
-    alert('Incorrect code');
-  }
-});
+if(mmMaintenanceUnlock){
+  mmMaintenanceUnlock.addEventListener('click', ()=>{
+    if(mmMaintenanceCode.value === MAINTENANCE_CODE){
+      localStorage.setItem('mm_maintenance_unlock', '1');
+      mmMaintenance.style.display = 'none';
+      document.body.style.pointerEvents = 'auto';
+    } else {
+      mmMaintenanceCode.value = '';
+      alert('Incorrect code');
+    }
+  });
+}
 
-mmMaintenanceCode.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ mmMaintenanceUnlock.click(); } });
+if(mmMaintenanceCode){
+  mmMaintenanceCode.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ mmMaintenanceUnlock.click(); } });
+}
 
 const mmGrid = document.getElementById('mmGrid');
 const mmNew = document.getElementById('mmNew');
