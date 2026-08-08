@@ -1,6 +1,42 @@
 ﻿const mmGrid = document.getElementById('mmGrid');
 const mmNew = document.getElementById('mmNew');
 const mmStatus = document.getElementById('mmStatus');
+
+// Maintenance gate
+const mmMaintenance = document.getElementById('mmMaintenance');
+const mmMaintenanceCode = document.getElementById('mmMaintenanceCode');
+const mmMaintenanceUnlock = document.getElementById('mmMaintenanceUnlock');
+
+const MAINTENANCE_CODE = '0320';
+
+function mmCheckMaintenance(){
+  const isUnlocked = localStorage.getItem('mm_maintenance_unlock') === '1';
+  if(!isUnlocked){
+    mmMaintenance.style.display = 'flex';
+    document.body.style.pointerEvents = 'none';
+    mmMaintenance.style.pointerEvents = 'auto';
+  } else {
+    mmMaintenance.style.display = 'none';
+    document.body.style.pointerEvents = 'auto';
+  }
+}
+
+mmMaintenanceUnlock.addEventListener('click', ()=>{
+  if(mmMaintenanceCode.value === MAINTENANCE_CODE){
+    localStorage.setItem('mm_maintenance_unlock', '1');
+    mmMaintenance.style.display = 'none';
+    document.body.style.pointerEvents = 'auto';
+  } else {
+    mmMaintenanceCode.value = '';
+    alert('Incorrect code');
+  }
+});
+
+mmMaintenanceCode.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ mmMaintenanceUnlock.click(); } });
+
+const mmGrid = document.getElementById('mmGrid');
+const mmNew = document.getElementById('mmNew');
+const mmStatus = document.getElementById('mmStatus');
 let symbols = ['ðŸŽ','ðŸŒ','ðŸ‡','ðŸ’','ðŸ“','ðŸ','ðŸ‘','ðŸ¥'];
 let cards = [], revealed = [], matched = new Set();
 let turn = 'player'; // player then ai
@@ -151,3 +187,5 @@ mmOwnerViewLS && mmOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for
 mmOwnerClearLS && mmOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); mmOwnerLocalStorageEl.textContent=''; mmLog('Owner cleared localStorage'); });
 mmOwnerClose && mmOwnerClose.addEventListener('click', ()=>{ mmOwnerPanel.classList.add('hidden'); mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); mmLog('Owner locked'); });
 
+// Maintenance gate check on load
+mmCheckMaintenance();

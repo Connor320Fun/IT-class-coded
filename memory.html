@@ -28,6 +28,19 @@
   <div class="app">
     <h1>Memory Match vs AI</h1>
 
+    <!-- Maintenance overlay -->
+    <div id="mmMaintenance" class="admin-panel" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column">
+      <div style="background:#222;padding:40px;border-radius:8px;text-align:center;max-width:400px">
+        <h2 style="color:#f00">Closed for Maintenance</h2>
+        <p>This game is temporarily unavailable.</p>
+        <div style="margin-top:20px">
+          <label>Owner code:</label>
+          <input id="mmMaintenanceCode" type="password" placeholder="Enter code" style="padding:8px;margin:8px 0" />
+          <button id="mmMaintenanceUnlock" style="padding:8px 16px;margin:8px;cursor:pointer">Unlock</button>
+        </div>
+      </div>
+    </div>
+
     <div class="controls">
       <button id="mmNew" class="new-game">New Game</button>
     </div>
