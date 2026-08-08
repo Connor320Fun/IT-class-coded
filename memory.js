@@ -1,55 +1,34 @@
-﻿const mmGrid = document.getElementById('mmGrid');
+const mmGrid = document.getElementById('mmGrid');
 const mmNew = document.getElementById('mmNew');
 const mmStatus = document.getElementById('mmStatus');
 
-// Maintenance gate - simple version
-const mmMaintenance = document.getElementById('mmMaintenance');
-const mmMaintenanceCode = document.getElementById('mmMaintenanceCode');
-const mmMaintenanceUnlock = document.getElementById('mmMaintenanceUnlock');
-const MAINTENANCE_CODE = '0320';
-
-function mmShowMaintenance(){
-  if(mmMaintenance) mmMaintenance.style.display = 'flex';
+// Maintenance gate - global unlock function
+function mmUnlockMaintenance(){
+  const code = document.getElementById('mmMaintenanceCode').value;
+  if(code === '0320'){
+    localStorage.setItem('mm_maintenance_unlock', '1');
+    document.getElementById('mmMaintenance').style.display = 'none';
+    console.log('Maintenance unlocked!');
+  } else {
+    alert('Wrong code');
+    document.getElementById('mmMaintenanceCode').value = '';
+  }
 }
 
-function mmHideMaintenance(){
-  if(mmMaintenance) mmMaintenance.style.display = 'none';
-}
-
-// Check on load
-window.addEventListener('load', ()=>{
+// Show maintenance on page load if not unlocked
+window.addEventListener('DOMContentLoaded', ()=>{
   const isUnlocked = localStorage.getItem('mm_maintenance_unlock') === '1';
   if(!isUnlocked){
-    mmShowMaintenance();
-  } else {
-    mmHideMaintenance();
+    document.getElementById('mmMaintenance').style.display = 'flex';
   }
 });
 
-// Unlock button
-if(mmMaintenanceUnlock){
-  mmMaintenanceUnlock.addEventListener('click', function(){
-    const code = mmMaintenanceCode ? mmMaintenanceCode.value : '';
-    console.log('Submitted code:', code, 'Expected:', MAINTENANCE_CODE, 'Match:', code === MAINTENANCE_CODE);
-    if(code === MAINTENANCE_CODE){
-      localStorage.setItem('mm_maintenance_unlock', '1');
-      mmHideMaintenance();
-      alert('Unlocked!');
-    } else {
-      alert('Incorrect code');
-      if(mmMaintenanceCode) mmMaintenanceCode.value = '';
-    }
+// Allow Enter key to unlock
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('mmMaintenanceCode').addEventListener('keypress', (e)=>{
+    if(e.key === 'Enter') mmUnlockMaintenance();
   });
-}
-
-// Enter key support
-if(mmMaintenanceCode){
-  mmMaintenanceCode.addEventListener('keypress', function(e){
-    if(e.key === 'Enter'){
-      mmMaintenanceUnlock.click();
-    }
-  });
-}
+});
 
 const mmGrid = document.getElementById('mmGrid');
 const mmNew = document.getElementById('mmNew');
