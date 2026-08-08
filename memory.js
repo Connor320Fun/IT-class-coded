@@ -2,40 +2,53 @@
 const mmNew = document.getElementById('mmNew');
 const mmStatus = document.getElementById('mmStatus');
 
-// Maintenance gate
+// Maintenance gate - simple version
 const mmMaintenance = document.getElementById('mmMaintenance');
 const mmMaintenanceCode = document.getElementById('mmMaintenanceCode');
 const mmMaintenanceUnlock = document.getElementById('mmMaintenanceUnlock');
-
 const MAINTENANCE_CODE = '0320';
 
-function mmCheckMaintenance(){
-  const isUnlocked = localStorage.getItem('mm_maintenance_unlock') === '1';
-  if(!isUnlocked && mmMaintenance){
-    mmMaintenance.style.display = 'flex';
-    document.body.style.pointerEvents = 'none';
-    mmMaintenance.style.pointerEvents = 'auto';
-  } else if(mmMaintenance){
-    mmMaintenance.style.display = 'none';
-    document.body.style.pointerEvents = 'auto';
-  }
+function mmShowMaintenance(){
+  if(mmMaintenance) mmMaintenance.style.display = 'flex';
 }
 
+function mmHideMaintenance(){
+  if(mmMaintenance) mmMaintenance.style.display = 'none';
+}
+
+// Check on load
+window.addEventListener('load', ()=>{
+  const isUnlocked = localStorage.getItem('mm_maintenance_unlock') === '1';
+  if(!isUnlocked){
+    mmShowMaintenance();
+  } else {
+    mmHideMaintenance();
+  }
+});
+
+// Unlock button
 if(mmMaintenanceUnlock){
-  mmMaintenanceUnlock.addEventListener('click', ()=>{
-    if(mmMaintenanceCode.value === MAINTENANCE_CODE){
+  mmMaintenanceUnlock.addEventListener('click', function(){
+    const code = mmMaintenanceCode ? mmMaintenanceCode.value : '';
+    console.log('Submitted code:', code, 'Expected:', MAINTENANCE_CODE, 'Match:', code === MAINTENANCE_CODE);
+    if(code === MAINTENANCE_CODE){
       localStorage.setItem('mm_maintenance_unlock', '1');
-      mmMaintenance.style.display = 'none';
-      document.body.style.pointerEvents = 'auto';
+      mmHideMaintenance();
+      alert('Unlocked!');
     } else {
-      mmMaintenanceCode.value = '';
       alert('Incorrect code');
+      if(mmMaintenanceCode) mmMaintenanceCode.value = '';
     }
   });
 }
 
+// Enter key support
 if(mmMaintenanceCode){
-  mmMaintenanceCode.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ mmMaintenanceUnlock.click(); } });
+  mmMaintenanceCode.addEventListener('keypress', function(e){
+    if(e.key === 'Enter'){
+      mmMaintenanceUnlock.click();
+    }
+  });
 }
 
 const mmGrid = document.getElementById('mmGrid');
@@ -190,7 +203,3 @@ mmOwnerForceAiWin && mmOwnerForceAiWin.addEventListener('click', ()=>{ aiPairs =
 mmOwnerViewLS && mmOwnerViewLS.addEventListener('click', ()=>{ const obj={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); try{ obj[k]=JSON.parse(localStorage.getItem(k)); }catch(e){ obj[k]=localStorage.getItem(k); } } mmOwnerLocalStorageEl.textContent = JSON.stringify(obj,null,2); mmLog('Owner viewed localStorage'); });
 mmOwnerClearLS && mmOwnerClearLS.addEventListener('click', ()=>{ if(!confirm('Clear all localStorage?')) return; localStorage.clear(); mmOwnerLocalStorageEl.textContent=''; mmLog('Owner cleared localStorage'); });
 mmOwnerClose && mmOwnerClose.addEventListener('click', ()=>{ mmOwnerPanel.classList.add('hidden'); mmOwnerAuth.classList.remove('hidden'); mmOwnerContents.classList.add('hidden'); mmLog('Owner locked'); });
-
-// Maintenance gate check on load
-mmCheckMaintenance();
-
