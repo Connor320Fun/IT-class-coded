@@ -42,9 +42,11 @@
     </div>
 
     <script>
-      if(localStorage.getItem('mm_unlock')==='1'){
-        document.getElementById('mmMaintenance').style.display='none';
-      }
+      window.addEventListener('load', function(){
+        if(localStorage.getItem('mm_unlock')==='1'){
+          document.getElementById('mmMaintenance').style.display='none';
+        }
+      });
     </script>
 
     <div class="controls">
